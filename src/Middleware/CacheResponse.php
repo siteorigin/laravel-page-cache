@@ -7,6 +7,11 @@ use SiteOrigin\PageCache\Cache;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Cache response middleware. This
+ *
+ * @package SiteOrigin\PageCache\Middleware
+ */
 class CacheResponse
 {
     /**
@@ -61,7 +66,15 @@ class CacheResponse
      */
     protected function shouldCache(Request $request, Response $response)
     {
-        // TODO only cache with query strings if a pattern is matched
+        if ($request->getQueryString()) {
+            $matches = collect($this->queryStringCachePatterns)
+                ->merge(config('pagecache.query_patterns'))
+                ->map(fn($pattern) => preg_match($pattern, $request->getRequestUri()))
+                ->sum();
+
+            if (!$matches) return false;
+        }
+
         return $request->isMethod('GET') && $response->getStatusCode() == 200;
     }
 }

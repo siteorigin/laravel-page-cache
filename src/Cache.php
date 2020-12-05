@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class Cache
 {
+    const INDEX_ALIAS = 'pc__index';
+
     /**
      * The filesystem instance.
      *
@@ -195,25 +197,37 @@ class Cache
      */
     protected function getDirectoryAndFileNames($request, $response)
     {
-        $segments = explode('/', ltrim($request->getPathInfo(), '/'));
+        $uri = $this->aliasUri($request->getRequestUri());
+        $filename = $this->uriToFilename($uri);
+        $path = pathinfo($filename.'.html');
 
-        $file = $this->aliasFilename(array_pop($segments));
-        // Add the query string to the filename
-        $file .= '__' . $request->getQueryString();
-        $file .=  '.' . $this->guessFileExtension($response);
+        $dirname = $path['dirname'];
+        $filename = $path['filename'] . '.' . $this->guessFileExtension($response);
 
-        return [$this->getCachePath(implode('/', $segments)), $file];
+        return [$this->getCachePath($dirname), $filename];
     }
 
     /**
      * Alias the filename if necessary.
      *
-     * @param  string  $filename
+     * @param string $uri
      * @return string
      */
-    protected function aliasFilename($filename)
+    protected function aliasUri($uri)
     {
-        return $filename ?: 'pc__index__pc';
+        // Handle the index
+        if ($uri == '/') $uri = '/' . self::INDEX_ALIAS;
+        else if (substr($uri, 0, 2) == '/?') $uri = str_replace('/?', '/' . self::INDEX_ALIAS . '?', $uri);
+
+        // We'll add a fake query string for consistency
+        if ( strpos($uri, '?') === false ) $uri .= '?';
+
+        return $uri;
+    }
+
+    protected function uriToFilename($uri)
+    {
+        return str_replace('?', '__', $uri);
     }
 
     /**
