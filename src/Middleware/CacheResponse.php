@@ -1,9 +1,9 @@
 <?php
 
-namespace Silber\PageCache\Middleware;
+namespace SiteOrigin\PageCache\Middleware;
 
 use Closure;
-use Silber\PageCache\Cache;
+use SiteOrigin\PageCache\Cache;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -12,14 +12,21 @@ class CacheResponse
     /**
      * The cache instance.
      *
-     * @var \Silber\PageCache\Cache
+     * @var \SiteOrigin\PageCache\Cache
      */
     protected $cache;
 
     /**
+     * Regular expression patterns that validate URLs with query strings.
+     *
+     * @var array
+     */
+    protected $queryStringCachePatterns = [];
+
+    /**
      * Constructor.
      *
-     * @var \Silber\PageCache\Cache  $cache
+     * @var \SiteOrigin\PageCache\Cache  $cache
      */
     public function __construct(Cache $cache)
     {
@@ -35,6 +42,7 @@ class CacheResponse
      */
     public function handle(Request $request, Closure $next)
     {
+        // Handle other middleware first.
         $response = $next($request);
 
         if ($this->shouldCache($request, $response)) {
@@ -53,6 +61,7 @@ class CacheResponse
      */
     protected function shouldCache(Request $request, Response $response)
     {
+        // TODO only cache with query strings if a pattern is matched
         return $request->isMethod('GET') && $response->getStatusCode() == 200;
     }
 }

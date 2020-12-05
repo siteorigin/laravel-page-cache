@@ -1,11 +1,12 @@
 <?php
 
-namespace Silber\PageCache;
+namespace SiteOrigin\PageCache;
 
 use Illuminate\Support\ServiceProvider;
-use Silber\PageCache\Console\ClearCache;
+use SiteOrigin\PageCache\Console\ClearCache;
+use SiteOrigin\PageCache\Console\Touch;
 
-class LaravelServiceProvider extends ServiceProvider
+class PageCacheServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
@@ -14,7 +15,10 @@ class LaravelServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->commands(ClearCache::class);
+        $this->commands([
+            ClearCache::class,
+            Touch::class
+        ]);
 
         $this->app->singleton(Cache::class, function () {
             $instance = new Cache($this->app->make('files'));

@@ -1,8 +1,9 @@
 <?php
 
-namespace Silber\PageCache\Console;
+namespace SiteOrigin\PageCache\Console;
 
-use Silber\PageCache\Cache;
+use Illuminate\Support\Facades\Artisan;
+use SiteOrigin\PageCache\Cache;
 use Illuminate\Console\Command;
 
 class ClearCache extends Command
@@ -12,7 +13,7 @@ class ClearCache extends Command
      *
      * @var string
      */
-    protected $signature = 'page-cache:clear {slug? : URL slug of page/directory to delete} {--recursive}';
+    protected $signature = 'page-cache:clear {path? : URL path of page/directory to delete} {--recursive} {--touch} {--touch-delay=}';
 
     /**
      * The console command description.
@@ -28,39 +29,49 @@ class ClearCache extends Command
      */
     public function handle()
     {
-        $cache = $this->laravel->make(Cache::class);
+        $cache = app(Cache::class);
         $recursive = $this->option('recursive');
-        $slug = $this->argument('slug');
+        $path = $this->argument('path');
 
-        if (!$slug) {
+        if (!$path) {
             $this->clear($cache);
         } else if ($recursive) {
-            $this->clear($cache, $slug);
+            $this->clear($cache, $path);
         } else {
-            $this->forget($cache, $slug);
+            $this->forget($cache, $path);
+        }
+
+        if ($this->option('touch')) {
+            if ($this->option('touch-delay')) {
+                $this->info('Queued touch with ' . ( (int)$this->option('touch-delay') ) . ' second delay');
+                Artisan::queue('page-cache:touch')->delay((int) $this->option('touch-delay'));
+            }
+            else {
+                $this->call('page-cache:touch');
+            }
         }
     }
 
     /**
-     * Remove the cached file for the given slug.
+     * Remove the cached file for the given path.
      *
-     * @param  \Silber\PageCache\Cache  $cache
-     * @param  string  $slug
+     * @param  \SiteOrigin\PageCache\Cache  $cache
+     * @param  string  $path
      * @return void
      */
-    public function forget(Cache $cache, $slug)
+    public function forget(Cache $cache, $path)
     {
-        if ($cache->forget($slug)) {
-            $this->info("Page cache cleared for \"{$slug}\"");
+        if ($cache->forget($path)) {
+            $this->info("Page cache cleared for \"{$path}\"");
         } else {
-            $this->info("No page cache found for \"{$slug}\"");
+            $this->info("No page cache found for \"{$path}\"");
         }
     }
 
     /**
      * Clear the full page cache.
      *
-     * @param  \Silber\PageCache\Cache  $cache
+     * @param  \SiteOrigin\PageCache\Cache  $cache
      * @param  string|null  $path
      * @return void
      */

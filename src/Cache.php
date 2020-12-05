@@ -1,6 +1,6 @@
 <?php
 
-namespace Silber\PageCache;
+namespace SiteOrigin\PageCache;
 
 use Exception;
 use Illuminate\Filesystem\Filesystem;
@@ -16,21 +16,21 @@ class Cache
      *
      * @var \Illuminate\Filesystem\Filesystem
      */
-    protected $files;
+    protected Filesystem $files;
 
     /**
      * The container instance.
      *
      * @var \Illuminate\Contracts\Container\Container|null
      */
-    protected $container = null;
+    protected ?Container $container = null;
 
     /**
      * The directory in which to store the cached pages.
      *
      * @var string|null
      */
-    protected $cachePath = null;
+    protected ?string $cachePath = null;
 
     /**
      * Constructor.
@@ -63,6 +63,7 @@ class Cache
      */
     public function setCachePath($path)
     {
+        // Remove trailing slash
         $this->cachePath = rtrim($path, '\/');
     }
 
@@ -93,9 +94,7 @@ class Cache
      */
     protected function join(array $paths)
     {
-        $trimmed = array_map(function ($path) {
-            return trim($path, '/');
-        }, $paths);
+        $trimmed = array_map(fn ($path) => trim($path, '/'), $paths);
 
         return $this->matchRelativity(
             $paths[0], implode('/', array_filter($trimmed))
@@ -151,7 +150,7 @@ class Cache
      */
     public function cache(Request $request, Response $response)
     {
-        list($path, $file) = $this->getDirectoryAndFileNames($request, $response);
+        [$path, $file] = $this->getDirectoryAndFileNames($request, $response);
 
         $this->files->makeDirectory($path, 0775, true, true);
 
@@ -198,10 +197,10 @@ class Cache
     {
         $segments = explode('/', ltrim($request->getPathInfo(), '/'));
 
-        $filename = $this->aliasFilename(array_pop($segments));
-        $extension = $this->guessFileExtension($response);
-
-        $file = "{$filename}.{$extension}";
+        $file = $this->aliasFilename(array_pop($segments));
+        // Add the query string to the filename
+        $file .= '__' . $request->getQueryString();
+        $file .=  '.' . $this->guessFileExtension($response);
 
         return [$this->getCachePath(implode('/', $segments)), $file];
     }
@@ -234,15 +233,12 @@ class Cache
      *
      * Currently, only JSON and HTML are supported.
      *
+     * @param $response
      * @return string
      */
     protected function guessFileExtension($response)
     {
-        if ($response instanceof JsonResponse) {
-            return 'json';
-        }
-
-        return 'html';
+        return $response instanceof JsonResponse ? 'json' : 'html';
     }
 
 }
