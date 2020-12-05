@@ -68,7 +68,7 @@ class CacheResponse
     {
         if ($request->getQueryString()) {
             $matches = collect($this->queryStringCachePatterns)
-                ->merge(config('pagecache.query_patterns'))
+                ->merge(config('page-cache.query_patterns'))
                 ->map(fn($pattern) => preg_match($pattern, $request->getRequestUri()))
                 ->sum();
 

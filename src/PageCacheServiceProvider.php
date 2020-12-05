@@ -22,8 +22,14 @@ class PageCacheServiceProvider extends ServiceProvider
 
         $this->app->singleton(Cache::class, function () {
             $instance = new Cache($this->app->make('files'));
-
             return $instance->setContainer($this->app);
         });
+    }
+
+    public function boot()
+    {
+        $this->publishes([
+            __DIR__.'/../config/page-cache.php' => config_path('page-cache.php'),
+        ]);
     }
 }
