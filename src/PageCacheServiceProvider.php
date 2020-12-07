@@ -2,9 +2,12 @@
 
 namespace SiteOrigin\PageCache;
 
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
-use SiteOrigin\PageCache\Console\ClearCache;
-use SiteOrigin\PageCache\Console\Touch;
+use SiteOrigin\PageCache\Commands\Install;
+use SiteOrigin\PageCache\Commands\ClearCache;
+use SiteOrigin\PageCache\Events\CachedPageChanged;
+use SiteOrigin\PageCache\Listeners\TestListener;
 
 class PageCacheServiceProvider extends ServiceProvider
 {
@@ -17,11 +20,11 @@ class PageCacheServiceProvider extends ServiceProvider
     {
         $this->commands([
             ClearCache::class,
-            Touch::class
+            Install::class,
         ]);
 
-        $this->app->singleton(Cache::class, function () {
-            $instance = new Cache($this->app->make('files'));
+        $this->app->singleton(PageCache::class, function () {
+            $instance = new PageCache($this->app->make('files'));
             return $instance->setContainer($this->app);
         });
     }

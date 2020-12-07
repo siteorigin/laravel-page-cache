@@ -5,11 +5,11 @@ namespace SiteOrigin\PageCache;
 use Exception;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Contracts\Container\Container;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 
-class Cache
+class PageCache
 {
     const INDEX_ALIAS = 'pc__index';
 
@@ -152,7 +152,7 @@ class Cache
      */
     public function cache(Request $request, Response $response)
     {
-        [$path, $file] = $this->getDirectoryAndFileNames($request, $response);
+        [$path, $file] = $this->getDirectoryAndFilename($request, $response);
 
         $this->files->makeDirectory($path, 0775, true, true);
 
@@ -195,7 +195,7 @@ class Cache
      * @param  \Illuminate\Http\Response $response
      * @return array
      */
-    protected function getDirectoryAndFileNames($request, $response)
+    public function getDirectoryAndFilename($request, $response)
     {
         $uri = $this->aliasUri($request->getRequestUri());
         $filename = $this->uriToFilename($uri);

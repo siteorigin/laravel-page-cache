@@ -3,9 +3,10 @@
 namespace SiteOrigin\PageCache\Middleware;
 
 use Closure;
-use SiteOrigin\PageCache\Cache;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use SiteOrigin\PageCache\Events\CachedPageChanged;
+use SiteOrigin\PageCache\PageCache;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 /**
  * Cache response middleware. This
@@ -17,7 +18,7 @@ class CacheResponse
     /**
      * The cache instance.
      *
-     * @var \SiteOrigin\PageCache\Cache
+     * @var \SiteOrigin\PageCache\PageCache
      */
     protected $cache;
 
@@ -31,9 +32,9 @@ class CacheResponse
     /**
      * Constructor.
      *
-     * @var \SiteOrigin\PageCache\Cache  $cache
+     * @var \SiteOrigin\PageCache\PageCache  $cache
      */
-    public function __construct(Cache $cache)
+    public function __construct(PageCache $cache)
     {
         $this->cache = $cache;
     }
@@ -41,8 +42,8 @@ class CacheResponse
     /**
      * Handle an incoming request.
      *
-     * @param  \Symfony\Component\HttpFoundation\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure $next
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
@@ -51,6 +52,8 @@ class CacheResponse
         $response = $next($request);
 
         if ($this->shouldCache($request, $response)) {
+            // Try triggering a change event before.
+            $this->triggerChangeEvent($request, $response);
             $this->cache->cache($request, $response);
         }
 
@@ -60,8 +63,8 @@ class CacheResponse
     /**
      * Determines whether the given request/response pair should be cached.
      *
-     * @param  \Symfony\Component\HttpFoundation\Request  $request
-     * @param  \Symfony\Component\HttpFoundation\Response  $response
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Response $response
      * @return bool
      */
     protected function shouldCache(Request $request, Response $response)
@@ -76,5 +79,13 @@ class CacheResponse
         }
 
         return $request->isMethod('GET') && $response->getStatusCode() == 200;
+    }
+
+    protected function triggerChangeEvent(Request $request, Response $response)
+    {
+        $path = join('/', $this->cache->getDirectoryAndFilename($request, $response));
+        if (md5($response->getContent()) != md5_file($path)) {
+            CachedPageChanged::dispatch($this->cache, $request, $response);
+        }
     }
 }

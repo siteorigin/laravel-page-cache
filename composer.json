@@ -27,8 +27,8 @@
         "php": ">=7.4",
         "illuminate/contracts": "^8.0",
         "illuminate/filesystem": "^8.0",
-        "symfony/http-foundation": "^5.2",
-        "spatie/crawler": "^6.0"
+        "illuminate/http": "^8.0",
+        "siteorigin/laravel-kernel-crawler": "*"
     },
     "require-dev": {
         "mockery/mockery": "^1.4",
@@ -42,7 +42,10 @@
         "laravel": {
             "providers": [
                 "SiteOrigin\\PageCache\\PageCacheServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "PageCache": "SiteOrigin\\PageCache\\Facades\\PageCache"
+            }
         }
     }
 }

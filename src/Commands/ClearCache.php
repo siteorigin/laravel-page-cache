@@ -1,9 +1,9 @@
 <?php
 
-namespace SiteOrigin\PageCache\Console;
+namespace SiteOrigin\PageCache\Commands;
 
 use Illuminate\Support\Facades\Artisan;
-use SiteOrigin\PageCache\Cache;
+use SiteOrigin\PageCache\PageCache;
 use Illuminate\Console\Command;
 
 class ClearCache extends Command
@@ -13,7 +13,7 @@ class ClearCache extends Command
      *
      * @var string
      */
-    protected $signature = 'page-cache:clear {path? : URL path of page/directory to delete} {--recursive} {--touch} {--touch-delay=}';
+    protected $signature = 'page-cache:clear {path? : URL path of page/directory to delete} {--recursive} {--touch}';
 
     /**
      * The console command description.
@@ -29,7 +29,7 @@ class ClearCache extends Command
      */
     public function handle()
     {
-        $cache = app(Cache::class);
+        $cache = app(PageCache::class);
         $recursive = $this->option('recursive');
         $path = $this->argument('path');
 
@@ -42,24 +42,18 @@ class ClearCache extends Command
         }
 
         if ($this->option('touch')) {
-            if ($this->option('touch-delay')) {
-                $this->info('Queued touch with ' . ( (int)$this->option('touch-delay') ) . ' second delay');
-                Artisan::queue('page-cache:touch')->delay((int) $this->option('touch-delay'));
-            }
-            else {
-                $this->call('page-cache:touch');
-            }
+            $this->call('crawler:run');
         }
     }
 
     /**
      * Remove the cached file for the given path.
      *
-     * @param  \SiteOrigin\PageCache\Cache  $cache
+     * @param  \SiteOrigin\PageCache\PageCache  $cache
      * @param  string  $path
      * @return void
      */
-    public function forget(Cache $cache, $path)
+    public function forget(PageCache $cache, $path)
     {
         if ($cache->forget($path)) {
             $this->info("Page cache cleared for \"{$path}\"");
@@ -71,11 +65,11 @@ class ClearCache extends Command
     /**
      * Clear the full page cache.
      *
-     * @param  \SiteOrigin\PageCache\Cache  $cache
+     * @param  \SiteOrigin\PageCache\PageCache  $cache
      * @param  string|null  $path
      * @return void
      */
-    public function clear(Cache $cache, $path = null)
+    public function clear(PageCache $cache, $path = null)
     {
         if ($cache->clear($path)) {
             $this->info('Page cache cleared at '.$cache->getCachePath($path));
