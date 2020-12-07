@@ -84,7 +84,7 @@ class CacheResponse
     protected function triggerChangeEvent(Request $request, Response $response)
     {
         $path = join('/', $this->cache->getDirectoryAndFilename($request, $response));
-        if (md5($response->getContent()) != md5_file($path)) {
+        if (file_exists($path) && md5($response->getContent()) != md5_file($path)) {
             CachedPageChanged::dispatch($this->cache, $request, $response);
         }
     }

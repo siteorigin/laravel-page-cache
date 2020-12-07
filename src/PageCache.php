@@ -11,7 +11,7 @@ use Illuminate\Http\JsonResponse;
 
 class PageCache
 {
-    const INDEX_ALIAS = 'pc__index';
+    const INDEX_ALIAS = '__pc_index';
 
     /**
      * The filesystem instance.
