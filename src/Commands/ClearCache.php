@@ -20,7 +20,7 @@ class ClearCache extends Command
      *
      * @var string
      */
-    protected $description = 'Clear (all or part of) the page cache.';
+    protected $description = 'Clear the page cache.';
 
     /**
      * Execute the console command.
