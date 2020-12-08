@@ -8,6 +8,7 @@ use Illuminate\Contracts\Container\Container;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
+use SiteOrigin\PageCache\Events\CachedPageChanged;
 
 class PageCache
 {
@@ -118,13 +119,17 @@ class PageCache
     /**
      * Caches the given response if we determine that it should be cache.
      *
-     * @param  \Symfony\Component\HttpFoundation\Request  $request
-     * @param  \Symfony\Component\HttpFoundation\Response  $response
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Response $response
      * @return $this
+     * @throws \Exception
      */
-    public function cacheIfNeeded(Request $request, Response $response)
+    public function cacheIfNeeded(Request $request, Response $response): PageCache
     {
-        if ($this->shouldCache($request, $response)) {
+        if (
+            $this->shouldCache($request, $response) &&
+            $this->hasChanged($request, $response, true)
+        ) {
             $this->cache($request, $response);
         }
 
@@ -134,21 +139,50 @@ class PageCache
     /**
      * Determines whether the given request/response pair should be cached.
      *
-     * @param  \Symfony\Component\HttpFoundation\Request  $request
-     * @param  \Symfony\Component\HttpFoundation\Response  $response
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Response $response
      * @return bool
      */
-    public function shouldCache(Request $request, Response $response)
+    public function shouldCache(Request $request, Response $response): bool
     {
+        if ($request->getQueryString()) {
+            // Reject any requests that have a query string that doesn't match our patterns
+            $matches = collect(config('page-cache.query_patterns'))
+                ->map(fn($pattern) => preg_match($pattern, $request->getRequestUri()))
+                ->sum();
+
+            if (!$matches) return false;
+        }
+
         return $request->isMethod('GET') && $response->getStatusCode() == 200;
+    }
+
+    /**
+     * Check if the version we have has changed compared to what we have on file.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Response $response
+     * @param bool $triggerEvent
+     * @return bool
+     * @throws \Exception
+     */
+    public function hasChanged(Request $request, Response $response, $triggerEvent = false): bool
+    {
+        $path = join('/', $this->getDirectoryAndFilename($request, $response));
+        if (! file_exists($path) || md5($response->getContent()) != md5_file($path)) {
+            if ($triggerEvent) CachedPageChanged::dispatch($this, $request, $response);
+            return true;
+        }
+        else return false;
     }
 
     /**
      * Cache the response to a file.
      *
-     * @param  \Symfony\Component\HttpFoundation\Request  $request
-     * @param  \Symfony\Component\HttpFoundation\Response  $response
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Response $response
      * @return void
+     * @throws \Exception
      */
     public function cache(Request $request, Response $response)
     {
@@ -166,10 +200,11 @@ class PageCache
     /**
      * Remove the cached file for the given slug.
      *
-     * @param  string  $slug
+     * @param string $slug
      * @return bool
+     * @throws \Exception
      */
-    public function forget($slug)
+    public function forget(string $slug): bool
     {
         $deletedHtml = $this->files->delete($this->getCachePath($slug.'.html'));
         $deletedJson = $this->files->delete($this->getCachePath($slug.'.json'));
@@ -180,10 +215,11 @@ class PageCache
     /**
      * Clear the full cache directory, or a subdirectory.
      *
-     * @param  string|null
+     * @param string|null
      * @return bool
+     * @throws \Exception
      */
-    public function clear($path = null)
+    public function clear($path = null): bool
     {
         return $this->files->deleteDirectory($this->getCachePath($path), true);
     }
@@ -191,11 +227,12 @@ class PageCache
     /**
      * Get the names of the directory and file.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Http\Response $response
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Response $response
      * @return array
+     * @throws \Exception
      */
-    public function getDirectoryAndFilename($request, $response)
+    public function getDirectoryAndFilename(Request $request, Response $response): array
     {
         $uri = $this->aliasUri($request->getRequestUri());
         $filename = $this->uriToFilename($uri);
@@ -213,7 +250,7 @@ class PageCache
      * @param string $uri
      * @return string
      */
-    protected function aliasUri($uri)
+    protected function aliasUri(string $uri): string
     {
         // Handle the index
         if ($uri == '/') $uri = '/' . self::INDEX_ALIAS;
@@ -225,7 +262,13 @@ class PageCache
         return $uri;
     }
 
-    protected function uriToFilename($uri)
+    /**
+     * Convert a URI to a filename.
+     *
+     * @param string $uri
+     * @return string|string[]
+     */
+    protected function uriToFilename(string $uri)
     {
         return str_replace('?', '__', $uri);
     }
@@ -234,8 +277,9 @@ class PageCache
      * Get the default path to the cache directory.
      *
      * @return string|null
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    protected function getDefaultCachePath()
+    protected function getDefaultCachePath(): ?string
     {
         if ($this->container && $this->container->bound('path.public')) {
             return $this->container->make('path.public').'/page-cache';
@@ -250,7 +294,7 @@ class PageCache
      * @param $response
      * @return string
      */
-    protected function guessFileExtension($response)
+    protected function guessFileExtension($response): string
     {
         return $response instanceof JsonResponse ? 'json' : 'html';
     }

@@ -2,12 +2,11 @@
 
 namespace SiteOrigin\PageCache;
 
-use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use SiteOrigin\PageCache\Commands\Install;
 use SiteOrigin\PageCache\Commands\ClearCache;
-use SiteOrigin\PageCache\Events\CachedPageChanged;
-use SiteOrigin\PageCache\Listeners\TestListener;
+use SiteOrigin\PageCache\Middleware\CacheResponse;
 
 class PageCacheServiceProvider extends ServiceProvider
 {
@@ -34,5 +33,7 @@ class PageCacheServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../config/page-cache.php' => config_path('page-cache.php'),
         ]);
+
+        Route::aliasMiddleware('cache.page', CacheResponse::class);
     }
 }
