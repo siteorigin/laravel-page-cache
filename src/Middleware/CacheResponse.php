@@ -3,10 +3,12 @@
 namespace SiteOrigin\PageCache\Middleware;
 
 use Closure;
+use SiteOrigin\KernelCrawler\Facades\Crawler;
+use SiteOrigin\PageCache\CacheableExchange;
 use SiteOrigin\PageCache\Events\CachedPageChanged;
-use SiteOrigin\PageCache\PageCache;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use SiteOrigin\PageCache\Facades\PageCache;
 
 /**
  * Cache response middleware. This
@@ -43,7 +45,15 @@ class CacheResponse
     {
         // Handle other middleware first.
         $response = $next($request);
-        $this->cache->cacheIfNeeded($request, $response);
+
+        $exchange = new CacheableExchange($request, $response);
+        if($exchange->shouldCache()) {
+            if(PageCache::hasChanged($exchange)) {
+                CachedPageChanged::dispatch($exchange);
+                PageCache::write($exchange);
+            }
+        }
+
         return $response;
     }
 

@@ -3,8 +3,8 @@
 namespace SiteOrigin\PageCache\Commands;
 
 use Illuminate\Support\Facades\Artisan;
-use SiteOrigin\PageCache\PageCache;
 use Illuminate\Console\Command;
+use SiteOrigin\PageCache\Facades\PageCache;
 
 class ClearCache extends Command
 {
@@ -13,7 +13,7 @@ class ClearCache extends Command
      *
      * @var string
      */
-    protected $signature = 'page-cache:clear {path? : URL path of page/directory to delete} {--recursive} {--touch}';
+    protected $signature = 'page-cache:clear {--touch}';
 
     /**
      * The console command description.
@@ -29,52 +29,10 @@ class ClearCache extends Command
      */
     public function handle()
     {
-        $cache = app(PageCache::class);
-        $recursive = $this->option('recursive');
-        $path = $this->argument('path');
-
-        if (!$path) {
-            $this->clear($cache);
-        } else if ($recursive) {
-            $this->clear($cache, $path);
-        } else {
-            $this->forget($cache, $path);
-        }
+        PageCache::clear();
 
         if ($this->option('touch')) {
-            $this->call('crawler:run');
-        }
-    }
-
-    /**
-     * Remove the cached file for the given path.
-     *
-     * @param  \SiteOrigin\PageCache\PageCache  $cache
-     * @param  string  $path
-     * @return void
-     */
-    public function forget(PageCache $cache, $path)
-    {
-        if ($cache->forget($path)) {
-            $this->info("Page cache cleared for \"{$path}\"");
-        } else {
-            $this->info("No page cache found for \"{$path}\"");
-        }
-    }
-
-    /**
-     * Clear the full page cache.
-     *
-     * @param  \SiteOrigin\PageCache\PageCache  $cache
-     * @param  string|null  $path
-     * @return void
-     */
-    public function clear(PageCache $cache, $path = null)
-    {
-        if ($cache->clear($path)) {
-            $this->info('Page cache cleared at '.$cache->getCachePath($path));
-        } else {
-            $this->warn('Page cache not cleared at '.$cache->getCachePath($path));
+            Artisan::call('crawler:start --observer=page-cache', [], $this->output);
         }
     }
 }

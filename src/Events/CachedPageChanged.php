@@ -3,9 +3,8 @@
 namespace SiteOrigin\PageCache\Events;
 
 use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Queue\SerializesModels;
+use SiteOrigin\PageCache\CacheableExchange;
 use SiteOrigin\PageCache\PageCache;
 
 class CachedPageChanged
@@ -13,46 +12,22 @@ class CachedPageChanged
     use Dispatchable, SerializesModels;
 
     /**
-     * @var \SiteOrigin\PageCache\PageCache
+     * @var \SiteOrigin\PageCache\CacheableExchange
      */
-    private PageCache $cache;
-
-    /**
-     * @var \Illuminate\Http\Request
-     */
-    private Request $request;
-
-    /**
-     * @var \Illuminate\Http\Response
-     */
-    private Response $response;
+    private CacheableExchange $exchange;
 
     /**
      * Create a new event instance.
      *
-     * @param \SiteOrigin\PageCache\PageCache $cache
-     * @param \Illuminate\Http\Request $request
-     * @param \Illuminate\Http\Response $response
+     * @param \SiteOrigin\PageCache\CacheableExchange $exchange
      */
-    public function __construct(PageCache $cache, Request $request, Response $response)
+    public function __construct(CacheableExchange $exchange)
     {
-        $this->cache = $cache;
-        $this->request = $request;
-        $this->response = $response;
+        $this->exchange = $exchange;
     }
 
-    public function getPageCache(): PageCache
+    public function getExchange(): CacheableExchange
     {
-        return $this->cache;
-    }
-
-    public function getRequest(): Request
-    {
-        return $this->request;
-    }
-
-    public function getResponse(): Response
-    {
-        return $this->response;
+        return $this->exchange;
     }
 }

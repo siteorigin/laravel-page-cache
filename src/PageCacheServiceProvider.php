@@ -4,8 +4,10 @@ namespace SiteOrigin\PageCache;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use SiteOrigin\PageCache\Commands\Install;
+use SiteOrigin\KernelCrawler\Facades\Crawler;
+use SiteOrigin\PageCache\Commands\InstallApache;
 use SiteOrigin\PageCache\Commands\ClearCache;
+use SiteOrigin\PageCache\Crawler\Observer\PageCacheCrawlObserver;
 use SiteOrigin\PageCache\Middleware\CacheResponse;
 
 class PageCacheServiceProvider extends ServiceProvider
@@ -17,14 +19,15 @@ class PageCacheServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->commands([
-            ClearCache::class,
-            Install::class,
-        ]);
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                ClearCache::class,
+                InstallApache::class,
+            ]);
+        }
 
         $this->app->singleton(PageCache::class, function () {
-            $instance = new PageCache($this->app->make('files'));
-            return $instance->setContainer($this->app);
+            return new PageCache(config('page-cache.filesystem', 'public'));
         });
     }
 
@@ -35,5 +38,7 @@ class PageCacheServiceProvider extends ServiceProvider
         ]);
 
         Route::aliasMiddleware('cache.page', CacheResponse::class);
+        Crawler::aliasObserver('page-cache', PageCacheCrawlObserver::class);
+
     }
 }
