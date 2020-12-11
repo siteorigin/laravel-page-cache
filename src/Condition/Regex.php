@@ -1,8 +1,10 @@
 <?php
 
+namespace SiteOrigin\PageCache\Condition;
+
 class Regex extends Condition
 {
-    protected function check($url): bool
+    public function __invoke($url): bool
     {
         return preg_match($this->condition, $url);
     }

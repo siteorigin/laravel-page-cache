@@ -7,6 +7,11 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
+/**
+ * Class CacheableExchange A Request/Response pair
+ *
+ * @package SiteOrigin\PageCache
+ */
 class CacheableExchange
 {
     /**

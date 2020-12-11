@@ -8,11 +8,25 @@ class CacheHelpers
 {
     const INDEX_ALIAS = '__pc_index';
 
+    /**
+     * Make sure a URL is in a baseURL format.
+     *
+     * @param $url
+     * @return string
+     */
     public static function baseUrl($url)
     {
-        return Str::replaceFirst(url('/'), '', $url);
+        $url = Str::replaceFirst(url('/'), '', $url);
+        return $url == '/' ? $url : ltrim($url, '/');
     }
 
+    /**
+     * Convert a base URL into a cache path.
+     *
+     * @param $url
+     * @param string $extension
+     * @return string
+     */
     public static function urlToCachePath($url, $extension = 'html'): string
     {
         // Turn this into a base URL
@@ -33,6 +47,12 @@ class CacheHelpers
         ]);
     }
 
+    /**
+     * Convert a cache path, back into a base URL
+     *
+     * @param $path
+     * @return string
+     */
     public static function cachePathToUrl($path)
     {
         $path = str_replace(self::INDEX_ALIAS, '/', $path);

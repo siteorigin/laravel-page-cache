@@ -8,6 +8,11 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use SiteOrigin\PageCache\Facades\PageCache;
 
+use SiteOrigin\PageCache\Condition\Direct;
+use SiteOrigin\PageCache\Condition\Prefix;
+use SiteOrigin\PageCache\Condition\Regex;
+use SiteOrigin\PageCache\Jobs\RefreshFiles;
+
 class Refresh extends Command
 {
     /**
@@ -15,7 +20,7 @@ class Refresh extends Command
      *
      * @var string
      */
-    protected $signature = 'page-cache:refresh {--url=*} {--prefix=*} {--regex=*} {--with-linking}';
+    protected $signature = 'page-cache:refresh {--url=*} {--prefix=*} {--regex=*} {--with-linking} {--dispatch}';
 
     /**
      * The console command description.
@@ -28,34 +33,24 @@ class Refresh extends Command
      * Execute the console command.
      *
      * @return void
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function handle()
     {
-        $refreshed = Collection::make([]);
+        $conditions = [];
+        $conditions = array_merge($conditions, Direct::fromStringArray($this->option('url')));
+        $conditions = array_merge($conditions, Prefix::fromStringArray($this->option('prefix')));
+        $conditions = array_merge($conditions, Regex::fromStringArray($this->option('regex')));
 
-        if (!empty($this->option('url'))) {
-            $refreshed = $refreshed->merge(
-                PageCache::refreshByUrls($this->option('url'), $this->option('with-linking'))
-            );
-        }
-        else if (!empty($this->option('prefix'))) {
-            $refreshed = $refreshed->merge(
-                PageCache::refreshByUrlPrefix($this->option('prefix'), $this->option('with-linking'))
-            );
-        }
-        else if (!empty($this->option('regex'))) {
-            $refreshed = $refreshed->merge(
-                PageCache::refreshByUrlRegex($this->option('regex'), $this->option('with-linking'))
-            );
+        if(!$this->option('dispatch')) {
+            $refreshed = PageCache::refresh($conditions, $this->option('with-linking'));
+            $this->info('Pages Refreshed: '.$refreshed->count());
+            $refreshed->each(fn($url, $file) => $this->info($url));
         }
         else {
-            $refreshed = $refreshed->merge(
-                PageCache::refreshAll()
-            );
+            RefreshFiles::dispatch($conditions, $this->option('with-linking'));
+            $this->info('Refresh dispatched to job queue.');
         }
-
-        $this->info('Pages Refreshed: ' . $refreshed->count());
-        $refreshed->each(fn($url, $file) => $this->info($url));
     }
 
 }

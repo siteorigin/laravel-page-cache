@@ -39,17 +39,16 @@ class PageCache
     }
 
     /**
-     * Delete all, or just a single file.
+     * Delete files that pass the given conditions or the entire folder.
      *
-     * @param string|null $url
+     * @param array|null $conditions
      */
-    public function clear(?string $url = null)
+    public function clear(array $conditions = null)
     {
-        if($url) {
-            $this->filesystem->delete([
-                CacheHelpers::urlToCachePath($url, 'html'),
-                CacheHelpers::urlToCachePath($url, 'json'),
-            ]);
+        if($conditions) {
+            $this->getCacheFiles($conditions)->each(function ($url, $file) {
+                $this->filesystem->delete($file);
+            });
         }
         else {
             $this->filesystem->delete($this->filesystem->allFiles());
@@ -60,75 +59,16 @@ class PageCache
     }
 
     /**
-     * Refresh all cached files
+     * Refresh pages and return a collection of the pages that were refreshed.
      *
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
-    public function refreshAll()
-    {
-        return $this->refreshCacheFiles($this->getAllFiles(), true);
-    }
-
-    /**
-     * Refresh all files that have the given base URLs.
-     *
-     * @param array|string $urls A list of URLs we want to refresh.
-     * @param false $withLinking Should we perform a second refresh run, looking at the incoming links.
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
-    public function refreshByUrls($urls, $withLinking = false)
-    {
-        $startUrls = array_map(fn($url) => CacheHelpers::baseUrl($url), !is_array($urls) ? [$urls] : $urls);
-        $toRefresh = $this->getAllFiles(fn($url, $file) => in_array($url, $startUrls))
-            ->merge();
-
-        return $this->refreshCacheFiles($toRefresh, $withLinking);
-    }
-
-    /**
-     * Refresh all files that have a base URL that starts with a given prefix.
-     *
-     * @param array|string $prefixes
+     * @param array $conditions
      * @param false $withLinking
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @return \Illuminate\Support\Collection
      */
-    public function refreshByUrlPrefix(array $prefixes, $withLinking = false)
+    public function refresh(array $conditions, $withLinking=false): Collection
     {
-        $startPrefixes = array_map(
-            fn($url) => CacheHelpers::baseUrl($url), !is_array($prefixes) ? [$prefixes] : $prefixes
-        );
-
-        $toRefresh = $this->getAllFiles(
-            fn($url, $file) => array_sum(array_map(fn($prefix) => Str::startsWith($url, $prefix), $startPrefixes))
-        );
-
-        return $this->refreshCacheFiles($toRefresh, $withLinking);
-    }
-
-    /**
-     * Get all files that have a base URL that matches a given prefix.
-     *
-     * @param array|string $regexes
-     * @param false $withLinking
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     */
-    public function refreshByUrlRegex(array $regexes, $withLinking = false)
-    {
-        $this->allFiles = $this->getAllFiles();
-
-        $toRefresh = $this->getAllFiles(
-            fn($url, $file) => array_sum(array_map(
-                fn($regex) => preg_match($regex, $url), !is_array($regexes) ? [$regexes] : $regexes
-            ))
-        );
-
-        return $this->refreshCacheFiles($toRefresh, $withLinking);
-    }
-
-    public function refreshByModelCollection()
-    {
-        $r = new Request();
-        Route::dispatch();
+        $toRefresh = $this->getCacheFiles($conditions);
+        return $this->refreshFiles($toRefresh, $withLinking);
     }
 
     /**
@@ -138,7 +78,7 @@ class PageCache
      * @param Collection|null $exclude Exclude these files from the results.
      * @return Collection
      */
-    protected function getLinking(Collection $files, Collection $exclude=null): Collection
+    protected function getLinkingFiles(Collection $files, Collection $exclude=null): Collection
     {
         // Create a simple expression that can find linking files
         $expression = $files
@@ -153,8 +93,8 @@ class PageCache
 
         // Return any files that have the simple regex.
         return $this
-            ->getAllFiles()
-            //->diffKeys($exclude)
+            ->getCacheFiles()
+            ->diffKeys($exclude)
             ->diffKeys($files)
             ->filter(fn($url, $file)  => preg_match($expression, $this->filesystem->get($file)));
     }
@@ -162,12 +102,13 @@ class PageCache
     /**
      * Get a list of all known files.
      *
-     * @param callable|null $filter
+     * @param array|null $conditions
      * @return \Illuminate\Support\Collection
      */
-    protected function getAllFiles(callable $filter = null): Collection
+    protected function getCacheFiles(array $conditions = null): Collection
     {
         $allFiles = collect($this->filesystem->allFiles())->toFileUrlMapping();
+        $filter = $conditions ? fn($url, $file) => array_sum(array_map(fn($c) => $c($url), $conditions)) : null;
         return !is_null($filter) ? $allFiles->filter($filter) : $allFiles;
     }
 
@@ -177,7 +118,7 @@ class PageCache
      * @return Collection
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    protected function refreshCacheFiles(Collection $toRefresh, $withLinking = false): Collection
+    protected function refreshFiles(Collection $toRefresh, $withLinking = false): Collection
     {
         $kernel = app()->make(HttpKernel::class);
 
@@ -201,8 +142,8 @@ class PageCache
 
         if ($withLinking && $refreshed->count()) {
             // Add in the linking files, then refresh them too, but with $withLinking disabled.
-            $linking = $this->getLinking($refreshed, $toRefresh);
-            $refreshed = $refreshed->merge($this->refreshCacheFiles($linking, false));
+            $linking = $this->getLinkingFiles($refreshed, $toRefresh);
+            $refreshed = $refreshed->merge($this->refreshFiles($linking, false));
         }
 
         return $refreshed;
