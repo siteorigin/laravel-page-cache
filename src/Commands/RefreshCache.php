@@ -13,7 +13,7 @@ use SiteOrigin\PageCache\Condition\Prefix;
 use SiteOrigin\PageCache\Condition\Regex;
 use SiteOrigin\PageCache\Jobs\RefreshFiles;
 
-class Refresh extends Command
+class RefreshCache extends Command
 {
     /**
      * The name and signature of the console command.

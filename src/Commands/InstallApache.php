@@ -3,11 +3,9 @@
 namespace SiteOrigin\PageCache\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Storage;
-use SiteOrigin\PageCache\CacheableExchange;
-use SiteOrigin\PageCache\Crawler\InfoCrawlObserver;
+use Illuminate\Support\Str;
+use SiteOrigin\PageCache\CacheHelpers;
 use SiteOrigin\PageCache\Facades\PageCache;
-use Spatie\Crawler\Crawler;
 
 class InstallApache extends Command
 {
@@ -16,9 +14,8 @@ class InstallApache extends Command
 
     public function handle()
     {
-        // TODO fix this all up.
-        $folder = PageCache::getFolder();
-        $indexAlias = CacheableExchange::INDEX_ALIAS; 
+        $fs = PageCache::getFilesystem();
+        $folder = Str::replaceFirst(storage_path('app/public/'), '', $fs->path(''));
 
         $info = <<< EOL
 # Serve static cached pages if available...
@@ -32,7 +29,7 @@ RewriteRule . storage/{{folder}}%{REQUEST_URI}__%{QUERY_STRING}.html [L]
 RewriteCond %{DOCUMENT_ROOT}/storage/{{folder}}%{REQUEST_URI}__%{QUERY_STRING}.json -f
 RewriteRule . storage/{{folder}}%{REQUEST_URI}__%{QUERY_STRING}.json [L]
 EOL;
-        $info = str_replace(['{{folder}}', '{{index_alias}}'], [$folder, $indexAlias], $info);
+        $info = str_replace(['{{folder}}', '{{index_alias}}'], [$folder, CacheHelpers::INDEX_ALIAS], $info);
 
         $above = <<< EOL
 # Send Requests To Front Controller...
@@ -45,7 +42,7 @@ EOL;
         $this->line('Open the file ' . public_path('.htaccess'));
         $this->line("\n\nFind the following lines:");
         $this->line($above, 'fg=blue');
-        $this->line("\n\nReplace them with the following:");
+        $this->line("\n\nAdd the following lines above them:");
         $this->line($info, 'fg=blue');
 
     }

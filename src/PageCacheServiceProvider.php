@@ -9,7 +9,8 @@ use Illuminate\Support\ServiceProvider;
 use SiteOrigin\KernelCrawler\Facades\Crawler;
 use SiteOrigin\PageCache\Commands\InstallApache;
 use SiteOrigin\PageCache\Commands\ClearCache;
-use SiteOrigin\PageCache\Commands\Refresh;
+use SiteOrigin\PageCache\Commands\InstallNginx;
+use SiteOrigin\PageCache\Commands\RefreshCache;
 use SiteOrigin\PageCache\Crawler\Observer\PageCacheCrawlObserver;
 use SiteOrigin\PageCache\Middleware\CacheResponse;
 
@@ -25,8 +26,9 @@ class PageCacheServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 ClearCache::class,
+                RefreshCache::class,
                 InstallApache::class,
-                Refresh::class,
+                InstallNginx::class,
             ]);
         }
 
