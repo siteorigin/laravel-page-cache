@@ -59,6 +59,6 @@ abstract class Condition
      */
     public function __toString()
     {
-        return get_class($this) . '::' . $this->condition;
+        return get_class($this) . '::' . $this->condition . '::' . json_encode($this->args);
     }
 }

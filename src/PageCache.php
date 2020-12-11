@@ -107,6 +107,7 @@ class PageCache
      */
     protected function getCacheFiles(array $conditions = null): Collection
     {
+        $conditions = array_unique($conditions);
         $allFiles = collect($this->filesystem->allFiles())->toFileUrlMapping();
         $filter = $conditions ? fn($url, $file) => array_sum(array_map(fn($c) => $c($url), $conditions)) : null;
         return !is_null($filter) ? $allFiles->filter($filter) : $allFiles;
