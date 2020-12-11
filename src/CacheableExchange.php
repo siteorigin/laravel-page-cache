@@ -2,15 +2,13 @@
 
 namespace SiteOrigin\PageCache;
 
-use Illuminate\Filesystem\Filesystem;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class CacheableExchange
 {
-    const INDEX_ALIAS = '__pc_index';
-
     /**
      * @var \Illuminate\Http\Request
      */
@@ -27,42 +25,15 @@ class CacheableExchange
         $this->response = $response;
     }
 
-    public function getCacheDirectoryAndFilename(): array
+    public function cachePath(): string
     {
-        $path = pathinfo($this->aliasedUri().'.html');
-
-        return [
-            ltrim($path['dirname'], '/'),
-            $path['filename'] . '.' . $this->guessFileExtension()
-        ];
-    }
-
-    public function getCachePath(): string
-    {
-        return ltrim(join('/', $this->getCacheDirectoryAndFilename()), '/');
+        Return CacheHelpers::urlToCachePath($this->request->getRequestUri(), $this->guessFileExtension());
     }
 
     /**
-     * Alias the filename if necessary.
+     * Check that the combination of request and response is cacheable.
      *
-     * @return string
-     */
-    protected function aliasedUri(): string
-    {
-        // Handle the index
-        $uri = $this->request->getRequestUri();
-        if ($uri == '/') $uri = '/' . self::INDEX_ALIAS;
-        else if (substr($uri, 0, 2) == '/?') $uri = str_replace('/?', '/' . self::INDEX_ALIAS . '?', $uri);
-
-        // We'll add a fake query string for consistency
-        if ( strpos($uri, '?') === false ) $uri .= '?';
-        $uri = str_replace('?', '__', $uri);
-
-        return $uri;
-    }
-
-    /**
-     * @return bool Should we cache this exchange.
+     * @return bool
      */
     public function shouldCache()
     {
@@ -81,33 +52,33 @@ class CacheableExchange
     }
 
     /**
+     * Check if the response has changed in the given filesystem.
+     *
+     * @param \Illuminate\Filesystem\FilesystemAdapter $filesystem
+     * @return bool
+     */
+    public function hasChanged(FilesystemAdapter $filesystem): bool
+    {
+        $path = $this->cachePath();
+        return (
+            ! $filesystem->exists($path) ||
+            md5_file($filesystem->path($path)) !== md5($this->getContent())
+        );
+    }
+
+    /**
      * Guess the file extension.
      *
      * @return string
      */
-    protected function guessFileExtension()
+    protected function guessFileExtension(): string
     {
         return $this->response instanceof JsonResponse ? 'json' : 'html';
     }
 
-    public function writeCacheIfNeeded(Filesystem $filesystem)
+    public function getRequest(): Request
     {
-        if($this->shouldCache() && $this->hasChanged()) {
-            $this->writeCache($filesystem);
-        }
-    }
-
-    public function writeCache(Filesystem $filesystem)
-    {
-        [$path, $file] = $this->getCacheDirectoryAndFilename();
-
-        $filesystem->makeDirectory($path, 0775, true, true);
-
-        $filesystem->put(
-            $this->join([$path, $file]),
-            $this->response->getContent(),
-            true
-        );
+        return $this->request;
     }
 
     public function getResponse(): Response
@@ -118,5 +89,13 @@ class CacheableExchange
     public function getContent(): string
     {
         return $this->response->getContent();
+    }
+
+    public function write(FilesystemAdapter $filesystem)
+    {
+        return $filesystem->put(
+            $this->cachePath(),
+            $this->getContent()
+        );
     }
 }

@@ -16,7 +16,7 @@ class InstallApache extends Command
 
     public function handle()
     {
-
+        // TODO fix this all up.
         $folder = PageCache::getFolder();
         $indexAlias = CacheableExchange::INDEX_ALIAS; 
 

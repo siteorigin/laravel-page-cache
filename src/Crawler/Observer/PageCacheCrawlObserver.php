@@ -15,11 +15,14 @@ class PageCacheCrawlObserver extends CrawlObserver
     public function afterRequest(CrawlUrl $url, Request $request, Response $response)
     {
         $exchange = new CacheableExchange($request, $response);
-        if($exchange->shouldCache()) {
-            if(PageCache::hasChanged($exchange)) {
-                CachedPageChanged::dispatch($exchange);
-                PageCache::write($exchange);
-            }
+        $fs = PageCache::getFilesystem();
+
+        if(
+            $exchange->shouldCache() &&
+            $exchange->hasChanged($fs)
+        ) {
+            CachedPageChanged::dispatch($exchange);
+            $exchange->write($fs);
         }
     }
 }

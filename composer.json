@@ -5,12 +5,12 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Joseph Silber",
-            "email": "contact@josephsilber.com"
-        },
-        {
             "name": "Greg Priday",
             "email": "greg@siteorigin.com"
+        },
+        {
+            "name": "Joseph Silber",
+            "email": "contact@josephsilber.com"
         }
     ],
     "autoload": {
@@ -25,9 +25,7 @@
     },
     "require": {
         "php": ">=7.4",
-        "illuminate/contracts": "^8.0",
-        "illuminate/filesystem": "^8.0",
-        "illuminate/http": "^8.0",
+        "laravel/framework": "^8.0",
         "siteorigin/laravel-kernel-crawler": "*"
     },
     "require-dev": {

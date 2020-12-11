@@ -8,7 +8,7 @@ use SiteOrigin\PageCache\CacheableExchange;
 use SiteOrigin\PageCache\Events\CachedPageChanged;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use SiteOrigin\PageCache\Facades\PageCache;
+use SiteOrigin\PageCache\PageCache;
 
 /**
  * Cache response middleware. This
@@ -25,9 +25,7 @@ class CacheResponse
     protected PageCache $cache;
 
     /**
-     * Constructor.
-     *
-     * @var \SiteOrigin\PageCache\PageCache  $cache
+     * @param \SiteOrigin\PageCache\PageCache $cache
      */
     public function __construct(PageCache $cache)
     {
@@ -45,13 +43,14 @@ class CacheResponse
     {
         // Handle other middleware first.
         $response = $next($request);
-
         $exchange = new CacheableExchange($request, $response);
-        if($exchange->shouldCache()) {
-            if(PageCache::hasChanged($exchange)) {
-                CachedPageChanged::dispatch($exchange);
-                PageCache::write($exchange);
-            }
+
+        if(
+            $exchange->shouldCache() &&
+            $exchange->hasChanged($this->cache->getFilesystem())
+        ) {
+            CachedPageChanged::dispatch($exchange);
+            $exchange->write($this->cache->getFilesystem());
         }
 
         return $response;
