@@ -109,7 +109,12 @@ class PageCache
     {
         $conditions = array_unique($conditions);
         $allFiles = collect($this->filesystem->allFiles())->toFileUrlMapping();
-        $filter = $conditions ? fn($url, $file) => array_sum(array_map(fn($c) => $c($url), $conditions)) : null;
+
+        $filter = $conditions ? fn($url, $file) => array_sum(array_map(
+            fn($c) => $c->setFilesystem($this->filesystem)($url, $file),
+            $conditions
+        )) : null;
+
         return !is_null($filter) ? $allFiles->filter($filter) : $allFiles;
     }
 

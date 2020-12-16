@@ -6,5 +6,5 @@ return [
         // Eg: '#^/articles\?page=[0-9]+$#'
     ],
 
-    'disk' => 'public',
+    'filesystem' => 'page-cache',
 ];

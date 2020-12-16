@@ -8,9 +8,9 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use SiteOrigin\PageCache\Facades\PageCache;
 
-use SiteOrigin\PageCache\Condition\Direct;
-use SiteOrigin\PageCache\Condition\Prefix;
-use SiteOrigin\PageCache\Condition\Regex;
+use SiteOrigin\PageCache\Condition\UrlDirect;
+use SiteOrigin\PageCache\Condition\UrlPrefix;
+use SiteOrigin\PageCache\Condition\UrlRegex;
 use SiteOrigin\PageCache\Jobs\RefreshFiles;
 
 class RefreshCache extends Command
@@ -38,9 +38,9 @@ class RefreshCache extends Command
     public function handle()
     {
         $conditions = [];
-        $conditions = array_merge($conditions, Direct::fromStringArray($this->option('url')));
-        $conditions = array_merge($conditions, Prefix::fromStringArray($this->option('prefix')));
-        $conditions = array_merge($conditions, Regex::fromStringArray($this->option('regex')));
+        $conditions = array_merge($conditions, UrlDirect::fromStringArray($this->option('url')));
+        $conditions = array_merge($conditions, UrlPrefix::fromStringArray($this->option('prefix')));
+        $conditions = array_merge($conditions, UrlRegex::fromStringArray($this->option('regex')));
 
         if(!$this->option('dispatch')) {
             $refreshed = PageCache::refresh($conditions, $this->option('with-linking'));

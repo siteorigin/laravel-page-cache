@@ -2,17 +2,35 @@
 
 namespace SiteOrigin\PageCache\Condition;
 
+use Illuminate\Filesystem\FilesystemAdapter;
+
 abstract class Condition
 {
     protected string $condition;
 
     protected $args;
 
+    /**
+     * @var FilesystemAdapter|null
+     */
+    protected ?FilesystemAdapter $filesystem;
+
     public function __construct(string $condition, array $args=[])
     {
         $this->condition = static::filterCondition($condition);
         $this->condition = $condition;
         $this->args = $args;
+    }
+
+    /**
+     * @param $filesystem
+     * @return \SiteOrigin\PageCache\Condition\Condition
+     */
+    public function setFilesystem(FilesystemAdapter $filesystem): Condition
+    {
+        $this->filesystem = $filesystem;
+
+        return $this;
     }
 
     /**
@@ -61,4 +79,6 @@ abstract class Condition
     {
         return get_class($this) . '::' . $this->condition . '::' . json_encode($this->args);
     }
+
+    abstract function __invoke($url, $file);
 }

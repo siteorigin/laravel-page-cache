@@ -2,9 +2,9 @@
 
 namespace SiteOrigin\PageCache\Condition;
 
-class Regex extends Condition
+class UrlRegex extends Condition
 {
-    public function __invoke($url): bool
+    public function __invoke($url, $file): bool
     {
         return preg_match($this->condition, $url);
     }

@@ -5,14 +5,14 @@ namespace SiteOrigin\PageCache\Condition;
 use Illuminate\Support\Str;
 use SiteOrigin\PageCache\CacheHelpers;
 
-class Prefix extends Condition
+class UrlPrefix extends Condition
 {
     protected static function filterCondition($condition)
     {
         return CacheHelpers::baseUrl($condition);
     }
 
-    public function __invoke($url): bool
+    public function __invoke($url, $file): bool
     {
         return Str::startsWith($url, CacheHelpers::baseUrl($this->condition));
     }
