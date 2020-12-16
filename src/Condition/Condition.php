@@ -18,7 +18,6 @@ abstract class Condition
     public function __construct(string $condition, array $args=[])
     {
         $this->condition = static::filterCondition($condition);
-        $this->condition = $condition;
         $this->args = $args;
     }
 
@@ -29,7 +28,6 @@ abstract class Condition
     public function setFilesystem(FilesystemAdapter $filesystem): Condition
     {
         $this->filesystem = $filesystem;
-
         return $this;
     }
 
@@ -53,7 +51,7 @@ abstract class Condition
      * @param array $args
      * @return Condition[]
      */
-    public static function fromStringArray(array $conditions, array $args=[])
+    public static function fromStringArray(array $conditions, array $args=[]): array
     {
         if(is_null($conditions)) return [];
         return array_map(fn($condition) => new static($condition, $args), $conditions);
@@ -65,7 +63,7 @@ abstract class Condition
      * @param $condition
      * @return mixed
      */
-    protected static function filterCondition($condition)
+    protected static function filterCondition($condition): string
     {
         return $condition;
     }
@@ -80,5 +78,17 @@ abstract class Condition
         return get_class($this) . '::' . $this->condition . '::' . json_encode($this->args);
     }
 
-    abstract function __invoke($url, $file);
+    /**
+     * Perform the filter action on the URL/file combination.
+     *
+     * @param string $url
+     * @param string $file
+     * @return mixed
+     */
+    abstract function filter(string $url, string $file);
+
+    public function __invoke(string $url, string $file)
+    {
+        return $this->filter($url, $file);
+    }
 }

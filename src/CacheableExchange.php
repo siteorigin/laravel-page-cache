@@ -6,6 +6,7 @@ use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 
 /**
  * Class CacheableExchange A Request/Response pair
@@ -24,15 +25,24 @@ class CacheableExchange
      */
     public Response $response;
 
+    /**
+     * CacheableExchange constructor.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Response $response
+     */
     public function __construct(Request $request, Response $response)
     {
         $this->request = $request;
         $this->response = $response;
     }
 
+    /**
+     * @return string
+     */
     public function cachePath(): string
     {
-        Return CacheHelpers::urlToCachePath($this->request->getRequestUri(), $this->guessFileExtension());
+        Return Page::urlToFilename($this->request->getRequestUri(), $this->guessFileExtension());
     }
 
     /**
@@ -53,7 +63,12 @@ class CacheableExchange
         }
 
         // Now check if the response is valid
-        return $this->request->isMethod('GET') && $this->response->getStatusCode() == 200;
+        return $this->request->isMethod('GET') &&
+            $this->response->getStatusCode() == 200 &&
+            ! array_intersect(
+                ['no-cache', 'private'],
+                array_map('trim', explode(',', $this->response->headers->get('cache-control')))
+            );
     }
 
     /**

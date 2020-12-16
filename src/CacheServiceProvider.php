@@ -14,7 +14,7 @@ use SiteOrigin\PageCache\Commands\RefreshCache;
 use SiteOrigin\PageCache\Crawler\Observer\PageCacheCrawlObserver;
 use SiteOrigin\PageCache\Middleware\CacheResponse;
 
-class PageCacheServiceProvider extends ServiceProvider
+class CacheServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
@@ -32,15 +32,17 @@ class PageCacheServiceProvider extends ServiceProvider
             ]);
         }
 
-        $this->app->singleton(PageCache::class, function () {
-            return new PageCache(config('page-cache.filesystem', 'page-cache'));
+        $this->app->singleton(Manager::class, function () {
+            return new Manager(config('page-cache.filesystem', 'page-cache'));
         });
 
         // Create a dynamic filesystem called page-cache
-        Config::set('filesystems.disks.page-cache', array(
-            'driver' => 'local',
-            'root' => storage_path('app/public/page-cache'),
-        ));
+        if(! Config::has('filesystems.disks.page-cache')) {
+            Config::set('filesystems.disks.page-cache', [
+                'driver' => 'local',
+                'root' => storage_path('app/public/page-cache'),
+            ]);
+        }
     }
 
     public function boot()
@@ -54,7 +56,7 @@ class PageCacheServiceProvider extends ServiceProvider
 
         Collection::macro('toFileUrlMapping', function(){
             return $this->mapWithKeys(
-                fn($f) => [$f => CacheHelpers::cachePathToUrl($f)]
+                fn($f) => [$f => Page::filenameToUrl($f)]
             );
         });
     }

@@ -3,16 +3,16 @@
 namespace SiteOrigin\PageCache\Condition;
 
 use Illuminate\Support\Str;
-use SiteOrigin\PageCache\CacheHelpers;
+use SiteOrigin\PageCache\Page;
 
 class UrlPrefix extends Condition
 {
-    protected static function filterCondition($condition)
+    protected static function filterCondition($condition): string
     {
-        return CacheHelpers::baseUrl($condition);
+        return Page::baseUrl($condition);
     }
 
-    public function __invoke($url, $file): bool
+    public function filter(string $url, string $file): bool
     {
         return Str::startsWith($url, CacheHelpers::baseUrl($this->condition));
     }

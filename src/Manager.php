@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
-class PageCache
+class Manager
 {
     /**
      * @var \Illuminate\Filesystem\FilesystemAdapter|null
@@ -105,7 +105,7 @@ class PageCache
      * @param array|null $conditions
      * @return \Illuminate\Support\Collection
      */
-    protected function getCacheFiles(array $conditions = null): Collection
+    public function getCacheFiles(array $conditions = null): Collection
     {
         $conditions = array_unique($conditions);
         $allFiles = collect($this->filesystem->allFiles())->toFileUrlMapping();

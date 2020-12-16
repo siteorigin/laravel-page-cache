@@ -13,6 +13,12 @@
             "email": "contact@josephsilber.com"
         }
     ],
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../*"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "SiteOrigin\\PageCache\\": "src/"
@@ -26,12 +32,13 @@
     "require": {
         "php": ">=7.4",
         "laravel/framework": "^8.0",
-        "siteorigin/laravel-kernel-crawler": "*"
+        "siteorigin/laravel-kernel-crawler": "dev-develop"
     },
     "require-dev": {
         "mockery/mockery": "^1.4",
         "phpunit/phpunit": "^9.5",
-        "symfony/var-dumper": "^5.2"
+        "symfony/var-dumper": "^5.2",
+        "orchestra/testbench": "^6.7"
     },
     "suggest": {
         "illuminate/console": "Allows clearing the cache via artisan"
@@ -39,7 +46,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "SiteOrigin\\PageCache\\PageCacheServiceProvider"
+                "CacheServiceProvider"
             ],
             "aliases": {
                 "PageCache": "SiteOrigin\\PageCache\\Facades\\PageCache"

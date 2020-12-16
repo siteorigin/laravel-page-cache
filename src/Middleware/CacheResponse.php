@@ -8,7 +8,7 @@ use SiteOrigin\PageCache\CacheableExchange;
 use SiteOrigin\PageCache\Events\CachedPageChanged;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use SiteOrigin\PageCache\PageCache;
+use SiteOrigin\PageCache\Manager;
 
 /**
  * Cache response middleware. This
@@ -20,14 +20,14 @@ class CacheResponse
     /**
      * The cache instance.
      *
-     * @var \SiteOrigin\PageCache\PageCache
+     * @var \SiteOrigin\PageCache\Manager
      */
-    protected PageCache $cache;
+    protected Manager $cache;
 
     /**
-     * @param \SiteOrigin\PageCache\PageCache $cache
+     * @param \SiteOrigin\PageCache\Manager $cache
      */
-    public function __construct(PageCache $cache)
+    public function __construct(Manager $cache)
     {
         $this->cache = $cache;
     }

@@ -6,13 +6,9 @@ use SiteOrigin\PageCache\CacheHelpers;
 
 class FileContains extends Condition
 {
-    protected static function filterCondition($condition)
+    public function filter(string $url, string $file): bool
     {
-        return CacheHelpers::baseUrl($condition);
-    }
-
-    public function __invoke($url, $file): bool
-    {
-        
+        // TODO implement this
+        return false;
     }
 }

@@ -5,7 +5,7 @@ namespace SiteOrigin\PageCache\Events;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use SiteOrigin\PageCache\CacheableExchange;
-use SiteOrigin\PageCache\PageCache;
+use SiteOrigin\PageCache\Manager;
 
 class CachedPageChanged
 {
