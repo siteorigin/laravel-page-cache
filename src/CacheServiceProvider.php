@@ -3,8 +3,12 @@
 namespace SiteOrigin\PageCache;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use SiteOrigin\KernelCrawler\Facades\Crawler;
 use SiteOrigin\PageCache\Commands\InstallApache;
@@ -13,6 +17,7 @@ use SiteOrigin\PageCache\Commands\InstallNginx;
 use SiteOrigin\PageCache\Commands\RefreshCache;
 use SiteOrigin\PageCache\Crawler\Observer\PageCacheCrawlObserver;
 use SiteOrigin\PageCache\Middleware\CacheResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CacheServiceProvider extends ServiceProvider
 {
@@ -31,10 +36,6 @@ class CacheServiceProvider extends ServiceProvider
                 InstallNginx::class,
             ]);
         }
-
-        //$this->app->singleton(Manager::class, function () {
-        //    return new Manager(config('page-cache.filesystem', 'page-cache'));
-        //});
 
         $this->app->bind(PageCollection::class, function(){
             return new PageCollection(null, config('page-cache.filesystem', 'page-cache'));
@@ -57,10 +58,12 @@ class CacheServiceProvider extends ServiceProvider
 
         Route::aliasMiddleware('page-cache', CacheResponse::class);
 
-        Collection::macro('toFileUrlMapping', function(){
-            return $this->mapWithKeys(
-                fn($f) => [$f => Page::filenameToUrl($f)]
-            );
+        // Use view composers to make sure we don't store 404 pages
+        View::composer('errors::404', function($view){
+            $page = Page::fromUrl(Request::path());
+            if($page->fileExists()){
+                $page->deleteFile();
+            }
         });
     }
 }

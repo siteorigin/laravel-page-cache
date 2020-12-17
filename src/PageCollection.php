@@ -54,6 +54,18 @@ class PageCollection extends LazyCollection
      */
     public function requestPages(): PageCollection
     {
+        return $this->each(function(Page $page){
+            return $page->requestPage();
+        });
+    }
+
+    /**
+     * Make a request to each of the pages.
+     *
+     * @return \SiteOrigin\PageCache\PageCollection
+     */
+    public function requestedPages(): PageCollection
+    {
         return $this->filter(function(Page $page){
             return $page->requestPage();
         });

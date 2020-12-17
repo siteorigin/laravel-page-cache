@@ -54,33 +54,6 @@ class Page
     }
 
     /**
-     * Create a collection of CachePages with the filename as the index from a collection of filename strings.
-     *
-     * @param \Illuminate\Support\Collection $collection
-     * @param string $disk
-     * @return \Illuminate\Support\Collection
-     */
-    public function fromFilenameCollection(Collection $collection, string $disk = 'page-cache')
-    {
-        return $collection->mapWithKeys(fn($filename) => [$filename => static::fromFilename($filename, $disk)]);
-    }
-
-    /**
-     * Create a collection of CachePages with the filename as the index from a collection of URL strings.
-     *
-     * @param \Illuminate\Support\Collection $collection
-     * @param string $disk
-     * @return \Illuminate\Support\Collection
-     */
-    public function fromUrlCollection(Collection $collection, string $disk = 'page-cache')
-    {
-        return $collection->mapWithKeys(function($url) use ($disk) {
-            $filename = static::urlToFilename();
-            return [$filename => new self($url, $filename, $disk)];
-        });
-    }
-
-    /**
      * @return string
      */
     public function getUrl(): string
@@ -242,10 +215,5 @@ class Page
 
         // Update the modified
         return ! $this->fileExists() || $originalHash !== $this->getFileMd5();
-    }
-
-    public function __toString()
-    {
-        return $this->url;
     }
 }

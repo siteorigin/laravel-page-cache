@@ -96,6 +96,11 @@ class PageCollectionTest extends TestCase
         $links = $collection->filterPageLinksTo($articles)->pluck('url')->all();
         $this->assertCount(1, $links);
         $this->assertEquals('site/articles?page=3', $links[0]);
+
+        // Check that we get the same result when using a PageCollection
+        $articles = $collection->filterPageUrlIs('site/articles/5');
+        $links = $collection->filterPageLinksTo($articles)->pluck('url')->all();
+        $this->assertEquals('site/articles?page=3', $links[0]);
     }
 
 }

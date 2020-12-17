@@ -45,11 +45,6 @@ class Exchange
         Return Page::urlToFilename($this->request->getRequestUri(), $this->guessFileExtension());
     }
 
-    public function shouldDelete(): bool
-    {
-        return $this->response->getStatusCode() == 404;
-    }
-
     /**
      * Check that the combination of request and response is cacheable.
      *
@@ -70,13 +65,13 @@ class Exchange
             if (!$matches) return false;
         }
 
+
+        $cacheControlHeaders = array_map('trim', explode(',', $this->response->headers->get('cache-control')));
+
         // Now check if the response is valid
         return $this->request->isMethod('GET') &&
             $this->response->getStatusCode() == 200 &&
-            ! array_intersect(
-                ['no-cache', 'private'],
-                array_map('trim', explode(',', $this->response->headers->get('cache-control')))
-            );
+            ! array_intersect(['no-cache', 'private'], $cacheControlHeaders);
     }
 
     /**

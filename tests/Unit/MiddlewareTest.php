@@ -30,4 +30,20 @@ class MiddlewareTest extends TestCase
         $this->assertFalse(Storage::disk('page-cache')->exists('nocache/home__.html'), 'File should not have been cached.');
     }
 
+    public function test_deleted_page()
+    {
+        $this->withExceptionHandling();
+        Article::factory()->count(1)->create();
+        $article = Article::find(1)->first();
+
+        $this->get(route('articles.show', $article));
+        $page = Page::fromUrl(route('articles.show', $article));
+
+        //$this->assertTrue($page->fileExists());
+
+        $article->delete();
+        $response = $this->get(route('articles.show', $article));
+        $this->assertFalse($page->fileExists());
+    }
+
 }

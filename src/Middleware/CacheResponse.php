@@ -42,11 +42,7 @@ class CacheResponse
         $exchange = new Exchange($request, $response);
         $page = Page::fromUrl($request->getRequestUri());
 
-        if ($page->fileExists() && $exchange->shouldDelete()) {
-            // This is a 404 response and should be deleted.
-            $page->deleteFile();
-        }
-        else if ($exchange->shouldCache() && $exchange->hasChanged($page)) {
+        if ($exchange->shouldCache() && $exchange->hasChanged($page)) {
             // Everything looks good. We need to cache this.
             PageRefreshed::dispatch($exchange, $page);
             $page->putFileContents($exchange->getContent());

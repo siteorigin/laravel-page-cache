@@ -36,7 +36,7 @@ class RefreshPages implements ShouldQueue
     {
         $pages = new PageCollection();
 
-        $refreshed = $pages->filterPageUrlIs($this->pages)->requestPages();
+        $refreshed = $pages->filterPageUrlIs($this->pages)->requestedPages()->all();
 
         if($this->withLinking){
             $pages->filterPageLinksTo($refreshed)->requestPages();
