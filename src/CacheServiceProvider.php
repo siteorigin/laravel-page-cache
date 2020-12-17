@@ -32,8 +32,12 @@ class CacheServiceProvider extends ServiceProvider
             ]);
         }
 
-        $this->app->singleton(Manager::class, function () {
-            return new Manager(config('page-cache.filesystem', 'page-cache'));
+        //$this->app->singleton(Manager::class, function () {
+        //    return new Manager(config('page-cache.filesystem', 'page-cache'));
+        //});
+
+        $this->app->bind(PageCollection::class, function(){
+            return new PageCollection(null, config('page-cache.filesystem', 'page-cache'));
         });
 
         // Create a dynamic filesystem called page-cache
@@ -52,7 +56,6 @@ class CacheServiceProvider extends ServiceProvider
         ]);
 
         Route::aliasMiddleware('page-cache', CacheResponse::class);
-        Crawler::aliasObserver('page-cache', PageCacheCrawlObserver::class);
 
         Collection::macro('toFileUrlMapping', function(){
             return $this->mapWithKeys(

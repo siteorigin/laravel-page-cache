@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
  *
  * @package SiteOrigin\PageCache
  */
-class CacheableExchange
+class Exchange
 {
     /**
      * @var \Illuminate\Http\Request
@@ -45,19 +45,27 @@ class CacheableExchange
         Return Page::urlToFilename($this->request->getRequestUri(), $this->guessFileExtension());
     }
 
+    public function shouldDelete(): bool
+    {
+        return $this->response->getStatusCode() == 404;
+    }
+
     /**
      * Check that the combination of request and response is cacheable.
      *
      * @return bool
      */
-    public function shouldCache()
+    public function shouldCache(): bool
     {
         // First check if the request is valid
         if ($this->request->getQueryString()) {
             // Reject any requests that have a query string that doesn't match our patterns
-            $matches = collect(config('page-cache.query_patterns'))
-                ->map(fn($pattern) => preg_match($pattern, $this->request->getRequestUri()))
-                ->sum();
+            $patterns = collect(config('page-cache.query_patterns'));
+            // Accept all pagination query strings.
+            if(config('page-cache.cache_pagination')) $patterns->push('/.*\?page=[0-9]+$/');
+
+            // Make sure there's a match here.
+            $matches = $patterns->map(fn($pattern) => preg_match($pattern, $this->request->getRequestUri()))->sum();
 
             if (!$matches) return false;
         }
@@ -74,16 +82,13 @@ class CacheableExchange
     /**
      * Check if the response has changed in the given filesystem.
      *
-     * @param \Illuminate\Filesystem\FilesystemAdapter $filesystem
+     * @param \SiteOrigin\PageCache\Page|null $page
      * @return bool
      */
-    public function hasChanged(FilesystemAdapter $filesystem): bool
+    public function hasChanged(?Page $page = null): bool
     {
-        $path = $this->cachePath();
-        return (
-            ! $filesystem->exists($path) ||
-            md5_file($filesystem->path($path)) !== md5($this->getContent())
-        );
+        if(is_null($page)) $page = $this->getPage();
+        return ( !$page->fileExists() || $page->getFileMd5() !== md5($this->getContent()) );
     }
 
     /**
@@ -111,11 +116,8 @@ class CacheableExchange
         return $this->response->getContent();
     }
 
-    public function write(FilesystemAdapter $filesystem)
+    public function getPage(): Page
     {
-        return $filesystem->put(
-            $this->cachePath(),
-            $this->getContent()
-        );
+        return Page::fromUrl($this->request->getRequestUri());
     }
 }

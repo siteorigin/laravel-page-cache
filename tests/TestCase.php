@@ -42,6 +42,7 @@ class TestCase extends OrchestraTestCase
         $config->set('view.paths', [
             __DIR__ . '/views'
         ]);
+        $config->set('page-cache', include(__DIR__.'/../config/page-cache.php'));
 
         include __DIR__ . '/routes/web.php';
 
@@ -61,6 +62,8 @@ class TestCase extends OrchestraTestCase
         foreach($toDelete as $f) {
             $fs->delete($f);
         }
+
+        $fs->put('test/page__.html', file_get_contents(__DIR__.'/html/page__.html'));
     }
 
     /**
@@ -71,7 +74,6 @@ class TestCase extends OrchestraTestCase
     public function crawlSite($startUrl)
     {
         Crawler::addUrlsToQueue([$startUrl]);
-        Crawler::addObserver(PageCacheCrawlObserver::class);
         Crawler::start();
     }
 }

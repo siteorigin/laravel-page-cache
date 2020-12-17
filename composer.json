@@ -47,10 +47,7 @@
         "laravel": {
             "providers": [
                 "CacheServiceProvider"
-            ],
-            "aliases": {
-                "PageCache": "SiteOrigin\\PageCache\\Facades\\PageCache"
-            }
+            ]
         }
     }
 }

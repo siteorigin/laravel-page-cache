@@ -9,7 +9,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use SiteOrigin\PageCache\Facades\PageCache;
 
-class RefreshFiles implements ShouldQueue
+class RefreshPages implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 

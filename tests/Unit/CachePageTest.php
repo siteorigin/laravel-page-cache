@@ -18,7 +18,7 @@ class CachePageTest extends TestCase
 
         $page = Page::fromFilename('test/page__.html');
         $this->assertEquals('test/page', $page->getUrl());
-        $this->assertEquals('Contents of test page.', $page->getFileContents());
+        $this->assertStringContainsString('Contents of test page.', $page->getFileContents());
     }
 
 }

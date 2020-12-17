@@ -6,5 +6,7 @@ return [
         // Eg: '#^/articles\?page=[0-9]+$#'
     ],
 
+    'cache_pagination' => true,
+
     'filesystem' => 'page-cache',
 ];

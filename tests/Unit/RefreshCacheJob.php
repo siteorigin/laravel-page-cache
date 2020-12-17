@@ -3,8 +3,8 @@
 namespace SiteOrigin\PageCache\Tests\Unit;
 
 use SiteOrigin\PageCache\Page;
-use SiteOrigin\PageCache\Condition\UrlDirect;
-use SiteOrigin\PageCache\Jobs\RefreshFiles;
+use SiteOrigin\PageCache\Filters\UrlDirect;
+use SiteOrigin\PageCache\Jobs\RefreshPages;
 use SiteOrigin\PageCache\Tests\App\Article;
 use SiteOrigin\PageCache\Tests\TestCase;
 
@@ -24,7 +24,7 @@ class RefreshCacheJob extends TestCase
         // Now lets change the title, and have the RefreshFiles job refresh things.
         $article->title = 'Some New Title';
         $article->save();
-        RefreshFiles::dispatch([
+        RefreshPages::dispatch([
             UrlDirect::fromString('/site/articles/' . $article->id)
         ]);
         $this->assertStringContainsString($article->title, $page->getFileContents());

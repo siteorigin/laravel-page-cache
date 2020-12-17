@@ -13,6 +13,7 @@ class CrawlerTest extends TestCase
 {
     public function test_crawling_site_no_query_strings()
     {
+        Config::set('page-cache.cache_pagination', false);
         Article::factory()->count(10)->create();
         $this->crawlSite('site/articles');
 
@@ -24,9 +25,7 @@ class CrawlerTest extends TestCase
 
     public function test_crawling_site_with_query_strings()
     {
-        Config::set('page-cache.query_patterns', [
-            '#^/site/articles\?page=[0-9]+$#',
-        ]);
+        Config::set('page-cache.cache_pagination', true);
         Article::factory()->count(10)->create();
         $this->crawlSite('site/articles');
 

@@ -25,6 +25,10 @@ Route::prefix('site/')->middleware(['bindings', 'page-cache', 'cache.headers:pub
     })->name('articles.show');
 });
 
+Route::get('test/page', function(){
+    return file_get_contents(__DIR__.'/../html/page__.html');
+});
+
 // Routes that shouldn't be cached because of their headers
 Route::prefix('nocache/')->middleware('page-cache')->group(function(){
     Route::get('home', function(){

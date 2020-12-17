@@ -5,6 +5,7 @@ namespace SiteOrigin\PageCache\Commands;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Console\Command;
 use SiteOrigin\PageCache\Facades\PageCache;
+use SiteOrigin\PageCache\PageCollection;
 
 class ClearCache extends Command
 {
@@ -29,10 +30,11 @@ class ClearCache extends Command
      */
     public function handle()
     {
-        PageCache::clear();
+        $pages = new PageCollection();
+        $pages->deletePages();
 
         if ($this->option('touch')) {
-            Artisan::call('crawler:start --observer=page-cache', [], $this->output);
+            Artisan::call('crawler:start', [], $this->output);
         }
     }
 }

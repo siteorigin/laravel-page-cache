@@ -14,11 +14,13 @@ class Page
 {
     const INDEX_ALIAS = '__pc_index';
 
-    private string $url;
+    public string $url;
 
-    private string $filename;
+    public string $filename;
 
     private string $disk;
+
+    protected $modified = false;
 
     public function __construct(string $url, string $filename, string $disk = 'page-cache')
     {
@@ -95,6 +97,16 @@ class Page
     }
 
     /**
+     * Return the MD5
+     *
+     * @return false|string The MD5 of the file contents.
+     */
+    public function getFileMd5()
+    {
+        return $this->fileExists() ? md5_file(Storage::disk($this->disk)->path($this->filename)) : null;
+    }
+
+    /**
      * Get the string contents of a page from the filesystem.
      *
      * @return string
@@ -103,6 +115,17 @@ class Page
     public function getFileContents(): string
     {
         return Storage::disk($this->disk)->get($this->filename);
+    }
+
+    /**
+     * Write contents to the cache file.
+     *
+     * @param string $contents
+     * @return bool
+     */
+    public function putFileContents(string $contents): bool
+    {
+        return Storage::disk($this->disk)->put($this->filename, $contents);
     }
 
     /**
@@ -177,5 +200,53 @@ class Page
         if($url == '') $url = '/';
 
         return $url;
+    }
+
+    /**
+     * @return int Last modified timestamp of the
+     */
+    public function lastModified(): int
+    {
+        return Storage::disk($this->disk)->lastModified($this->getFilename());
+    }
+
+    public function fileExists(): bool
+    {
+        return Storage::disk($this->disk)->exists($this->getFilename());
+    }
+
+    /**
+     * Delete the cached file.
+     */
+    public function deleteFile(): bool
+    {
+        return Storage::disk($this->disk)->delete($this->getFilename());
+    }
+
+    /**
+     * Trigger a Kernel request to the page. Rely on middleware to handle the actual refreshing.
+     *
+     * @param null|HttpKernel $kernel
+     * @return bool Was this page modified
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    public function requestPage(?HttpKernel $kernel=null): bool
+    {
+        // If a kernel wasn't given, then make one
+        if (empty($kernel)) $kernel = app()->make(HttpKernel::class);
+
+        $originalHash = $this->getFileMd5();
+
+        $symfonyRequest = SymfonyRequest::create(url($this->url));
+        $request = Request::createFromBase($symfonyRequest);
+        $response = $kernel->handle($request);
+
+        // Update the modified
+        return ! $this->fileExists() || $originalHash !== $this->getFileMd5();
+    }
+
+    public function __toString()
+    {
+        return $this->url;
     }
 }

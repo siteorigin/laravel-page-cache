@@ -2,16 +2,9 @@
 
 namespace SiteOrigin\PageCache\Commands;
 
-use App\Models\Article;
 use Illuminate\Console\Command;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
-use SiteOrigin\PageCache\Facades\PageCache;
-
-use SiteOrigin\PageCache\Condition\UrlDirect;
-use SiteOrigin\PageCache\Condition\UrlPrefix;
-use SiteOrigin\PageCache\Condition\UrlRegex;
-use SiteOrigin\PageCache\Jobs\RefreshFiles;
+use SiteOrigin\PageCache\Page;
+use SiteOrigin\PageCache\PageCollection;
 
 class RefreshCache extends Command
 {
@@ -20,14 +13,14 @@ class RefreshCache extends Command
      *
      * @var string
      */
-    protected $signature = 'page-cache:refresh {--url=*} {--prefix=*} {--regex=*} {--with-linking} {--dispatch}';
+    protected $signature = 'page-cache:refresh';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Refresh the cached version for the URL, and any URLs that link to it.';
+    protected $description = 'Refresh all known pages .';
 
     /**
      * Execute the console command.
@@ -37,20 +30,12 @@ class RefreshCache extends Command
      */
     public function handle()
     {
-        $conditions = [];
-        $conditions = array_merge($conditions, UrlDirect::fromStringArray($this->option('url')));
-        $conditions = array_merge($conditions, UrlPrefix::fromStringArray($this->option('prefix')));
-        $conditions = array_merge($conditions, UrlRegex::fromStringArray($this->option('regex')));
-
-        if(!$this->option('dispatch')) {
-            $refreshed = PageCache::refresh($conditions, $this->option('with-linking'));
-            $this->info('Pages Refreshed: '.$refreshed->count());
-            $refreshed->each(fn($url, $file) => $this->info($url));
-        }
-        else {
-            RefreshFiles::dispatch($conditions, $this->option('with-linking'));
-            $this->info('Refresh dispatched to job queue.');
-        }
+        $pages = new PageCollection();
+        $changed = 0;
+        $this->withProgressBar($pages, function(Page $page) use (&$changed){
+            if ($page->requestPage()) $changed++;
+        });
+        $this->info('Pages refreshed: ' .  $changed);
     }
 
 }

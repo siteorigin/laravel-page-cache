@@ -4,11 +4,12 @@ namespace SiteOrigin\PageCache\Middleware;
 
 use Closure;
 use SiteOrigin\KernelCrawler\Facades\Crawler;
-use SiteOrigin\PageCache\CacheableExchange;
-use SiteOrigin\PageCache\Events\CachedPageChanged;
+use SiteOrigin\PageCache\Exchange;
+use SiteOrigin\PageCache\Events\PageRefreshed;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use SiteOrigin\PageCache\Manager;
+use SiteOrigin\PageCache\Page;
 
 /**
  * Cache response middleware. This
@@ -17,19 +18,14 @@ use SiteOrigin\PageCache\Manager;
  */
 class CacheResponse
 {
-    /**
-     * The cache instance.
-     *
-     * @var \SiteOrigin\PageCache\Manager
-     */
-    protected Manager $cache;
+    private string $disk;
 
     /**
-     * @param \SiteOrigin\PageCache\Manager $cache
+     * @param string|null $disk The name of the disk to use for caching
      */
-    public function __construct(Manager $cache)
+    public function __construct(string $disk=null)
     {
-        $this->cache = $cache;
+        $this->disk = $disk ?: config('page-cache.filesystem', 'page-cache');
     }
 
     /**
@@ -43,14 +39,17 @@ class CacheResponse
     {
         // Handle other middleware first.
         $response = $next($request);
-        $exchange = new CacheableExchange($request, $response);
+        $exchange = new Exchange($request, $response);
+        $page = Page::fromUrl($request->getRequestUri());
 
-        if(
-            $exchange->shouldCache() &&
-            $exchange->hasChanged($this->cache->getFilesystem())
-        ) {
-            CachedPageChanged::dispatch($exchange);
-            $exchange->write($this->cache->getFilesystem());
+        if ($page->fileExists() && $exchange->shouldDelete()) {
+            // This is a 404 response and should be deleted.
+            $page->deleteFile();
+        }
+        else if ($exchange->shouldCache() && $exchange->hasChanged($page)) {
+            // Everything looks good. We need to cache this.
+            PageRefreshed::dispatch($exchange, $page);
+            $page->putFileContents($exchange->getContent());
         }
 
         return $response;
