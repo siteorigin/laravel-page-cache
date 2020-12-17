@@ -26,6 +26,7 @@ class PageRefreshed
      * Create a new event instance.
      *
      * @param \SiteOrigin\PageCache\Exchange $exchange
+     * @param \SiteOrigin\PageCache\Page $page
      */
     public function __construct(Exchange $exchange, Page $page)
     {

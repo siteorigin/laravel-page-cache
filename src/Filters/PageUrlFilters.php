@@ -11,19 +11,19 @@ trait PageUrlFilters
     /**
      * Filter for pages that have an exact match URL.
      *
-     * @param string $url
+     * @param string|array $url
      * @param false $ignoreQuery
      * @return \SiteOrigin\PageCache\PageCollection
      */
-    public function filterPageUrlIs(string $url, $ignoreQuery=false): PageCollection
+    public function filterPageUrlIs($url, $ignoreQuery=false): PageCollection
     {
-        $url = Page::baseUrl($url);
+        $url = is_array($url) ? array_map([Page::class, 'baseUrl'], $url) :  Page::baseUrl($url);
 
         return $this->filter(function(Page $page) use ($url, $ignoreQuery){
             $pageUrl = $page->getUrl();
             if($ignoreQuery) $pageUrl = preg_replace('/\?.*/', '', $pageUrl);
 
-            return $url == $pageUrl;
+            return is_array($url) ? in_array($pageUrl, $url) : $url == $pageUrl;
         });
     }
 

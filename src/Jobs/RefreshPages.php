@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use SiteOrigin\PageCache\Facades\PageCache;
+use SiteOrigin\PageCache\PageCollection;
 
 class RefreshPages implements ShouldQueue
 {
@@ -23,15 +23,23 @@ class RefreshPages implements ShouldQueue
      */
     private bool $withLinking;
 
-    public function __construct(array $conditions, $withLinking = false)
+    private array $pages;
+
+    public function __construct(PageCollection $pages, $withLinking = false)
     {
-        $this->conditions = $conditions;
+        // We can't serialize a PageCollection, so just store URLs
+        $this->pages = $pages->pluck('url')->all();
         $this->withLinking = $withLinking;
     }
 
     public function handle()
     {
-        // Just pass everything directly to the PageCache refresh function.
-        PageCache::refresh($this->conditions, $this->withLinking);
+        $pages = new PageCollection();
+
+        $refreshed = $pages->filterPageUrlIs($this->pages)->requestPages();
+
+        if($this->withLinking){
+            $pages->filterPageLinksTo($refreshed)->requestPages();
+        }
     }
 }

@@ -58,14 +58,4 @@ class PageCollection extends LazyCollection
             return $page->requestPage();
         });
     }
-
-    /**
-     * Get any pages that link to pages in the given collection.
-     *
-     * @param \SiteOrigin\PageCache\PageCollection $pages
-     */
-    public function linksTo(PageCollection $pages)
-    {
-
-    }
 }
