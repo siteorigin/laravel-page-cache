@@ -3,9 +3,11 @@
 namespace SiteOrigin\PageCache\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use SiteOrigin\PageCache\CacheHelpers;
 use SiteOrigin\PageCache\Facades\PageCache;
+use SiteOrigin\PageCache\Page;
 
 class InstallApache extends Command
 {
@@ -14,7 +16,7 @@ class InstallApache extends Command
 
     public function handle()
     {
-        $fs = PageCache::getFilesystem();
+        $fs = Storage::disk(config('page-cache.filesystem', 'page-cache'));
         $folder = Str::replaceFirst(storage_path('app/public/'), '', $fs->path(''));
 
         $info = <<< EOL
@@ -29,7 +31,7 @@ RewriteRule . storage/{{folder}}%{REQUEST_URI}__%{QUERY_STRING}.html [L]
 RewriteCond %{DOCUMENT_ROOT}/storage/{{folder}}%{REQUEST_URI}__%{QUERY_STRING}.json -f
 RewriteRule . storage/{{folder}}%{REQUEST_URI}__%{QUERY_STRING}.json [L]
 EOL;
-        $info = str_replace(['{{folder}}', '{{index_alias}}'], [$folder, CacheHelpers::INDEX_ALIAS], $info);
+        $info = str_replace(['{{folder}}', '{{index_alias}}'], [$folder, Page::INDEX_ALIAS], $info);
 
         $above = <<< EOL
 # Send Requests To Front Controller...

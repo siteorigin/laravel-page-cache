@@ -29,6 +29,10 @@ Route::get('test/page', function(){
     return file_get_contents(__DIR__.'/../html/page__.html');
 });
 
+Route::get('/', function(){
+    return view('home');
+});
+
 // Routes that shouldn't be cached because of their headers
 Route::prefix('nocache/')->middleware('page-cache')->group(function(){
     Route::get('home', function(){

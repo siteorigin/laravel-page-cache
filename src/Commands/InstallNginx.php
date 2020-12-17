@@ -3,9 +3,11 @@
 namespace SiteOrigin\PageCache\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use SiteOrigin\PageCache\CacheHelpers;
 use SiteOrigin\PageCache\Facades\PageCache;
+use SiteOrigin\PageCache\Page;
 
 class InstallNginx extends Command
 {
@@ -14,9 +16,9 @@ class InstallNginx extends Command
 
     public function handle()
     {
-        $fs = PageCache::getFilesystem();
+        $fs = Storage::disk(config('page-cache.filesystem', 'page-cache'));
         $folder = Str::replaceFirst(storage_path('app/public'), '', $fs->path(''));
-        $indexAlias = CacheHelpers::INDEX_ALIAS;
+        $indexAlias = Page::INDEX_ALIAS;
 
         $indexTry = [
             $folder . $indexAlias . '.html',

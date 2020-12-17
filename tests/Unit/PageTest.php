@@ -8,7 +8,7 @@ use SiteOrigin\PageCache\Tests\TestCase;
  *
  * Class TestCachePage
  */
-class CachePageTest extends TestCase
+class PageTest extends TestCase
 {
     public function test_cache_page_creation_methods()
     {

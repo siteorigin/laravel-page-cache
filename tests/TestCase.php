@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Storage;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
 use SiteOrigin\KernelCrawler\Facades\Crawler;
+use SiteOrigin\KernelCrawler\KernelCrawlerServiceProvider;
 use SiteOrigin\PageCache\Crawler\Observer\PageCacheCrawlObserver;
 use SiteOrigin\PageCache\CacheServiceProvider;
 
@@ -28,7 +29,8 @@ class TestCase extends OrchestraTestCase
     protected function getPackageProviders($app)
     {
         return [
-            CacheServiceProvider::class
+            CacheServiceProvider::class,
+            KernelCrawlerServiceProvider::class
         ];
     }
 

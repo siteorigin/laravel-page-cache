@@ -131,15 +131,18 @@ class Page
     /**
      * Get the response directly from the HttpKernel.
      *
-     * @return Response
+     * @param \Illuminate\Contracts\Http\Kernel|null $kernel
+     * @return \SiteOrigin\PageCache\Exchange
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public function getUrlResponse(): Response
+    public function getExchange(?HttpKernel $kernel=null): Exchange
     {
-        $kernel = app()->make(HttpKernel::class);
+        if (empty($kernel)) $kernel = app()->make(HttpKernel::class);
         $symfonyRequest = SymfonyRequest::create(url($this->url));
         $request = Request::createFromBase($symfonyRequest);
-        return $kernel->handle($request);
+        $response = $kernel->handle($request);
+
+        return new Exchange($request, $response);
     }
 
     /**
@@ -232,14 +235,10 @@ class Page
      */
     public function requestPage(?HttpKernel $kernel=null): bool
     {
-        // If a kernel wasn't given, then make one
-        if (empty($kernel)) $kernel = app()->make(HttpKernel::class);
-
         $originalHash = $this->getFileMd5();
 
-        $symfonyRequest = SymfonyRequest::create(url($this->url));
-        $request = Request::createFromBase($symfonyRequest);
-        $response = $kernel->handle($request);
+        // Get the exchange as a way of requesting the page
+        $this->getExchange($kernel);
 
         // Update the modified
         return ! $this->fileExists() || $originalHash !== $this->getFileMd5();
