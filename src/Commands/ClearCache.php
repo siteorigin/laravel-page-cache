@@ -15,7 +15,7 @@ class ClearCache extends Command
      *
      * @var string
      */
-    protected $signature = 'page-cache:clear {--touch}';
+    protected $signature = 'page-cache:clear {--touch : Crawl site from the home page to warm the cache.}';
 
     /**
      * The console command description.

@@ -3,12 +3,9 @@
 namespace SiteOrigin\PageCache\Middleware;
 
 use Closure;
-use SiteOrigin\KernelCrawler\Facades\Crawler;
 use SiteOrigin\PageCache\Exchange;
 use SiteOrigin\PageCache\Events\PageRefreshed;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use SiteOrigin\PageCache\Manager;
 use SiteOrigin\PageCache\Page;
 
 /**

@@ -15,8 +15,8 @@
     ],
     "repositories": [
         {
-            "type": "path",
-            "url": "../*"
+            "type": "vcs",
+            "url": "https://github.com/siteorigin/laravel-kernel-crawler.git"
         }
     ],
     "autoload": {
@@ -46,7 +46,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "CacheServiceProvider"
+                "SiteOrigin\\PageCache\\PageCacheServiceProvider"
             ]
         }
     }
