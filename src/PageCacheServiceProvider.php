@@ -59,5 +59,11 @@ class PageCacheServiceProvider extends ServiceProvider
                 $page->deleteFile();
             }
         });
+
+        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'page-cache');
+        $this->publishes([
+            __DIR__.'/../resources/assets' => public_path('vendor/assets'),
+        ], 'assets');
     }
 }
