@@ -3,6 +3,7 @@
 namespace SiteOrigin\PageCache\Middleware;
 
 use Closure;
+use SiteOrigin\PageCache\Events\PageRefreshing;
 use SiteOrigin\PageCache\Exchange;
 use SiteOrigin\PageCache\Events\PageRefreshed;
 use Illuminate\Http\Request;
@@ -41,8 +42,9 @@ class CacheResponse
 
         if ($exchange->shouldCache() && $exchange->hasChanged($page)) {
             // Everything looks good. We need to cache this.
-            PageRefreshed::dispatch($exchange, $page);
+            PageRefreshing::dispatch($exchange, $page);
             $page->putFileContents($exchange->getContent());
+            PageRefreshed::dispatch($exchange, $page);
         }
 
         return $response;

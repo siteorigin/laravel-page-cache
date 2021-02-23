@@ -179,7 +179,7 @@ class Page
     }
 
     /**
-     * @return int Last modified timestamp of the
+     * @return int Last modified timestamp of the file.
      */
     public function lastModified(): int
     {
