@@ -20,7 +20,7 @@ class RefreshCache extends Command
      *
      * @var string
      */
-    protected $description = 'Refresh all known pages .';
+    protected $description = 'Refresh all known pages.';
 
     /**
      * Execute the console command.
