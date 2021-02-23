@@ -1,3 +1,5 @@
+![Laravel Page Cache](.github/logo.svg)
+
 # Laravel Page Cache
 
 Laravel Page Cache is a static page caching package. It's heavily inspired by, and forked from [Joseph Silber](https://github.com/JosephSilber)'s [Page Cache](https://github.com/JosephSilber/page-cache) package. This package goes in a slightly different direction, so you should check both to decide which is best for you.
@@ -86,4 +88,4 @@ Refresh every page on your site using `php artisan page-cache:refresh`. This wil
 
 ### Installation Instructions
 
-Run `php arisan page-cache:install:apache` for PHP installation instructions or `php artisan page-cache:install:nginx` for Nginx installation instructions.
+Run `php artisan page-cache:install:apache` for PHP installation instructions or `php artisan page-cache:install:nginx` for Nginx installation instructions.
