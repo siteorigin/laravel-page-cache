@@ -19,7 +19,7 @@ class PageRefreshing
     /**
      * @var \SiteOrigin\PageCache\Page
      */
-    private Page $page;
+    protected Page $page;
 
     /**
      * Create a new event instance.

@@ -12,6 +12,7 @@ use SiteOrigin\PageCache\Commands\ClearCache;
 use SiteOrigin\PageCache\Commands\InstallNginx;
 use SiteOrigin\PageCache\Commands\RefreshCache;
 use SiteOrigin\PageCache\Middleware\CacheResponse;
+use SiteOrigin\PageCache\Providers\EventServiceProvider;
 
 class PageCacheServiceProvider extends ServiceProvider
 {
@@ -42,6 +43,8 @@ class PageCacheServiceProvider extends ServiceProvider
                 'root' => storage_path('app/public/page-cache'),
             ]);
         }
+
+        $this->app->register(EventServiceProvider::class);
     }
 
     public function boot()

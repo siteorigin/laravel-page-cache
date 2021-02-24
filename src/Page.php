@@ -90,6 +90,11 @@ class Page
         return Storage::disk($this->disk)->get($this->filename);
     }
 
+    public function getDisk(): string
+    {
+        return $this->disk;
+    }
+
     /**
      * Write contents to the cache file.
      *
