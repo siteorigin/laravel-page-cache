@@ -2,26 +2,10 @@
 
 namespace SiteOrigin\PageCache\Jobs;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Str;
-use SiteOrigin\PageCache\Page;
 use Symfony\Component\Process\Process;
 
-class GenerateCriticalCss implements ShouldQueue
+class CriticalCssJob extends OptimizeHtmlJob
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
-    protected Page $page;
-
-    public function __construct(Page $page)
-    {
-        $this->page = $page;
-    }
-
     public function handle()
     {
         $contents = $this->page->getFileContents();
@@ -43,10 +27,5 @@ class GenerateCriticalCss implements ShouldQueue
     protected function injectCriticalCss($contents, $css)
     {
         return str_replace('</head>', "<style>{$css}</style>" . PHP_EOL . "</head>", $contents);
-    }
-
-    protected function getFilename(): string
-    {
-        return Str::replaceLast('html', 'min.css', $this->page->getFilename());
     }
 }
