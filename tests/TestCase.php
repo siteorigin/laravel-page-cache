@@ -25,8 +25,8 @@ class TestCase extends OrchestraTestCase
 
     protected function tearDown(): void
     {
-        parent::tearDown();
         $this->resetPageCache();
+        parent::tearDown();
     }
 
     protected function getPackageProviders($app)

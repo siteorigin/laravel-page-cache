@@ -4,7 +4,7 @@ namespace SiteOrigin\PageCache\Jobs\Optimizers;
 
 use Symfony\Component\Process\Process;
 
-class HtmlMinifier extends HtmlOptimizer
+class HtmlMinifier extends BaseOptimizer
 {
     public function handle()
     {

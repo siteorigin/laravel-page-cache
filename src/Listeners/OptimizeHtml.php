@@ -15,7 +15,7 @@ class OptimizeHtml implements ShouldQueue
     {
         $page = $event->getPage();
 
-        if ($this->hasOptimizers()) {
+        if ($page->getFileExtension() == 'html' && $this->hasOptimizers()) {
             // Create a temporary file with the original filename
             $filename = tempnam('', 'page-cache');
             file_put_contents($filename, $page->getFileContents());

@@ -71,6 +71,14 @@ class Page
     }
 
     /**
+     * @return string The file extension of the main file.
+     */
+    public function getFileExtension(): string
+    {
+        return pathinfo($this->filename)['extension'];
+    }
+
+    /**
      * Return the MD5
      *
      * @return false|string The MD5 of the file contents.

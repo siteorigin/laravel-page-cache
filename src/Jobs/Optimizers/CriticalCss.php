@@ -4,7 +4,7 @@ namespace SiteOrigin\PageCache\Jobs\Optimizers;
 
 use Symfony\Component\Process\Process;
 
-class CriticalCss extends HtmlOptimizer
+class CriticalCss extends BaseOptimizer
 {
     public function handle()
     {
