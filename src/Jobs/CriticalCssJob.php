@@ -20,12 +20,16 @@ class CriticalCssJob extends OptimizeHtmlJob
         $process->run();
 
         if ($process->isSuccessful()) {
-            $this->putFileContents($this->injectCriticalCss($contents, $process->getOutput()));
+            $this->putFileContents(
+                $this->injectCriticalCss($process->getOutput())
+            );
         }
     }
 
-    protected function injectCriticalCss($contents, $css)
+    protected function injectCriticalCss($css)
     {
+        $contents = $this->getFileContents();
+
         return str_replace('</head>', "<style>{$css}</style>".PHP_EOL."</head>", $contents);
     }
 }
