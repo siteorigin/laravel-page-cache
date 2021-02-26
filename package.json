@@ -1,0 +1,7 @@
+{
+  "private": true,
+  "dependencies": {
+    "critical": "^3.0.0",
+    "html-minifier": "^4.0.0"
+  }
+}

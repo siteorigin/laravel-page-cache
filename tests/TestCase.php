@@ -17,6 +17,10 @@ class TestCase extends OrchestraTestCase
         $this->loadMigrationsFrom(__DIR__.'/Database/migrations');
         $this->resetPageCache();
         $this->withoutExceptionHandling();
+
+        if( ! isset(static::$hasEvents) || !static::$hasEvents) {
+            $this->withoutEvents();
+        }
     }
 
     protected function tearDown(): void

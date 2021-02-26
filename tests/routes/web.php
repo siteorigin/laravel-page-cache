@@ -11,6 +11,10 @@ Route::prefix('site/')->middleware(['bindings', 'page-cache', 'cache.headers:pub
         return view('home');
     });
 
+    Route::get('page', function(){
+        return file_get_contents(__DIR__.'/../html/page__.html');
+    });
+
     Route::get('articles', function(){
         return view('articles.index', [
             'articles' => Article::paginate(2)

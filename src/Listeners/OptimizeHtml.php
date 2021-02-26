@@ -7,7 +7,6 @@ use Illuminate\Support\Str;
 use SiteOrigin\PageCache\Events\PageRefreshed;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Bus;
-use SiteOrigin\PageCache\Jobs\SyncOriginalPageContentJob;
 use SiteOrigin\PageCache\Page;
 
 class OptimizeHtml implements ShouldQueue
@@ -17,19 +16,35 @@ class OptimizeHtml implements ShouldQueue
         $page = $event->getPage();
 
         if ($this->hasOptimizers()) {
-            $tempFilename = $this->getTemporaryFile($page);
+            // Create a temporary file with the original filename
+            $filename = tempnam('', 'page-cache');
+            file_put_contents($filename, $page->getFileContents());
 
-            Bus::chain([
-                ...$this->getOptimizers($tempFilename),
-                new SyncOriginalPageContentJob($page, $tempFilename)
-            ])->dispatch();
+            // Run each of the optimizations on the file
+            Bus::chain($this->getOptimizers($filename))->onQueue('sync')->dispatch();
+
+            // Store the optimized file if it exists
+            $optimized = file_get_contents($filename);
+
+            if($optimized) {
+                $page->putFileContents($optimized, 'min');
+            }
+
+            // Clean up the temp file
+            unlink($filename);
         }
     }
 
-    protected function getOptimizers($tempFilename): array
+    protected function getOptimizers($filename): array
     {
         return collect(config('page-cache.optimizers', []))
-            ->map(fn($optimizerClassName) => app($optimizerClassName, ['filename' => $tempFilename]))
+            ->map(function($optimizer, $key) use ($filename){
+                return $optimizer['enabled'] ? app($optimizer['class'], [
+                    'filename' => $filename,
+                    'config' => $optimizer
+                ]) : null;
+            })
+            ->filter()
             ->toArray();
     }
 
@@ -37,14 +52,5 @@ class OptimizeHtml implements ShouldQueue
     {
         $optimizers = config('page-cache.optimizers', []);
         return is_array($optimizers) && count($optimizers);
-    }
-
-    protected function getTemporaryFile(Page $page): ?string
-    {
-        $filename = 'page-cache-'.Str::random(32).'.html';
-        if (Storage::put($filename, $page->getFileContents())) {
-            return $filename;
-        }
-        return null;
     }
 }

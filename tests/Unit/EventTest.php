@@ -14,8 +14,6 @@ class EventTest extends TestCase
 {
     public function test_receiving_page_refreshed_event()
     {
-        //$this->expectsEvents(PageRefreshed::class);
-
         Article::factory()->count(10)->create();
         $this->crawlSite('site/articles');
 

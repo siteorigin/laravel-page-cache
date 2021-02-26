@@ -11,7 +11,16 @@ return [
     'filesystem' => 'page-cache',
 
     'optimizers' => [
-        \SiteOrigin\PageCache\Jobs\CriticalCssJob::class,
-        \SiteOrigin\PageCache\Jobs\HTMLMinifierJob::class,
+        'critical' => [
+            'enabled' => true,
+            'class' => \SiteOrigin\PageCache\Jobs\Optimizers\CriticalCss::class,
+            'command' => base_path('node_modules/.bin/critical'),
+            'css' => public_path('css/app.css')
+        ],
+        'minifier' => [
+            'enabled' => true,
+            'class' => \SiteOrigin\PageCache\Jobs\Optimizers\HtmlMinifier::class,
+            'command' => base_path('node_modules/.bin/html-minifier'),
+        ],
     ]
 ];

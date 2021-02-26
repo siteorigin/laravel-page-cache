@@ -1,15 +1,15 @@
 <?php
 
-namespace SiteOrigin\PageCache\Jobs;
+namespace SiteOrigin\PageCache\Jobs\Optimizers;
 
 use Symfony\Component\Process\Process;
 
-class HTMLMinifierJob extends OptimizeHtmlJob
+class HtmlMinifier extends HtmlOptimizer
 {
     public function handle()
     {
         $process = new Process([
-            'html-minifier',
+            $this->config['command'],
             '--collapse-whitespace',
             '--remove-comments',
             '--remove-optional-tags',

@@ -1,18 +1,18 @@
 <?php
 
-namespace SiteOrigin\PageCache\Jobs;
+namespace SiteOrigin\PageCache\Jobs\Optimizers;
 
 use Symfony\Component\Process\Process;
 
-class CriticalCssJob extends OptimizeHtmlJob
+class CriticalCss extends HtmlOptimizer
 {
     public function handle()
     {
         $contents = $this->getFileContents();
 
         $process = new Process([
-            'critical',
-            '--css='.public_path('css/app.css'),
+            $this->config['command'],
+            '--css='.$this->config['css'],
             '--minify'
         ]);
 
