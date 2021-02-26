@@ -2,7 +2,6 @@
 
 namespace SiteOrigin\PageCache\Jobs;
 
-use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Process\Process;
 
 class HTMLMinifierJob extends OptimizeHtmlJob
@@ -17,11 +16,11 @@ class HTMLMinifierJob extends OptimizeHtmlJob
             '--remove-redundant-attributes',
             '--remove-tag-whitespace'
         ]);
-        $process->setInput($this->page->getFileContents());
+        $process->setInput($this->getFileContents());
         $process->run();
 
         if ($process->isSuccessful()) {
-            Storage::disk($this->page->getDisk())->put($this->getFilename(), $process->getOutput());
+            $this->putFileContents($process->getOutput());
         }
     }
 }

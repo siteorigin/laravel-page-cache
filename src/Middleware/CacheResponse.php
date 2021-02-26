@@ -40,12 +40,12 @@ class CacheResponse
         $exchange = new Exchange($request, $response);
         $page = Page::fromUrl($request->getRequestUri());
 
-        if ($exchange->shouldCache() && $exchange->hasChanged($page)) {
+//        if ($exchange->shouldCache() && $exchange->hasChanged($page)) {
             // Everything looks good. We need to cache this.
             PageRefreshing::dispatch($exchange, $page);
             $page->putFileContents($exchange->getContent());
             PageRefreshed::dispatch($exchange, $page);
-        }
+//        }
 
         return $response;
     }

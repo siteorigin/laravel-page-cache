@@ -2,9 +2,12 @@
 
 namespace SiteOrigin\PageCache\Listeners;
 
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use SiteOrigin\PageCache\Events\PageRefreshed;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Bus;
+use SiteOrigin\PageCache\Jobs\SyncOriginalPageFileJob;
 use SiteOrigin\PageCache\Page;
 
 class OptimizeHtml implements ShouldQueue
@@ -12,17 +15,36 @@ class OptimizeHtml implements ShouldQueue
     public function handle(PageRefreshed $event)
     {
         $page = $event->getPage();
-        $optimizers = $this->getOptimizers($page);
 
-        if (count($optimizers)) {
-            Bus::chain($optimizers)->dispatch();
+        if ($this->hasOptimizers()) {
+            $tempFilename = $this->getTemporaryFile($page);
+
+            Bus::chain([
+                ...$this->getOptimizers($tempFilename),
+                new SyncOriginalPageFileJob($page, $tempFilename)
+            ])->dispatch();
         }
     }
 
-    public static function getOptimizers(Page $page): array
+    protected function getOptimizers($tempFilename): array
     {
         return collect(config('page-cache.optimizers', []))
-            ->map(fn($optimizerClassName) => app($optimizerClassName, ['page' => $page]))
+            ->map(fn($optimizerClassName) => app($optimizerClassName, ['filename' => $tempFilename]))
             ->toArray();
+    }
+
+    protected function hasOptimizers(): bool
+    {
+        $optimizers = config('page-cache.optimizers', []);
+        return is_array($optimizers) && count($optimizers);
+    }
+
+    protected function getTemporaryFile(Page $page): ?string
+    {
+        $filename = 'page-cache-'.Str::random(32).'.html';
+        if (Storage::put($filename, $page->getFileContents())) {
+            return $filename;
+        }
+        return null;
     }
 }

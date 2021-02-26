@@ -8,7 +8,7 @@ class CriticalCssJob extends OptimizeHtmlJob
 {
     public function handle()
     {
-        $contents = $this->page->getFileContents();
+        $contents = $this->getFileContents();
 
         $process = new Process([
             'critical',
@@ -20,12 +20,12 @@ class CriticalCssJob extends OptimizeHtmlJob
         $process->run();
 
         if ($process->isSuccessful()) {
-            $this->page->putFileContents($this->injectCriticalCss($contents, $process->getOutput()));
+            $this->putFileContents($this->injectCriticalCss($contents, $process->getOutput()));
         }
     }
 
     protected function injectCriticalCss($contents, $css)
     {
-        return str_replace('</head>', "<style>{$css}</style>" . PHP_EOL . "</head>", $contents);
+        return str_replace('</head>', "<style>{$css}</style>".PHP_EOL."</head>", $contents);
     }
 }
