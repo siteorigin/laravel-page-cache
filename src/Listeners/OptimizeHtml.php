@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 use SiteOrigin\PageCache\Events\PageRefreshed;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Bus;
-use SiteOrigin\PageCache\Jobs\SyncOriginalPageFileJob;
+use SiteOrigin\PageCache\Jobs\SyncOriginalPageContentJob;
 use SiteOrigin\PageCache\Page;
 
 class OptimizeHtml implements ShouldQueue
@@ -21,7 +21,7 @@ class OptimizeHtml implements ShouldQueue
 
             Bus::chain([
                 ...$this->getOptimizers($tempFilename),
-                new SyncOriginalPageFileJob($page, $tempFilename)
+                new SyncOriginalPageContentJob($page, $tempFilename)
             ])->dispatch();
         }
     }

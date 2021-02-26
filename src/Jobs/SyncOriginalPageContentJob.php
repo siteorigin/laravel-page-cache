@@ -10,7 +10,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use SiteOrigin\PageCache\Page;
 
-class SyncOriginalPageFileJob implements ShouldQueue
+class SyncOriginalPageContentJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
