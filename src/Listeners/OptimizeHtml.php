@@ -2,12 +2,9 @@
 
 namespace SiteOrigin\PageCache\Listeners;
 
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
+use Illuminate\Support\Collection;
 use SiteOrigin\PageCache\Events\PageRefreshed;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Facades\Bus;
-use SiteOrigin\PageCache\Page;
 
 class OptimizeHtml implements ShouldQueue
 {
@@ -21,7 +18,7 @@ class OptimizeHtml implements ShouldQueue
             file_put_contents($filename, $page->getFileContents());
 
             // Run each of the optimizations on the file
-            Bus::chain($this->getOptimizers($filename))->onQueue('sync')->dispatch();
+            $this->getOptimizers($filename)->each(fn($optimizer) => $optimizer->handle());
 
             // Store the optimized file if it exists
             $optimized = file_get_contents($filename);
@@ -35,7 +32,11 @@ class OptimizeHtml implements ShouldQueue
         }
     }
 
-    protected function getOptimizers($filename): array
+    /**
+     * @param $filename
+     * @return \Illuminate\Support\Collection
+     */
+    protected function getOptimizers($filename): Collection
     {
         return collect(config('page-cache.optimizers', []))
             ->map(function($optimizer, $key) use ($filename){
@@ -44,8 +45,7 @@ class OptimizeHtml implements ShouldQueue
                     'config' => $optimizer
                 ]) : null;
             })
-            ->filter()
-            ->toArray();
+            ->filter();
     }
 
     protected function hasOptimizers(): bool
