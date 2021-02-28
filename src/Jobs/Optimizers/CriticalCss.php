@@ -2,6 +2,7 @@
 
 namespace SiteOrigin\PageCache\Jobs\Optimizers;
 
+use DOMDocument;
 use Symfony\Component\Process\Process;
 
 class CriticalCss extends BaseOptimizer
@@ -28,8 +29,14 @@ class CriticalCss extends BaseOptimizer
 
     protected function injectCriticalCss($css)
     {
-        $contents = $this->getFileContents();
+        $dom = new DOMDocument();
+        @$dom->loadHTML($this->getFileContents());
 
-        return str_replace('</head>', "<style>{$css}</style>".PHP_EOL."</head>", $contents);
+        $style = $dom->createElement('style', $css);
+
+        $head = $dom->getElementsByTagName('head')->item(0);
+        $head->appendChild($style);
+
+        return $dom->saveHTML();
     }
 }
