@@ -18,6 +18,11 @@ class TestCase extends OrchestraTestCase
         $this->resetPageCache();
         $this->withoutExceptionHandling();
 
+        // Set the proper public path
+        $this->app->bind('path.public', function() {
+            return __DIR__ . '/public';
+        });
+
         if( ! isset(static::$hasEvents) || !static::$hasEvents) {
             $this->withoutEvents();
         }

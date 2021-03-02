@@ -3,6 +3,7 @@
 namespace SiteOrigin\PageCache\Jobs\Optimizers;
 
 use DOMDocument;
+use DOMElement;
 use Symfony\Component\Process\Process;
 
 class CriticalCss extends BaseOptimizer
@@ -11,42 +12,62 @@ class CriticalCss extends BaseOptimizer
 
     public function handle()
     {
-        $contents = $this->getFileContents();
+        // Load the DomDocument
+        $this->dom = new DOMDocument();
+        @$this->dom->loadHTML($this->getFileContents());
 
-        $process = new Process([
-            $this->config['command'],
-            '--css='.$this->config['css'],
-            '--minify'
-        ]);
+        $links = [];
+        foreach($this->dom->getElementsByTagName('link') as $link) {
+            if ($link->getAttribute('rel') == 'stylesheet' && $link->hasAttribute('data-critical-defer')) {
+                $links[] = $link;
+            }
+        }
 
-        $process->setInput($contents);
+        if($links) {
+            $css = $this->getCriticalCss($links);
+
+            if($css) {
+                // Add the critical CSS before the first link
+                $this->injectCriticalCss($css, $links[0]);
+                $this->deferNonCriticalCss();
+            }
+
+            $this->saveDom($this->getFilename());
+        }
+    }
+
+    protected function getCriticalCss($links): string
+    {
+        $command = [$this->config['command']];
+        foreach($links as $link) {
+            $href = $link->getAttribute('href');
+            $path = public_path($href);
+            $command[] = '--css='.$path;
+        }
+        $command[] = '--minify';
+
+        $process = new Process($command);
+        $process->setInput($this->getFileContents());
         $process->run();
 
-        if ($process->isSuccessful()) {
-            // Load the DomDocument
-            $this->dom = new DOMDocument();
-            @$this->dom->loadHTML($this->getFileContents());
-
-            // Run all the processing steps
-            $this->injectCriticalCss($process->getOutput())
-                ->deferNonCriticalCss()
-                ->saveDom($this->filename);
-        }
+        return $process->isSuccessful() ? $process->getOutput() : '';
     }
 
     /**
      * Inject the body specific CSS at the top of the body tag.
      *
-     * @param $css
+     * @param string $css
+     * @param DOMElement $before
      * @return $this
      */
-    protected function injectCriticalCss($css): CriticalCss
+    protected function injectCriticalCss(string $css, DOMElement $before): CriticalCss
     {
+        // Create the critical style
         $style = $this->dom->createElement('style', $css);
-        $style->setAttribute('id', 'critical-' . rand(0, getrandmax()));
+        $style->setAttribute('id', 'critical-css-' . md5($css));
 
-        $body = $this->dom->getElementsByTagName('body')->item(0);
-        $body->insertBefore($style, $body->firstChild);
+        $body = $this->dom->getElementsByTagName('head')->item(0);
+        $body->insertBefore($style, $before);
 
         return $this;
     }
@@ -61,8 +82,10 @@ class CriticalCss extends BaseOptimizer
         foreach($this->dom->getElementsByTagName('link') as $link) {
             if($link->getAttribute('rel') == 'stylesheet' && $link->hasAttribute('data-critical-defer')) {
                 $html = $this->dom->saveHTML($link);
+
                 $html = str_replace('data-critical-defer', '', $html);
-                $noscript = $this->dom->createElement('noscript', $html);
+                $noscript = $this->dom->createElement('noscript');
+                $noscript->appendChild($this->dom->createCDATASection($html));
 
                 $link->parentNode->insertBefore($noscript, $link);
 
