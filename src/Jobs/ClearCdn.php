@@ -24,7 +24,7 @@ class ClearCdn implements ShouldQueue
      */
     private bool $withLinking;
 
-    private array $page;
+    private Page $page;
 
     public function __construct(Page $page)
     {
