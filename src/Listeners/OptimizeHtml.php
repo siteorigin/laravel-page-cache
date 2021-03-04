@@ -7,7 +7,6 @@ use SiteOrigin\PageCache\Events\PageOptimized;
 use SiteOrigin\PageCache\Events\PageOptimizing;
 use SiteOrigin\PageCache\Events\PageRefreshed;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use SiteOrigin\PageCache\Jobs\ClearCdn;
 
 class OptimizeHtml implements ShouldQueue
 {
@@ -20,7 +19,7 @@ class OptimizeHtml implements ShouldQueue
             $filename = tempnam('', 'page-cache');
             file_put_contents($filename, $page->getFileContents());
 
-            PageOptimizing::dispatch($filename, $page);
+            PageOptimizing::dispatch($page, $filename);
 
             // Run each of the optimizations on the file
             $this->getOptimizers($filename)->each(fn($optimizer) => $optimizer->handle());
@@ -35,7 +34,7 @@ class OptimizeHtml implements ShouldQueue
             // Clean up the temp file
             unlink($filename);
 
-            PageOptimized::dispatch($filename, $page);
+            PageOptimized::dispatch($page, $filename);
         }
     }
 

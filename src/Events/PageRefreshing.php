@@ -14,7 +14,7 @@ class PageRefreshing
     /**
      * @var \SiteOrigin\PageCache\Exchange
      */
-    protected Exchange $exchange;
+    private Exchange $exchange;
 
     /**
      * @var \SiteOrigin\PageCache\Page
@@ -33,11 +33,19 @@ class PageRefreshing
         $this->page = $page;
     }
 
+    /**
+     * Get the exchange. Will only work if the event is handled asynchronously.
+     *
+     * @return \SiteOrigin\PageCache\Exchange|null The current Exchange or null if handled asynchronously.
+     */
     public function getExchange(): Exchange
     {
         return $this->exchange;
     }
 
+    /**
+     * @return \SiteOrigin\PageCache\Page The page being refreshed.
+     */
     public function getPage(): Page
     {
         return $this->page;

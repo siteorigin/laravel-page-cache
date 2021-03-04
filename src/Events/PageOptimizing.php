@@ -12,14 +12,14 @@ class PageOptimizing
     use Dispatchable, SerializesModels;
 
     /**
-     * @var string
-     */
-    protected string $filename;
-
-    /**
      * @var \SiteOrigin\PageCache\Page
      */
     protected Page $page;
+
+    /**
+     * @var string
+     */
+    protected string $filename;
 
     /**
      * Create a new event instance.
@@ -27,19 +27,25 @@ class PageOptimizing
      * @param string $filename
      * @param \SiteOrigin\PageCache\Page $page
      */
-    public function __construct(string $filename, Page $page)
+    public function __construct(Page $page, string $filename)
     {
         $this->filename = $filename;
         $this->page = $page;
     }
 
-    public function getFilename(): Exchange
-    {
-        return $this->filename;
-    }
-
+    /**
+     * @return \SiteOrigin\PageCache\Page The page object being optimized.
+     */
     public function getPage(): Page
     {
         return $this->page;
+    }
+
+    /**
+     * @return string The temporary filename being optimized.
+     */
+    public function getFilename(): string
+    {
+        return $this->filename;
     }
 }
