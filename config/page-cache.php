@@ -21,9 +21,5 @@ return [
             'class' => \SiteOrigin\PageCache\Jobs\Optimizers\HtmlMinifier::class,
             'command' => base_path('node_modules/.bin/html-minifier'),
         ],
-    ],
-
-    // This class is triggered after each iteration in Optimize HTML,
-    // must be a child of `SiteOrigin\PageCache\Jobs\ClearCDN\BaseClearCdn` or null.
-    'clear_cdn_job' => null
+    ]
 ];

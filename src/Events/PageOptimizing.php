@@ -7,14 +7,14 @@ use Illuminate\Queue\SerializesModels;
 use SiteOrigin\PageCache\Exchange;
 use SiteOrigin\PageCache\Page;
 
-class PageRefreshing
+class PageOptimizing
 {
     use Dispatchable, SerializesModels;
 
     /**
-     * @var \SiteOrigin\PageCache\Exchange
+     * @var string
      */
-    protected Exchange $exchange;
+    protected string $filename;
 
     /**
      * @var \SiteOrigin\PageCache\Page
@@ -24,18 +24,18 @@ class PageRefreshing
     /**
      * Create a new event instance.
      *
-     * @param \SiteOrigin\PageCache\Exchange $exchange
+     * @param string $filename
      * @param \SiteOrigin\PageCache\Page $page
      */
-    public function __construct(Exchange $exchange, Page $page)
+    public function __construct(string $filename, Page $page)
     {
-        $this->exchange = $exchange;
+        $this->filename = $filename;
         $this->page = $page;
     }
 
-    public function getExchange(): Exchange
+    public function getFilename(): Exchange
     {
-        return $this->exchange;
+        return $this->filename;
     }
 
     public function getPage(): Page

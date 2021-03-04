@@ -3,10 +3,11 @@
 namespace SiteOrigin\PageCache\Listeners;
 
 use Illuminate\Support\Collection;
+use SiteOrigin\PageCache\Events\PageOptimized;
+use SiteOrigin\PageCache\Events\PageOptimizing;
 use SiteOrigin\PageCache\Events\PageRefreshed;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use SiteOrigin\PageCache\Jobs\ClearCDN\ClearCdn;
-use SiteOrigin\PageCache\Page;
+use SiteOrigin\PageCache\Jobs\ClearCdn;
 
 class OptimizeHtml implements ShouldQueue
 {
@@ -18,6 +19,8 @@ class OptimizeHtml implements ShouldQueue
             // Create a temporary file with the original filename
             $filename = tempnam('', 'page-cache');
             file_put_contents($filename, $page->getFileContents());
+
+            PageOptimizing::dispatch($filename, $page);
 
             // Run each of the optimizations on the file
             $this->getOptimizers($filename)->each(fn($optimizer) => $optimizer->handle());
@@ -32,7 +35,7 @@ class OptimizeHtml implements ShouldQueue
             // Clean up the temp file
             unlink($filename);
 
-            $this->clearCdnCache($page);
+            PageOptimized::dispatch($filename, $page);
         }
     }
 
@@ -56,24 +59,5 @@ class OptimizeHtml implements ShouldQueue
     {
         $optimizers = config('page-cache.optimizers', []);
         return is_array($optimizers) && count($optimizers);
-    }
-
-    /**
-     * @param  Page  $page
-     * @return false|\Illuminate\Foundation\Bus\PendingDispatch
-     */
-    protected function clearCdnCache(Page $page)
-    {
-        $clearCdnClass = config('clear_cdn_job');
-
-        if (! is_subclass_of($clearCdnClass, ClearCdn::class)) {
-            return false;
-        }
-
-        $clearCDN = app($clearCdnClass, [
-            'page' => $page
-        ]);
-
-        return dispatch($clearCDN);
     }
 }
