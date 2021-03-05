@@ -46,10 +46,21 @@ trait PageUrlFilters
      * @param string $regex
      * @return \SiteOrigin\PageCache\PageCollection
      */
-    public function filterPageUrlMatch(string $regex)
+    public function filterPageUrlMatch(string $regex): PageCollection
     {
         return $this->filter(function(Page $page) use ($regex){
             return preg_match($regex, $page->getUrl());
         });
+    }
+
+    /**
+     * Filter for page URLs and don't worry if there's a query string. Mainly for pagination.
+     *
+     * @param $url
+     * @return \SiteOrigin\PageCache\PageCollection
+     */
+    public function filterPageUrlWithQuery($url): PageCollection
+    {
+        return $this->filterPageUrlIs($url, true);
     }
 }

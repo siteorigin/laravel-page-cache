@@ -21,6 +21,8 @@ class InstallNginx extends Command
         $indexAlias = Page::INDEX_ALIAS;
 
         $indexTry = [
+            $folder . $indexAlias . '.min.html',
+            $folder . $indexAlias . '__$query_string.min.html',
             $folder . $indexAlias . '.html',
             $folder . $indexAlias . '__$query_string.html',
             '/index.php?$query_string'
@@ -29,6 +31,8 @@ class InstallNginx extends Command
         $siteTry = [
             '$uri',
             '$uri/',
+            $folder . '$uri.min.html',
+            $folder . '$uri__$query_string.min.html',
             $folder . '$uri.html',
             $folder . '$uri__$query_string.html',
             $folder . '$uri.json',

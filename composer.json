@@ -13,16 +13,11 @@
             "email": "contact@josephsilber.com"
         }
     ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/siteorigin/laravel-kernel-crawler.git"
-        }
-    ],
     "autoload": {
         "psr-4": {
             "SiteOrigin\\PageCache\\": "src/"
-        }
+        },
+        "files" : ["src/helpers.php"]
     },
     "autoload-dev": {
         "psr-4": {
@@ -31,8 +26,9 @@
     },
     "require": {
         "php": ">=7.4",
+        "ext-dom": "*",
         "laravel/framework": "^8.0",
-        "siteorigin/laravel-kernel-crawler": "dev-develop"
+        "siteorigin/laravel-kernel-crawler": "9999999-dev"
     },
     "require-dev": {
         "mockery/mockery": "^1.4",
@@ -49,5 +45,10 @@
                 "SiteOrigin\\PageCache\\PageCacheServiceProvider"
             ]
         }
-    }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

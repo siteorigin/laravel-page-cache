@@ -23,12 +23,13 @@ class MiddlewareTest extends TestCase
         $this->assertStringContainsString('This is a test home page', $page->getFileContents());
     }
 
-    public function test_middleware_skipped()
-    {
-        $response = $this->get('nocache/home');
-        $page = Page::fromUrl('nocache/home');
-        $this->assertFalse(Storage::disk('page-cache')->exists('nocache/home__.html'), 'File should not have been cached.');
-    }
+    // We're removing this test for now because we no longer want to skip the middleware based on headers.
+    //public function test_middleware_skipped()
+    //{
+    //    $response = $this->get('nocache/home');
+    //    $page = Page::fromUrl('nocache/home');
+    //    $this->assertFalse(Storage::disk('page-cache')->exists('nocache/home__.html'), 'File should not have been cached.');
+    //}
 
     public function test_deleted_page()
     {

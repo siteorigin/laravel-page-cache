@@ -17,12 +17,21 @@ class TestCase extends OrchestraTestCase
         $this->loadMigrationsFrom(__DIR__.'/Database/migrations');
         $this->resetPageCache();
         $this->withoutExceptionHandling();
+
+        // Set the proper public path
+        $this->app->bind('path.public', function() {
+            return __DIR__ . '/public';
+        });
+
+        if( ! isset(static::$hasEvents) || !static::$hasEvents) {
+            $this->withoutEvents();
+        }
     }
 
     protected function tearDown(): void
     {
-        parent::tearDown();
         $this->resetPageCache();
+        parent::tearDown();
     }
 
     protected function getPackageProviders($app)

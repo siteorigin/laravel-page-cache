@@ -22,8 +22,15 @@ class InstallApache extends Command
         $info = <<< EOL
 # Serve static cached pages if available...
 RewriteCond %{REQUEST_URI} ^/?$
+RewriteCond %{DOCUMENT_ROOT}/storage/{{folder}}/{{index_alias}}__%{QUERY_STRING}.min.html -f
+RewriteRule .? storage/{{folder}}/{{index_alias}}__%{QUERY_STRING}.min.html [L]
+
+RewriteCond %{REQUEST_URI} ^/?$
 RewriteCond %{DOCUMENT_ROOT}/storage/{{folder}}/{{index_alias}}__%{QUERY_STRING}.html -f
 RewriteRule .? storage/{{folder}}/{{index_alias}}__%{QUERY_STRING}.html [L]
+
+RewriteCond %{DOCUMENT_ROOT}/storage/{{folder}}%{REQUEST_URI}__%{QUERY_STRING}.min.html -f
+RewriteRule . storage/{{folder}}%{REQUEST_URI}__%{QUERY_STRING}.min.html [L]
 
 RewriteCond %{DOCUMENT_ROOT}/storage/{{folder}}%{REQUEST_URI}__%{QUERY_STRING}.html -f
 RewriteRule . storage/{{folder}}%{REQUEST_URI}__%{QUERY_STRING}.html [L]

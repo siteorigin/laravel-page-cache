@@ -65,13 +65,9 @@ class Exchange
             if (!$matches) return false;
         }
 
-
-        $cacheControlHeaders = array_map('trim', explode(',', $this->response->headers->get('cache-control')));
-
         // Now check if the response is valid
         return $this->request->isMethod('GET') &&
-            $this->response->getStatusCode() == 200 &&
-            ! array_intersect(['no-cache', 'private'], $cacheControlHeaders);
+            $this->response->getStatusCode() == 200;
     }
 
     /**

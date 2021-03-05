@@ -25,10 +25,25 @@ class RefreshPages implements ShouldQueue
 
     private array $pages;
 
-    public function __construct(PageCollection $pages, $withLinking = false)
+    /**
+     * RefreshPages constructor.
+     *
+     * @param \SiteOrigin\PageCache\PageCollection|array|string $pages A page collection, array of URLs or a single URL.
+     * @param false $withLinking
+     */
+    public function __construct($pages, $withLinking = false)
     {
-        // We can't serialize a PageCollection, so just store URLs
-        $this->pages = $pages->pluck('url')->all();
+        if(is_array($pages)){
+            $this->pages = $pages;
+        }
+        elseif(is_string($pages)) {
+            $this->pages = [$pages];
+        }
+        elseif($pages instanceof PageCollection) {
+            // We can't serialize a PageCollection, so just store URLs
+            $this->pages = $pages->pluck('url')->all();
+        }
+
         $this->withLinking = $withLinking;
     }
 

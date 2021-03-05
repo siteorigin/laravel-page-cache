@@ -6,7 +6,20 @@ return [
         // Eg: '#^/articles\?page=[0-9]+$#'
     ],
 
-    'cache_pagination' => false,
+    'cache_pagination' => true,
 
     'filesystem' => 'page-cache',
+
+    'optimizers' => [
+        'critical' => [
+            'enabled' => true,
+            'class' => \SiteOrigin\PageCache\Jobs\Optimizers\CriticalCss::class,
+            'command' => base_path('node_modules/.bin/critical'),
+        ],
+        'minifier' => [
+            'enabled' => true,
+            'class' => \SiteOrigin\PageCache\Jobs\Optimizers\HtmlMinifier::class,
+            'command' => base_path('node_modules/.bin/html-minifier'),
+        ],
+    ]
 ];

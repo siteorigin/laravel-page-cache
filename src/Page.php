@@ -62,11 +62,20 @@ class Page
     }
 
     /**
+     * @param string $suffix
      * @return string
      */
-    public function getFilename(): string
+    public function getFilename($suffix=false): string
     {
-        return $this->filename;
+        return $suffix ? $this->addFilenameSuffix($this->filename, $suffix) : $this->filename;
+    }
+
+    /**
+     * @return string The file extension of the main file.
+     */
+    public function getFileExtension(): string
+    {
+        return pathinfo($this->filename)['extension'];
     }
 
     /**
@@ -90,15 +99,31 @@ class Page
         return Storage::disk($this->disk)->get($this->filename);
     }
 
+    public function getDisk(): string
+    {
+        return $this->disk;
+    }
+
+    private function addFilenameSuffix($filename, $suffix = '')
+    {
+        $filename = pathinfo($this->filename);
+        if($suffix) {
+            $filename['basename'] = preg_replace('/(\.\w+)$/', '.' . $suffix . '$1', $filename['basename']);
+        }
+
+        $filename = $filename['dirname'] . '/' . $filename['basename'];
+        return $filename;
+    }
+
     /**
      * Write contents to the cache file.
      *
      * @param string $contents
      * @return bool
      */
-    public function putFileContents(string $contents): bool
+    public function putFileContents(string $contents, $suffix=''): bool
     {
-        return Storage::disk($this->disk)->put($this->filename, $contents);
+        return Storage::disk($this->disk)->put($this->addFilenameSuffix($this->filename, $suffix), $contents);
     }
 
     /**
@@ -193,9 +218,17 @@ class Page
 
     /**
      * Delete the cached file.
+     *
+     * @param bool $withSuffix Also delete suffix files.
+     * @return bool
      */
-    public function deleteFile(): bool
+    public function deleteFile($withSuffix = ['min']): bool
     {
+        if(!empty($withSuffix) && is_array($withSuffix)) {
+            foreach($withSuffix as $suffix) {
+                Storage::disk($this->disk)->delete($this->getFilename($suffix));
+            }
+        }
         return Storage::disk($this->disk)->delete($this->getFilename());
     }
 
