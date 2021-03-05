@@ -28,7 +28,7 @@
         "php": ">=7.4",
         "ext-dom": "*",
         "laravel/framework": "^8.0",
-        "siteorigin/laravel-kernel-crawler": "9999999-dev"
+        "siteorigin/laravel-kernel-crawler": "*"
     },
     "require-dev": {
         "mockery/mockery": "^1.4",
