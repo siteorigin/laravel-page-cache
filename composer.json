@@ -5,18 +5,19 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Joseph Silber",
-            "email": "contact@josephsilber.com"
-        },
-        {
             "name": "Greg Priday",
             "email": "greg@siteorigin.com"
+        },
+        {
+            "name": "Joseph Silber",
+            "email": "contact@josephsilber.com"
         }
     ],
     "autoload": {
         "psr-4": {
             "SiteOrigin\\PageCache\\": "src/"
-        }
+        },
+        "files" : ["src/helpers.php"]
     },
     "autoload-dev": {
         "psr-4": {
@@ -25,15 +26,15 @@
     },
     "require": {
         "php": ">=7.4",
-        "illuminate/contracts": "^8.0",
-        "illuminate/filesystem": "^8.0",
-        "symfony/http-foundation": "^5.2",
-        "spatie/crawler": "^6.0"
+        "ext-dom": "*",
+        "laravel/framework": "^8.0",
+        "siteorigin/laravel-kernel-crawler": "^0.1"
     },
     "require-dev": {
         "mockery/mockery": "^1.4",
         "phpunit/phpunit": "^9.5",
-        "symfony/var-dumper": "^5.2"
+        "symfony/var-dumper": "^5.2",
+        "orchestra/testbench": "^6.7"
     },
     "suggest": {
         "illuminate/console": "Allows clearing the cache via artisan"
@@ -44,5 +45,10 @@
                 "SiteOrigin\\PageCache\\PageCacheServiceProvider"
             ]
         }
-    }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
