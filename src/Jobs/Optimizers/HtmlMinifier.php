@@ -14,7 +14,8 @@ class HtmlMinifier extends BaseOptimizer
             '--remove-comments',
             '--remove-optional-tags',
             '--remove-redundant-attributes',
-            '--remove-tag-whitespace'
+            '--remove-tag-whitespace',
+            '--custom-attr-surround "[""[/@/,/(?:)/]""]"'
         ]);
         $process->setInput($this->getFileContents());
         $process->run();
