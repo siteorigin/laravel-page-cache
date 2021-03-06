@@ -1,0 +1,7 @@
+{
+    "collapseWhitespace": true,
+    "removeComments": true,
+    "removeOptionalTags": true,
+    "removeRedundantAttributes": true,
+    "removeTagWhitespace": true
+}

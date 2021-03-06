@@ -10,12 +10,7 @@ class HtmlMinifier extends BaseOptimizer
     {
         $process = new Process([
             $this->config['command'],
-            '--collapse-whitespace',
-            '--remove-comments',
-            '--remove-optional-tags',
-            '--remove-redundant-attributes',
-            '--remove-tag-whitespace',
-            '--custom-attr-surround "[""[/@/,/(?:)/]""]"'
+            '-c '.__DIR__.'/../../../html-minifier.json'
         ]);
         $process->setInput($this->getFileContents());
         $process->run();
