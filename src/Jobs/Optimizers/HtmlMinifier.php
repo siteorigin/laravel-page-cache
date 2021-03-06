@@ -10,8 +10,9 @@ class HtmlMinifier extends BaseOptimizer
     {
         $process = new Process([
             $this->config['command'],
-            '-c '.__DIR__.'/../../../html-minifier.json'
+            '-c '. realpath(__DIR__.'/../../../html-minifier.json')
         ]);
+
         $process->setInput($this->getFileContents());
         $process->run();
 
