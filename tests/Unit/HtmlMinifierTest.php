@@ -35,6 +35,7 @@ class HtmlMinifierTest extends TestCase
 
         $minifier = new HtmlMinifier($filename, config('page-cache.optimizers.minifier'));
         $minifier->handle();
+
         $content = file_get_contents($filename);
         $this->assertLessThan(strlen(file_get_contents(__DIR__ . '/../html/vue-page.html')), strlen($content), 'No minification took place.');
         $this->assertStringContainsString('@click.prevent', $content, 'Vue attributes stripped during minification.');

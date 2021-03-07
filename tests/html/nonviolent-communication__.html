@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Nonviolent Communication Summary - Briefer</title>
+
+            <link rel="manifest" href="/manifest.json" crossorigin="use-credentials">
+    
+    
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+
+<link rel="stylesheet" href="/css/app.css" data-critical-defer>
+
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500"></noscript>    <script src="http://briefer.localhost:8888/scripts/user" defer="defer"></script>
+<script src="/js/app.js" defer="defer"></script>
+    <link rel="canonical" href="http://briefer.localhost:8888/books/nonviolent-communication"/>
+<meta name="title" content="Nonviolent Communication Summary - Briefer">
+
+    <meta name="description" content="Nonviolent communication (or NVC, as it’s known), is as applicable in our interactions with ourselve...">
+    <meta property="og:type" content="article"/>
+
+    <meta property="og:description" content="Nonviolent communication (or NVC, as it’s known), is as applicable in our interactions with ourselve...">
+    <meta property="og:image" content="https://briefer-covers.imgix.net/thumbnails/Zc9IdGHanpQE84ukNLvYNuL1gwCrwdsZwJMn0nEN.jpeg?auto=compress&amp;crop=entropy&amp;fit=crop&amp;h=630&amp;w=1200">
+
+    <meta property="twitter:description" content="Nonviolent communication (or NVC, as it’s known), is as applicable in our interactions with ourselve...">
+    <meta property="twitter:image" content="https://briefer-covers.imgix.net/thumbnails/Zc9IdGHanpQE84ukNLvYNuL1gwCrwdsZwJMn0nEN.jpeg?auto=compress&amp;crop=entropy&amp;fit=crop&amp;h=630&amp;w=1200">
+
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="http://briefer.localhost:8888/books/nonviolent-communication">
+<meta property="og:title" content="Nonviolent Communication Summary - Briefer">
+
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="http://briefer.localhost:8888/books/nonviolent-communication">
+<meta property="twitter:title" content="Nonviolent Communication Summary - Briefer">
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#db463b">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="theme-color" content="#ffffff"></head>
+<body id="page-books.show">
+    <div id="header" data-turbo-permanent>
+        <header class="relative z-50">
+    <div class="container flex justify-between h-16 items-center">
+        <a href="http://briefer.localhost:8888" title="Briefer Book Summaries">
+            <img id="logo" src="http://briefer.localhost:8888/images/logo.svg" width="128" height="38" class="w-32" alt="Briefer" />
+        </a>
+        <div class="flex items-center xl:hidden h-full">
+            <search id="mobile-search"></search>
+            <button id="btn-mobile-menu" class="px-5 h-full -mr-4" aria-label="Display menu">
+                <span id="btn-mobile-menu__icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </button>
+        </div>
+        <div class="hidden xl:flex text-15 pl-16 relative h-full">
+            <search></search>
+
+            <a href="http://briefer.localhost:8888/discover" title="Discover book summaries" class="menu-item">
+                Discover
+            </a>
+            <a href="http://briefer.localhost:8888/categories" title="Book summary categories" class="menu-item dropdown-link" id="dropdown-categories-button">
+                Categories
+            </a>
+
+            <auth v-cloak>
+                <a href="http://briefer.localhost:8888/favorites" class="menu-item" title="View your favorites">
+                    Favorites
+                </a>
+
+                <a href="http://briefer.localhost:8888/account" class="menu-item" title="Manage account">
+                    Account
+                </a>
+
+                <logout class="menu-item"></logout>
+            </auth>
+    
+            <guest class="flex">
+                <a href="http://briefer.localhost:8888/login" @click.exact.prevent="$modal.open('login-modal')" class="menu-item">
+                    Sign In
+                </a>
+                <a href="http://briefer.localhost:8888/register" @click.exact.prevent="$modal.open('register-modal')" class="menu-item">
+                    Sign Up
+                </a>
+            </guest>
+        </div>
+        <div id="mobile-menu" class="mobile-menu w-screen container p-0 absolute bg-white z-50 left-right flex flex-col">
+
+            <a href="http://briefer.localhost:8888/discover" class="px-4 py-22p border-b border-gray-200">
+                Book Summaries
+            </a>
+            <a href="http://briefer.localhost:8888/categories" class="px-4 py-22p border-b border-gray-200" id="dropdown-categories-button">
+                Categories
+            </a>
+
+            <auth v-cloak>
+                <a href="http://briefer.localhost:8888/favorites" class="px-4 py-22p border-b border-gray-200 block">
+                    Favorites
+                </a>
+
+                <a href="http://briefer.localhost:8888/account"  class="px-4 py-22p border-b border-gray-200 block">
+                    Account
+                </a>
+
+                <logout class="px-4 py-22p border-b border-gray-200"></logout>
+            </auth>
+
+            <guest v-cloak>
+                <a href="http://briefer.localhost:8888/login" @click.prevent="$modal.open('login-modal')"  class="px-4 py-22p border-b border-gray-200 block">
+                    Sign In
+                </a>
+                <a href="http://briefer.localhost:8888/register" @click.prevent="$modal.open('register-modal')" class="px-4 py-22p border-b border-gray-200 block">
+                    Sign Up
+                </a>
+            </guest>
+        </div>
+    </div>
+
+    <categories-dropdown :categories="[{&quot;id&quot;:1,&quot;name&quot;:&quot;Art &amp; Creativity&quot;,&quot;slug&quot;:&quot;art-creativity&quot;,&quot;description&quot;:null,&quot;icon&quot;:&quot;http:\/\/briefer.localhost:8888\/images\/icons\/categories\/art-creativity.svg&quot;},{&quot;id&quot;:2,&quot;name&quot;:&quot;Business&quot;,&quot;slug&quot;:&quot;business&quot;,&quot;description&quot;:&quot;Become the best business professional you could possibly be. Learn how to become more tech-savvy, how to lead a talented and diverse team, how to make a sales pitch, and how to turn a profit \u2013 this is 21st century business.&quot;,&quot;icon&quot;:&quot;http:\/\/briefer.localhost:8888\/images\/icons\/categories\/business.svg&quot;},{&quot;id&quot;:3,&quot;name&quot;:&quot;Career Development&quot;,&quot;slug&quot;:&quot;career-development&quot;,&quot;description&quot;:&quot;Taking your career to the next level is essential \u2013 but knowing how to do that isn\u2019t exactly the easiest task in the world. Learn how to sharpen your professional skills, how to leverage opportunities, and how to grow your career.&quot;,&quot;icon&quot;:&quot;http:\/\/briefer.localhost:8888\/images\/icons\/categories\/career-development.svg&quot;},{&quot;id&quot;:4,&quot;name&quot;:&quot;Communication&quot;,&quot;slug&quot;:&quot;communication&quot;,&quot;description&quot;:&quot;Master the art of clear and effective communication by learning how to speak clearly and succinctly. Learn how to become an active listener, so that you can be on the same page as others. Spot non-verbal cues and learn how to read gestures to become a better communicator.&quot;,&quot;icon&quot;:&quot;http:\/\/briefer.localhost:8888\/images\/icons\/categories\/communication.svg&quot;},{&quot;id&quot;:7,&quot;name&quot;:&quot;Entrepreneurship&quot;,&quot;slug&quot;:&quot;entrepreneurship&quot;,&quot;description&quot;:&quot;Starting your own business begins with an idea \u2013 then it\u2019s about bringing that idea to life. Learn how to turn your business idea into a tangible, functioning business. From startup strategies, to managing growth, you\u2019ll learn it all.&quot;,&quot;icon&quot;:&quot;http:\/\/briefer.localhost:8888\/images\/icons\/categories\/entrepreneurship.svg&quot;},{&quot;id&quot;:8,&quot;name&quot;:&quot;Finance&quot;,&quot;slug&quot;:&quot;finance&quot;,&quot;description&quot;:&quot;Having a handle on your personal or business finances is always a good idea. Use these resources to learn all about cutting-edge financial strategies like investments, savings plans, and more. &quot;,&quot;icon&quot;:&quot;http:\/\/briefer.localhost:8888\/images\/icons\/categories\/finance.svg&quot;},{&quot;id&quot;:9,&quot;name&quot;:&quot;Health &amp; Fitness&quot;,&quot;slug&quot;:&quot;health-fitness&quot;,&quot;description&quot;:&quot;The science always has it right, especially when it comes to your health and fitness level. Learn all about new fitness strategies, cutting-edge health trends, and proven practices designed to help you strengthen and support your mind and body.&quot;,&quot;icon&quot;:&quot;http:\/\/briefer.localhost:8888\/images\/icons\/categories\/health-fitness.svg&quot;},{&quot;id&quot;:12,&quot;name&quot;:&quot;Leadership&quot;,&quot;slug&quot;:&quot;leadership&quot;,&quot;description&quot;:&quot;Every leader is different \u2013 there certainly isn\u2019t a one-size-fits-all leadership mold. With that in mind, you can build your leadership skills by understanding the differences between different leadership styles. Learn how to become a mentor, a manager, and a team player, so that you can build a stronger organization. &quot;,&quot;icon&quot;:&quot;http:\/\/briefer.localhost:8888\/images\/icons\/categories\/leadership.svg&quot;},{&quot;id&quot;:15,&quot;name&quot;:&quot;Mindfulness&quot;,&quot;slug&quot;:&quot;mindfulness&quot;,&quot;description&quot;:&quot;Unpack the science, wisdom, and practices related to mindfulness to help you optimize your health and wellness. Make mindfulness practices part of your everyday life, so that you can live a happier, healthier, and less stressful life.&quot;,&quot;icon&quot;:&quot;http:\/\/briefer.localhost:8888\/images\/icons\/categories\/mindfulness.svg&quot;},{&quot;id&quot;:21,&quot;name&quot;:&quot;Productivity&quot;,&quot;slug&quot;:&quot;productivity&quot;,&quot;description&quot;:&quot;Do you struggle completing the tasks that you set for yourself? Do you have trouble remaining productive at work or school? You wouldn\u2019t be alone. Use these resources to learn how to become more productive and maximize every waking moment.&quot;,&quot;icon&quot;:&quot;http:\/\/briefer.localhost:8888\/images\/icons\/categories\/productivity.svg&quot;},{&quot;id&quot;:22,&quot;name&quot;:&quot;Psychology&quot;,&quot;slug&quot;:&quot;psychology&quot;,&quot;description&quot;:&quot;The human mind is a fascinating entity, and learning to understand the decisions that we make, the actions we take, and the behaviors we exhibit can make you a better people person. Use these resources to learn more about the human condition.&quot;,&quot;icon&quot;:&quot;http:\/\/briefer.localhost:8888\/images\/icons\/categories\/psychology.svg&quot;},{&quot;id&quot;:26,&quot;name&quot;:&quot;Self Help&quot;,&quot;slug&quot;:&quot;self-help&quot;,&quot;description&quot;:null,&quot;icon&quot;:&quot;http:\/\/briefer.localhost:8888\/images\/icons\/categories\/self-help.svg&quot;},{&quot;id&quot;:27,&quot;name&quot;:&quot;Spirituality&quot;,&quot;slug&quot;:&quot;spirituality&quot;,&quot;description&quot;:&quot;Search for meaning, explore new belief systems, gain a deeper understanding of the universe and the spiritual energy that fills it. Deepen your soul and become more connected to the world around you.&quot;,&quot;icon&quot;:&quot;http:\/\/briefer.localhost:8888\/images\/icons\/categories\/spirituality.svg&quot;}]"></categories-dropdown>
+</header>
+    </div>
+
+    <main id="content">
+            <div
+        id="single-book"
+        class="container mb-24"
+        data-reading-progress="0"
+        data-id="26"
+        data-slug="nonviolent-communication"
+    >
+        <div class="md:flex mt-6 md:mt-12 border-b border-gray-300 pb-16 items-start relative">
+            <aside class="md:w-1/4 md:sticky top-30p">
+                <div class="pr-8 flex md:block">
+                    <div class="md:mb-6 wrap-svg absolute md:relative w-16 md:w-full mr-3 md:mr-0 flex-shrink-0 ">
+                        <?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="263" height="420" viewBox="0 0 263 420" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><rect x="0" y="0" width="263" height="420" style="fill: #9B94D7" /><image xlink:href="http://briefer.localhost:8888/images/logo-light.svg" x="16" y="16" width="96" height="23" /><text x="16" y="75" style="font-family: Inter; font-weight: 500; font-size: 20px; fill: #ffffff">Nonviolent</text><text x="16" y="100" style="font-family: Inter; font-weight: 500; font-size: 20px; fill: #ffffff">Communication</text><text x="16" y="125" style="font-family: Inter; font-size: 14px; fill: #ffffff">Marshall Rosenberg</text><image xlink:href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wCEAAUGBgcJBwoLCwoNDg0ODRMSEBASEx0VFhUWFR0rGyAbGyAbKyYuJiMmLiZENjAwNkRPQj9CT19VVV94cnicnNIBBQYGBwkHCgsLCg0ODQ4NExIQEBITHRUWFRYVHSsbIBsbIBsrJi4mIyYuJkQ2MDA2RE9CP0JPX1VVX3hyeJyc0v/CABEIABYAGQMBIgACEQEDEQH/xAAZAAEBAAMBAAAAAAAAAAAAAAADAAIFBgj/2gAIAQEAAAAA8+vseUOjTAb/xAAWAQEBAQAAAAAAAAAAAAAAAAACAQP/2gAIAQIQAAAAazv/xAAVAQEBAAAAAAAAAAAAAAAAAAABA//aAAgBAxAAAACQn//EAB4QAAEFAAIDAAAAAAAAAAAAAAEAAgMEERMhBRIj/9oACAEBAAE/AKVys3p7NQlpS2u241XY/Ftj+Z7xe0arwue7AE6NzZCCnA7i4yqlh0cmhT2HOlJK5jq5Sv/EABcRAQEBAQAAAAAAAAAAAAAAAAEAEUH/2gAIAQIBAT8A3JR5MX//xAAXEQEBAQEAAAAAAAAAAAAAAAABABFB/9oACAEDAQE/ACNOxN//2Q==" x="0" y="138" width="263" height="236" style="filter: blur(10)" /><foreignObject x="0" y="138" width="263" height="236" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><img src="https://briefer-covers.imgix.net/thumbnails/Zc9IdGHanpQE84ukNLvYNuL1gwCrwdsZwJMn0nEN.jpeg?auto=compress&amp;crop=entropy&amp;fit=crop&amp;h=236&amp;w=263" width="263" height="236" style="width: 100%; height:auto" srcset="https://briefer-covers.imgix.net/thumbnails/Zc9IdGHanpQE84ukNLvYNuL1gwCrwdsZwJMn0nEN.jpeg?auto=compress&amp;crop=entropy&amp;fit=crop&amp;h=44&amp;w=49 49w, https://briefer-covers.imgix.net/thumbnails/Zc9IdGHanpQE84ukNLvYNuL1gwCrwdsZwJMn0nEN.jpeg?auto=compress&amp;crop=entropy&amp;fit=crop&amp;h=88&amp;w=98 98w, https://briefer-covers.imgix.net/thumbnails/Zc9IdGHanpQE84ukNLvYNuL1gwCrwdsZwJMn0nEN.jpeg?auto=compress&amp;crop=entropy&amp;fit=crop&amp;h=472&amp;w=526 526w" loading="lazy" /></foreignObject><text x="16" y="402" style="font-family: Inter; font-size: 14px; fill: #ffffff">Communication</text><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23.04 24" x="223" y="386" height="24" width="24" style="fill: #FFFFFF"><path d="m0 0v17.62h5.42v6.38l6.38-6.38h11.2v-17.62zm21.69 16.26h-10.45l-4.46 4.47v-4.47h-5.42v-14.9h20.33z" /><path d="m11.38 9.62a.8.8 0 0 0 .62-.24.82.82 0 0 0 .24-.57.86.86 0 0 0 -.24-.58.82.82 0 0 0 -1.39.58.8.8 0 0 0 .24.57.78.78 0 0 0 .53.24z" /><path d="m16.8 9.62a.78.78 0 0 0 .58-.24.82.82 0 0 0 .24-.57.86.86 0 0 0 -.24-.58.85.85 0 0 0 -1.15 0 .86.86 0 0 0 -.24.58.82.82 0 0 0 .24.57.78.78 0 0 0 .57.24z" /><path d="m6 9.62a.78.78 0 0 0 .58-.24.81.81 0 0 0 .23-.57.81.81 0 0 0 -1.38-.58.82.82 0 0 0 -.24.58.82.82 0 0 0 .81.81z" /></svg></svg>
+                    </div>
+
+                    <div class="hidden md:block">
+                        <a
+                            href="#"
+                            class="flex items-center font-semibold text-orange"
+                            @click.prevent="$playBook('nonviolent-communication')"
+                        >
+                            <img src="http://briefer.localhost:8888/images/icons/play-small.svg" width="32" height="32" class="mr-3 w-8 h-8">
+                            Listen to Audio
+                        </a>
+                        <hr class="border-gray-300 my-6">
+                        <a href="http://briefer.localhost:8888/books/nonviolent-communication/pdf" class="flex items-center font-medium mb-6 text-gray-500 text-15" target="_blank" title="Nonviolent Communication PDF Summary">
+                            <img src="http://briefer.localhost:8888/images/icons/file-pdf.svg" width="20" height="20" class="w-5 mr-17p ml-7p"> Download PDF
+                        </a>
+                    </div>
+                </div>
+            </aside>
+            <section class="md:w-3/4 w-full">
+                <div class="md:mb-8 flex border-b border-gray-300 md:border-none pb-8 md:pb-0">
+                    <img
+                        src="http://briefer.localhost:8888/images/icons/play.svg"
+                        width="64"
+                        height="64"
+                        class="w-16 h-16 mr-4 cursor-pointer play-book hidden md:block"
+                        @click.prevent="$playBook('nonviolent-communication')"
+                    >
+
+                    <div class="w-c72 ml-16 pl-3 md:ml-0 md:pl-0 min-h-103 md:min-h-0">
+                        <div class="flex justify-between w-full">
+                            <div class="mb-1">
+                                <h1 class="font-bold text-xl md:text-32 leading-none">
+                                    Nonviolent Communication Summary
+                                </h1>
+                                                            </div>
+                                                    </div>
+                        <span class="font-bold">By <a href="/authors/marshall-rosenberg"> Marshall Rosenberg</a></span>
+                        <book-duration :duration="{&quot;Joanna&quot;:12,&quot;Matthew&quot;:11}" >
+            <div
+            class="flex items-center text-sm mt-4 font-medium text-black"
+        >
+                            <img src="/images/icons/clock.svg" width="24" height="24" class="w-5 h-5 mr-1">
+                        11-minute read
+        </div>
+    </book-duration>
+                        <div class="flex md:hidden overflow-x-auto max-w-full mt-3">
+                                                            <a href="http://briefer.localhost:8888/tags/psychology" class="tag mr-4 flex-shrink-0" title="Psychology book summaries">psychology</a>
+                                                            <a href="http://briefer.localhost:8888/tags/personal-development" class="tag mr-4 flex-shrink-0" title="Personal development book summaries">personal development</a>
+                                                            <a href="http://briefer.localhost:8888/tags/relationships" class="tag mr-4 flex-shrink-0" title="Relationships book summaries">relationships</a>
+                                                    </div>
+                    </div>
+
+
+                </div>
+                <div class="flex md:hidden items-center mt-4 justify-between mb-8">
+                    <a
+                        href="#"
+                        class="flex items-center font-semibold"
+                        @click.prevent="$playBook('nonviolent-communication')"
+                    >
+                        <img src="http://briefer.localhost:8888/images/icons/play.svg" class="mr-3 w-8 h-8" width="64" height="64">
+                        Listen to Audio
+                    </a>
+                    <book-font-size></book-font-size>
+                </div>
+                <div class="hidden md:flex justify-between items-center pb-12 mb-12">
+                    <div class="hidden md:flex mr-5 overflow-x-auto">
+                                                    <a href="http://briefer.localhost:8888/tags/psychology" class="tag mr-4 flex-shrink-0" title="Psychology book summaries">psychology</a>
+                                                    <a href="http://briefer.localhost:8888/tags/personal-development" class="tag mr-4 flex-shrink-0" title="Personal development book summaries">personal development</a>
+                                                    <a href="http://briefer.localhost:8888/tags/relationships" class="tag mr-4 flex-shrink-0" title="Relationships book summaries">relationships</a>
+                                            </div>
+                    <book-font-size></book-font-size>
+                </div>
+
+                <div id="book-content" class="book-content" data-audio-element="book:26:content">
+                    <p>Nonviolent communication (or NVC, as it’s known), is as applicable in our interactions with ourselves and people close to us,  as it is in workplace mediation and peacekeeping initiatives. It invites us to find a way to communicate our deepest needs, and understand the needs of others.  If done with honesty and empathy, the language of NVC leads us to develop constructive strategies to improve our wellbeing.</p>
+
+<h3>Let’s take a brief look at the ‘who’ behind the ’what’</h3>
+
+<p>The late Marshall Rosenberg trained as a psychotherapist before developing NVC in community settings. His work was influenced by his training in psychology, particularly the humanistic approach of Carl Rogers.</p>
+
+<p>He founded the Center for Nonviolent Communication, an international peacekeeping organization offering programs based on the principles discussed in the book.  These programs have been used in conflict zones such as Rwanda and the Middle East, and are equally effective at home or in a therapy room.</p>
+
+<p>Here’s a brief overview of key ideas: We gain an understanding of what Marshall calls ‘life-alienating’ communication, and how NVC provides an alternative to not only enhance our personal lives, but also build group consensus and reduce societal violence. He outlines the four-step process of NVC that helps us to access our needs and express them clearly, and also identify the needs of others, irrespective of the setting.</p>
+
+<h3>Let’s start by defining life-alienating communication</h3>
+
+<p>Marshall believes that we are naturally compassionate and that we seek harmony. But cultural influences, and what we learn from our families and workplaces, unconsciously mould what he calls life-alienating forms of communication. This has different components.</p>
+
+<p>The first component is revealed in this familiar-sounding comment: “The problem with you is that you are too selfish!”</p>
+
+<p>Marshall calls statements like these, a moralistic stand – we make a judgement call as to what is good or bad, particularly when someone’s behaviour is out of line with our belief system. We make it a ‘who is what’ story, with blame, insults, and categorizations such as smart or ignorant, and attractive or unattractive.</p>
+
+<p>Ironically, using this communication, doesn’t serve anyone well. The person making it becomes defensive, pushing others away, which escalates the possibility of violence.</p>
+
+<p>The second component is making comparisons. He quotes an experiment in Dan Greenburg’s book, called “How to Make Yourself Miserable”, where Dan humorously asks readers to look at pictures of a man and woman who represent current media standards of good looks, and then asks them to compare their own looks and measurements to those in the picture. He then asks readers to dwell on how this comparison made them feel. The resulting misery shows that comparisons reduce both kindness to ourselves, and our empathy towards others.</p>
+
+<p>Marshall believes that the third component  is particularly dangerous – this is when people say things like: ‘I lied to the client because the boss told me to’ or ‘You make me feel guilty.’</p>
+
+<p>Comments like this allow us to escape accountability. We use a language that does not allow us to choose our responses, which reduces our responsibility for how we think, feel and behave.</p>
+
+<p>Other forms of life-alienating communication include making requests that sound like demands, or believing that we can make people do what we want them to do. Or we adopt the approach of ‘who deserves what’, where we communicate that certain actions deserve a reward and others a punishment.</p>
+
+<p>These ways of communicating are entrenched in our personal and societal narratives, but Marshall sees nonviolent communication (or NVC)  as the alternative to this.</p>
+
+<h3>Let’s unpack NVC a little:</h3>
+
+<p>NVC goes beyond mere words – it is about communicating consciously and with good intentions. It’s not mechanistic, or aimed at changing others. And it only works if we want non-hierarchical relationships based on honesty and empathy.</p>
+
+<p>This underpins the four crucial steps of NVC. These are: becoming aware of what we are observing, how we are feeling about what we are observing, and how this feeling indicates what we are needing. Only once we can express our needs, can we determine what to request in a specific way that will enrich our lives.</p>
+
+<p>Marshall gives us an example of a mother using these four NVC components: ‘Felix, When I see two balls of soiled socks under the coffee table and another three next to the TV, (note the observation here), I feel irritated, (now note the feeling), because I am needing more order in the rooms we share.’ (here is the need).Then comes the fourth component – the specific request that would make her life easier: ‘Would you be willing to put your socks in your room or in the washing machine?’</p>
+
+<p>Let’s explore these steps: </p>
+
+<h3>To observe is to notice what we see, hear, remember and imagine, and to understand how this observation impacts our wellbeing</h3>
+
+<p>But this comes with a crucial caveat – we have to separate the observation from an evaluation, because an evaluation is laden with blame or criticism. For example, a mixed observation and evaluation is: ‘Doug procrastinates’.  An observation on its own is: ‘Doug only studies for exams the night before’.</p>
+
+<p>Using time and context helps us to get this right. A general statement is ‘Hank Smith is a poor soccer player.’ Using time and place to turn this into an observation is: ‘Hank Smith has not scored a goal in twenty games.’</p>
+
+<p>We then express our feelings about the observation we have made. To do this,  we need a vocabulary of feelings, which Marshall provides. The difficult part is that the feeling has to be separate from words that better describe our thoughts and interpretations. Let’s look at a thought-based expression:‘I feel inadequate as a guitar player.’ An expression of feeling, on the other hand,  would be ‘I feel impatient with myself as  a guitar player.’ </p>
+
+<p>This is quite a nuanced language, so Marshall provides some exercises for us. Try this: Is the following statement purely based on the speaker’s feelings? ‘I feel you don’t love me’</p>
+
+<p>The answer is: No, it is a statement that is more about what the other person could be feeling, not how the speaker is feeling. The third component is to then acknowledge the need that lies beneath the feelings. We can structure our sentences in the following way: I feel x because I need x.</p>
+
+<p>He gives us another test: Here is an example: Is this a need? ‘I feel frustrated when you come home late.’ </p>
+
+<p>No, this is a feeling as opposed to a need.  A need would be expressed as: “I feel frustrated when you come home late because I was hoping we’d be able to get some front-row seats.” Our basic needs tend to centre around autonomy, celebration, integrity, interdependence, play, spiritual communion, and nurturance.</p>
+
+<p>The fourth component is requesting a desired action, but without it sounding demanding. This requires clear and positive language, that focuses on what we do want as opposed to what we don’t want. A suggestion is to start our request with:  Would you be willing to……… ?</p>
+
+<p>Let’s test this again: Is the following an expressed need that requires a specific action? ‘I’d like you to be honest with me about yesterday’s meeting”</p>
+
+<p>The answer is: No, because, ‘be honest with me’ does not request a specific action. That would be “I want you to tell me how you feel about what I did, and what you would like me to do differently.’</p>
+
+<h3>Expressing needs makes us vulnerable, which is discouraged in society, but expressing vulnerability can help to reduce conflict </h3>
+
+<p>If what we are hearing is negative, we have four options: Blame ourselves, fault the speaker, be conscious of our own needs and feelings, or focus on what the other’s needs might be. NVC  connects feelings to a need, for example:‘ I feel angry that the supervisor broke her promise because I was counting on getting that long weekend to visit my brother’</p>
+
+<p>If we don’t express our needs, we can feel like emotional slaves, believing that we are responsible for everyone’s happiness. Once we become aware of this, we may feel angry because we don’t want to always carry all these other feelings. Emotional liberation is when we learn to respond with compassion, rather than out of fear or guilt.</p>
+
+<h3>We can also use NVC to hear the needs of others</h3>
+
+<p>All communication is a two-way street, and NVC is no exception. In conjunction with expressing our needs, we have to learn to receive others’ needs empathically. And the same four components apply: listening to what others are observing, feeling, needing and requesting. This calls on us to suspend our own thoughts, feelings and judgements, and then, with an empty mind, listen deeply.</p>
+
+<p>Empathy involves reflecting and paraphrasing, until we get to the core of what someone needs, and then giving them space to request how these needs could be met. Sometimes we may have to just take a deep breath and not speak at all. Marshall emphasises that we actually say a lot by just listening to other people. He warns that trying to interpret what someone is saying from an intellectual standpoint, blocks our empathy, because we tune into what someone else is thinking, as opposed to connecting with their feelings.</p>
+
+<p>Try this test: Is the following empathic listening?</p>
+
+<p>Person A: You aren’t God!</p>
+
+<p>Person B: Are you feeling frustrated because you would like me to admit that there can be other ways of interpreting this matter?</p>
+
+<p>Yes. Person B is empathically receiving what Person A is saying. Emphatically receiving our own needs. Sometimes we need to apply the same listening in order to build a compassionate connection to ourselves. Marshall says this is crucial because we can’t give something to someone else, if we, ourselves,  don’t have it. He suggests we ask ourselves what unmet need we have that is looking for expression.  This might mean we have to acknowledge how these unmet needs influenced our previous actions, and then honour how this was our attempt to serve our lives well, even if it fell short of the outcome we desired. He says this is being able to: ‘hold both the self that regrets, and the past self that took that action.’</p>
+
+<p>NVC, interestingly, allows us to experience our anger more fully. We often judge others when our own needs aren’t met. NVC means replacing “I am angry because they … ‘ with ‘I am angry because I am needing…’ We can then divert anger more constructively. Marshall says:  “Violence comes from our belief that other people cause our pain and therefore deserve punishment.’</p>
+
+<p>This experience of NVC fits well when managing conflict.</p>
+
+<h3>Applying nonviolent communication in conflict resolution and mediation</h3>
+
+<p>This means bringing an understanding that is conceptually different to most conflict resolution processes. Marshall believed that the aim is to meet both parties’ needs fully, as opposed to settling on a compromise. It’s about creating a dialogue that leads to workable plans, and relies on both sides making a caring and respectful connection, and recognising common needs.</p>
+
+<p>He outlines a five-step process he uses in conflict situations: Each side expresses their needs. They search for the underlying needs of the other party. They take time to verify the accuracy of this understanding. Everyone provides as much empathy as needed to hear needs accurately. Once everyone is satisfied that needs have been clearly communicated, the group starts to generate workable strategies to resolve the conflict.</p>
+
+<p>It takes skill, patience, practice and guesswork to access the need in a message. We need to use ‘present language’ statements, such as saying, “would you be willing to....’.</p>
+
+<h3>In conclusion</h3>
+
+<p>Nonviolent communication is a language of compassion designed to help us access our needs and those of others in order to strengthen relationships that long for healing, and to reduce societal violence.</p>
+
+
+                </div>
+                <p class="mt-16">
+                    <span class="font-semibold">Find this book on:</span><br>
+                    <a class="font-medium text-orange" href="https://www.amazon.com/s?k=Nonviolent+Communication+Marshall+Rosenberg&i=stripbooks-intl-ship&ref=nb_sb_noss">Amazon</a>
+                    <span class="text-gray-300">|</span>
+                    <a class="font-medium text-orange" href="https://www.audible.com/search?keywords=Nonviolent+Communication+Marshall+Rosenberg">Audible</a>
+                </p>
+            </section>
+        </div>
+
+        <div class="mt-16">
+            <h3 class="text-2xl font-bold mb-6">Continue Your Learning</h3>
+            <recommended-books book-slug="nonviolent-communication">
+    <div class="flex -mx-4 -mb-16 flex-wrap opacity-50">
+                    <div class="w-1/2 md:w-1/3 lg:w-1/6 px-4 mb-16">
+                <a href="http://briefer.localhost:8888/books/rich-dad-poor-dad" title="Summary of Rich Dad Poor Dad">
+                    <div class="mb-5 wrap-svg relative">
+                        <?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="263" height="420" viewBox="0 0 263 420" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><rect x="0" y="0" width="263" height="420" style="fill: #D6935D" /><image xlink:href="http://briefer.localhost:8888/images/logo-light.svg" x="16" y="16" width="96" height="23" /><text x="16" y="75" style="font-family: Inter; font-weight: 500; font-size: 20px; fill: #ffffff">Rich Dad Poor</text><text x="16" y="100" style="font-family: Inter; font-weight: 500; font-size: 20px; fill: #ffffff">Dad</text><text x="16" y="125" style="font-family: Inter; font-size: 14px; fill: #ffffff">Robert Kiyosaki</text><image xlink:href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wCEAAUGBgcJBwoLCwoNDg0ODRMSEBASEx0VFhUWFR0rGyAbGyAbKyYuJiMmLiZENjAwNkRPQj9CT19VVV94cnicnNIBBQYGBwkHCgsLCg0ODQ4NExIQEBITHRUWFRYVHSsbIBsbIBsrJi4mIyYuJkQ2MDA2RE9CP0JPX1VVX3hyeJyc0v/CABEIABYAGQMBIgACEQEDEQH/xAAaAAACAgMAAAAAAAAAAAAAAAAEBwIFAwYI/9oACAEBAAAAADgmDkRdwwQ+Z9/oo//EABUBAQEAAAAAAAAAAAAAAAAAAAID/9oACAECEAAAABWC/8QAFgEBAQEAAAAAAAAAAAAAAAAAAwEE/9oACAEDEAAAAMyrP//EACYQAAICAQIDCQAAAAAAAAAAAAECAAMEBRESEyEGFBUiMVFSU5H/2gAIAQEAAT8As1cMpCjYzBsymuJb03mPntXWCZ423tBkKh6MDOzurm7KZGHQRcnHsDAWAbTiq+xZzrVceaaOhxUewHfiWPnX81iHI3M77kfM/s//xAAeEQABAwQDAAAAAAAAAAAAAAABAAIhAwQQERJBgf/aAAgBAgEBPwC4IY5pnxct9KqAROP/xAAcEQACAgIDAAAAAAAAAAAAAAABAgAhAxARMVH/2gAIAQMBAT8Awo2Xm+oAfYhKmq1//9k=" x="0" y="138" width="263" height="236" style="filter: blur(10)" /><foreignObject x="0" y="138" width="263" height="236" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><img src="https://briefer-covers.imgix.net/thumbnails/MxiFQqILthavNgnjW7a1wRQ6qipQ4H9EpZ5YVP6r.jpeg?auto=compress&amp;crop=entropy&amp;fit=crop&amp;h=236&amp;w=263" width="263" height="236" style="width: 100%; height:auto" srcset="https://briefer-covers.imgix.net/thumbnails/MxiFQqILthavNgnjW7a1wRQ6qipQ4H9EpZ5YVP6r.jpeg?auto=compress&amp;crop=entropy&amp;fit=crop&amp;h=44&amp;w=49 49w, https://briefer-covers.imgix.net/thumbnails/MxiFQqILthavNgnjW7a1wRQ6qipQ4H9EpZ5YVP6r.jpeg?auto=compress&amp;crop=entropy&amp;fit=crop&amp;h=88&amp;w=98 98w, https://briefer-covers.imgix.net/thumbnails/MxiFQqILthavNgnjW7a1wRQ6qipQ4H9EpZ5YVP6r.jpeg?auto=compress&amp;crop=entropy&amp;fit=crop&amp;h=472&amp;w=526 526w" loading="lazy" /></foreignObject><text x="16" y="402" style="font-family: Inter; font-size: 14px; fill: #ffffff">Finance</text><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23.58 23.46" x="223" y="386" height="24" width="24" style="fill: #FFFFFF"><path d="m17.81 4.31-1.81-4.31-10.4 4.31h-5.6v19.15h23.58v-19.15zm-2.54-2.5 1 2.5h-7.04zm-13.88 20.26v-16.37h20.81v3.05h-6.71a5.14 5.14 0 0 0 0 10.27h6.71v3.05zm20.81-11.93v7.49h-6.71a3.75 3.75 0 0 1 0-7.49z" /><path d="m14.9 13.3a.85.85 0 0 0 -.24.59.87.87 0 0 0 .24.59.85.85 0 0 0 1.18 0 .83.83 0 0 0 .25-.59.82.82 0 0 0 -.25-.59.86.86 0 0 0 -1.18 0z" /></svg></svg>
+                    </div>
+                    <div class="font-bold text-md ellipsis">Rich Dad Poor Dad</div>
+                    <span class="text-sm text-gray-400 leading-none">Why is it that there are so many highly educated, hardworking people who struggle financially?  Rich...</span>
+                </a>
+            </div>
+                    <div class="w-1/2 md:w-1/3 lg:w-1/6 px-4 mb-16">
+                <a href="http://briefer.localhost:8888/books/getting-things" title="Summary of Getting Things Done">
+                    <div class="mb-5 wrap-svg relative">
+                        <?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="263" height="420" viewBox="0 0 263 420" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><rect x="0" y="0" width="263" height="420" style="fill: #D24070" /><image xlink:href="http://briefer.localhost:8888/images/logo-light.svg" x="16" y="16" width="96" height="23" /><text x="16" y="75" style="font-family: Inter; font-weight: 500; font-size: 20px; fill: #ffffff">Getting Things</text><text x="16" y="100" style="font-family: Inter; font-weight: 500; font-size: 20px; fill: #ffffff">Done</text><text x="16" y="125" style="font-family: Inter; font-size: 14px; fill: #ffffff">David Allen</text><image xlink:href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wCEAAUGBgcJBwoLCwoNDg0ODRMSEBASEx0VFhUWFR0rGyAbGyAbKyYuJiMmLiZENjAwNkRPQj9CT19VVV94cnicnNIBBQYGBwkHCgsLCg0ODQ4NExIQEBITHRUWFRYVHSsbIBsbIBsrJi4mIyYuJkQ2MDA2RE9CP0JPX1VVX3hyeJyc0v/CABEIABYAGQMBIgACEQEDEQH/xAAaAAACAgMAAAAAAAAAAAAAAAAFBgIEAwcI/9oACAEBAAAAAOZBleLExImAlvWiH//EABYBAQEBAAAAAAAAAAAAAAAAAAIBA//aAAgBAhAAAACMb//EABUBAQEAAAAAAAAAAAAAAAAAAAMC/9oACAEDEAAAAECh/8QAJRAAAQQBAwIHAAAAAAAAAAAAAQACBBEDBRIhEEEGExYiMTJR/9oACAEBAAE/ADCY/DuB5CZGyOuh8JzSDR6QHb37b4KjwPblFEkC1nBGR1jv009p89pvutKa04/q3kUVL8MQ8hLqolelYv6v/8QAGREAAwADAAAAAAAAAAAAAAAAAAECEBEx/9oACAECAQE/AHSxUrfBI//EABgRAQEBAQEAAAAAAAAAAAAAAAECABEQ/9oACAEDAQE/ALmUE8Kebu//2Q==" x="0" y="138" width="263" height="236" style="filter: blur(10)" /><foreignObject x="0" y="138" width="263" height="236" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><img src="https://briefer-covers.imgix.net/thumbnails/6gdZINRpNaA1HIJfWMuVZmR5Em2UNzDurUFAMHhE.jpeg?auto=compress&amp;crop=entropy&amp;fit=crop&amp;h=236&amp;w=263" width="263" height="236" style="width: 100%; height:auto" srcset="https://briefer-covers.imgix.net/thumbnails/6gdZINRpNaA1HIJfWMuVZmR5Em2UNzDurUFAMHhE.jpeg?auto=compress&amp;crop=entropy&amp;fit=crop&amp;h=44&amp;w=49 49w, https://briefer-covers.imgix.net/thumbnails/6gdZINRpNaA1HIJfWMuVZmR5Em2UNzDurUFAMHhE.jpeg?auto=compress&amp;crop=entropy&amp;fit=crop&amp;h=88&amp;w=98 98w, https://briefer-covers.imgix.net/thumbnails/6gdZINRpNaA1HIJfWMuVZmR5Em2UNzDurUFAMHhE.jpeg?auto=compress&amp;crop=entropy&amp;fit=crop&amp;h=472&amp;w=526 526w" loading="lazy" /></foreignObject><text x="16" y="402" style="font-family: Inter; font-size: 14px; fill: #ffffff">Productivity</text><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" x="223" y="386" height="24" width="24" style="fill: #FFFFFF"><path d="m12 0a12 12 0 1 0 12 12 12 12 0 0 0 -12-12zm0 22.59a10.59 10.59 0 1 1 10.59-10.59 10.6 10.6 0 0 1 -10.59 10.59z" /><path d="m12.71 5.76h-1.42v6.95h5.82v-1.42h-4.4z" /><path d="m12 2.82a9.18 9.18 0 1 0 9.18 9.18 9.19 9.19 0 0 0 -9.18-9.18zm0 16.94a7.77 7.77 0 1 1 7.76-7.76 7.77 7.77 0 0 1 -7.76 7.76z" /></svg></svg>
+                    </div>
+                    <div class="font-bold text-md ellipsis">Getting Things Done</div>
+                    <span class="text-sm text-gray-400 leading-none">Do you feel anxious and inundated by all of the incomplete tasks hanging over you? Getting Things Do...</span>
+                </a>
+            </div>
+                    <div class="w-1/2 md:w-1/3 lg:w-1/6 px-4 mb-16">
+                <a href="http://briefer.localhost:8888/books/defense-food" title="Summary of In Defense of Food">
+                    <div class="mb-5 wrap-svg relative">
+                        <?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="263" height="420" viewBox="0 0 263 420" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><rect x="0" y="0" width="263" height="420" style="fill: #A98258" /><image xlink:href="http://briefer.localhost:8888/images/logo-light.svg" x="16" y="16" width="96" height="23" /><text x="16" y="75" style="font-family: Inter; font-weight: 500; font-size: 20px; fill: #ffffff">In Defense of</text><text x="16" y="100" style="font-family: Inter; font-weight: 500; font-size: 20px; fill: #ffffff">Food</text><text x="16" y="125" style="font-family: Inter; font-size: 14px; fill: #ffffff">Michael Pollan</text><image xlink:href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wCEAAUGBgcJBwoLCwoNDg0ODRMSEBASEx0VFhUWFR0rGyAbGyAbKyYuJiMmLiZENjAwNkRPQj9CT19VVV94cnicnNIBBQYGBwkHCgsLCg0ODQ4NExIQEBITHRUWFRYVHSsbIBsbIBsrJi4mIyYuJkQ2MDA2RE9CP0JPX1VVX3hyeJyc0v/CABEIABYAGQMBIgACEQEDEQH/xAAaAAACAgMAAAAAAAAAAAAAAAAEBgIFAwcI/9oACAEBAAAAAOM2ma6K9Xuua0rKH//EABYBAQEBAAAAAAAAAAAAAAAAAAMBBP/aAAgBAhAAAAAj0z//xAAWAQEBAQAAAAAAAAAAAAAAAAACAAP/2gAIAQMQAAAATyv/xAAkEAAABQMDBQEAAAAAAAAAAAAAAQIDBAUGESFBURASExQxYf/aAAgBAQABPwDcQLbmS2u9ss/getWpNNqWpsyJP0es5wNxb9dkwnEmk8lwKrc06SlzZJlqPO50YkKbVkg7NdXnXQxkx//EABsRAQACAgMAAAAAAAAAAAAAAAECAwAQESIx/9oACAECAQE/ALWZHmPuVStTsBoM/8QAGREAAwADAAAAAAAAAAAAAAAAAQIRABAh/9oACAEDAQE/AFl7jBBJd//Z" x="0" y="138" width="263" height="236" style="filter: blur(10)" /><foreignObject x="0" y="138" width="263" height="236" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><img src="https://briefer-covers.imgix.net/thumbnails/5Yzkdt1dvliWKFFpxekm78ATT7Mrg4rB1KMJIMcJ.jpeg?auto=compress&amp;crop=entropy&amp;fit=crop&amp;h=236&amp;w=263" width="263" height="236" style="width: 100%; height:auto" srcset="https://briefer-covers.imgix.net/thumbnails/5Yzkdt1dvliWKFFpxekm78ATT7Mrg4rB1KMJIMcJ.jpeg?auto=compress&amp;crop=entropy&amp;fit=crop&amp;h=44&amp;w=49 49w, https://briefer-covers.imgix.net/thumbnails/5Yzkdt1dvliWKFFpxekm78ATT7Mrg4rB1KMJIMcJ.jpeg?auto=compress&amp;crop=entropy&amp;fit=crop&amp;h=88&amp;w=98 98w, https://briefer-covers.imgix.net/thumbnails/5Yzkdt1dvliWKFFpxekm78ATT7Mrg4rB1KMJIMcJ.jpeg?auto=compress&amp;crop=entropy&amp;fit=crop&amp;h=472&amp;w=526 526w" loading="lazy" /></foreignObject><text x="16" y="402" style="font-family: Inter; font-size: 14px; fill: #ffffff">Health &amp; Fitness</text><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23.58 21.97" x="223" y="386" height="24" width="24" style="fill: #FFFFFF"><path d="m21.47 2.11a7.19 7.19 0 0 0 -9.68-.45 7.2 7.2 0 0 0 -9.69 10.62l9.69 9.72 9.68-9.69a7.19 7.19 0 0 0 0-10.2zm-1 9.19-8.68 8.7-8.47-8.47h3.1l1.41-2.13 3.41 5.46 3.59-5.62 2 2.08 1-1-3.22-3.32-3.36 5.25-3.39-5.41-2.19 3.31h-3.47a5.8 5.8 0 0 1 9.1-7.06l.49.49.49-.49a5.81 5.81 0 0 1 8.21 8.21z" /></svg></svg>
+                    </div>
+                    <div class="font-bold text-md ellipsis">In Defense of Food</div>
+                    <span class="text-sm text-gray-400 leading-none">Eat food, not a lot, and mostly plants. Let&#039;s repeat that. Eat food. Not a lot. And mostly plants. T...</span>
+                </a>
+            </div>
+                    <div class="w-1/2 md:w-1/3 lg:w-1/6 px-4 mb-16">
+                <a href="http://briefer.localhost:8888/books/win-friends-influence-people" title="Summary of How to Win Friends and Influence People">
+                    <div class="mb-5 wrap-svg relative">
+                        <?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="263" height="420" viewBox="0 0 263 420" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><rect x="0" y="0" width="263" height="420" style="fill: #56423E" /><image xlink:href="http://briefer.localhost:8888/images/logo-light.svg" x="16" y="16" width="96" height="23" /><text x="16" y="75" style="font-family: Inter; font-weight: 500; font-size: 20px; fill: #ffffff">How to Win</text><text x="16" y="100" style="font-family: Inter; font-weight: 500; font-size: 20px; fill: #ffffff">Friends and</text><text x="16" y="125" style="font-family: Inter; font-weight: 500; font-size: 20px; fill: #ffffff">Influence People</text><text x="16" y="150" style="font-family: Inter; font-size: 14px; fill: #ffffff">Dale Carnegie</text><image xlink:href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wCEAAUGBgcJBwoLCwoNDg0ODRMSEBASEx0VFhUWFR0rGyAbGyAbKyYuJiMmLiZENjAwNkRPQj9CT19VVV94cnicnNIBBQYGBwkHCgsLCg0ODQ4NExIQEBITHRUWFRYVHSsbIBsbIBsrJi4mIyYuJkQ2MDA2RE9CP0JPX1VVX3hyeJyc0v/CABEIABQAGQMBIgACEQEDEQH/xAAZAAADAAMAAAAAAAAAAAAAAAACBQgDBgf/2gAIAQEAAAAAqpW6KftK6ovnc86//8QAFwEAAwEAAAAAAAAAAAAAAAAAAQMEBf/aAAgBAhAAAADOMqP/xAAWAQEBAQAAAAAAAAAAAAAAAAAAAQX/2gAIAQMQAAAA0of/xAAkEAABBAEDAwUAAAAAAAAAAAABAAIDBBIGESEFMVITFBYiUf/aAAgBAQABPwCxaihbu4gBSdcqNLRmOUyRrmgg91k39Wq9RumrtET+d023bygJdxuE7VAihaMuQF8yPkn2JfQH2KhvWCG7u7FXeo2Q4DJe/seS/8QAHxEAAgECBwAAAAAAAAAAAAAAAQIAEiEDBBEVQVFh/9oACAECAQE/AGzmpBUin2bjh9GECk25iqtIsJ//xAAdEQEAAQQDAQAAAAAAAAAAAAABAAIEESEDEkFR/9oACAEDAQE/AKbYwiKnyNmnsFyb8nJVV3ds/9k=" x="0" y="163" width="263" height="211" style="filter: blur(10)" /><foreignObject x="0" y="163" width="263" height="211" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><img src="https://briefer-covers.imgix.net/thumbnails/ZyqjbNNfg7spgF7MdRnOXdK7nnEUd6ObTIprF76m.jpeg?auto=compress&amp;crop=entropy&amp;fit=crop&amp;h=211&amp;w=263" width="263" height="211" style="width: 100%; height:auto" srcset="https://briefer-covers.imgix.net/thumbnails/ZyqjbNNfg7spgF7MdRnOXdK7nnEUd6ObTIprF76m.jpeg?auto=compress&amp;crop=entropy&amp;fit=crop&amp;h=40&amp;w=49 49w, https://briefer-covers.imgix.net/thumbnails/ZyqjbNNfg7spgF7MdRnOXdK7nnEUd6ObTIprF76m.jpeg?auto=compress&amp;crop=entropy&amp;fit=crop&amp;h=79&amp;w=98 98w, https://briefer-covers.imgix.net/thumbnails/ZyqjbNNfg7spgF7MdRnOXdK7nnEUd6ObTIprF76m.jpeg?auto=compress&amp;crop=entropy&amp;fit=crop&amp;h=422&amp;w=526 526w" loading="lazy" /></foreignObject><text x="16" y="402" style="font-family: Inter; font-size: 14px; fill: #ffffff">Self Help</text><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 23.71" x="223" y="386" height="24" width="24" style="fill: #FFFFFF"><path d="m11 0a11 11 0 0 0 -11 11v3.73h2.16v1.77a4.13 4.13 0 0 0 4.12 4.13h.59v3.09h11.7v-4.72a11 11 0 0 0 -7.57-19zm6.4 18.15-.23.21v4h-8.91v-3.1h-2a2.74 2.74 0 0 1 -2.73-2.78v-3.15h-2.13v-2.33a9.61 9.61 0 1 1 16 7.16z" /><path d="m14.06 8.51-2.25 2.25-3.23-3.23-3.73 3.72.99.99 2.74-2.74 3.23 3.23 3.23-3.23 1.3 1.29 1.31-4.88-4.89 1.31z" /></svg></svg>
+                    </div>
+                    <div class="font-bold text-md ellipsis">How to Win Friends and Influence People</div>
+                    <span class="text-sm text-gray-400 leading-none">How to Win Friends and Influence People is as relevant today as when first published in 1936. Essent...</span>
+                </a>
+            </div>
+                    <div class="w-1/2 md:w-1/3 lg:w-1/6 px-4 mb-16">
+                <a href="http://briefer.localhost:8888/books/thrive" title="Summary of Thrive">
+                    <div class="mb-5 wrap-svg relative">
+                        <?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="263" height="420" viewBox="0 0 263 420" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><rect x="0" y="0" width="263" height="420" style="fill: #223241" /><image xlink:href="http://briefer.localhost:8888/images/logo-light.svg" x="16" y="16" width="96" height="23" /><text x="16" y="75" style="font-family: Inter; font-weight: 500; font-size: 20px; fill: #ffffff">Thrive</text><text x="16" y="100" style="font-family: Inter; font-size: 14px; fill: #ffffff">Arianna Huffington</text><image xlink:href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wCEAAUGBgcJBwoLCwoNDg0ODRMSEBASEx0VFhUWFR0rGyAbGyAbKyYuJiMmLiZENjAwNkRPQj9CT19VVV94cnicnNIBBQYGBwkHCgsLCg0ODQ4NExIQEBITHRUWFRYVHSsbIBsbIBsrJi4mIyYuJkQ2MDA2RE9CP0JPX1VVX3hyeJyc0v/CABEIABgAGQMBIgACEQEDEQH/xAAaAAABBQEAAAAAAAAAAAAAAAABAgMEBgcF/9oACAEBAAAAALm4BclJZ7uU6RN//8QAFgEBAQEAAAAAAAAAAAAAAAAABQEC/9oACAECEAAAAHaZv//EABYBAQEBAAAAAAAAAAAAAAAAAAEAA//aAAgBAxAAAABN7//EACEQAAAHAAICAwAAAAAAAAAAAAABAgMEEVETFAUSIjFB/9oACAEBAAE/AChHgKEeA4R4OmeBMZODiRdBTCcHGnA5Hc9fj9ifOnMeYS3dkf4ITb7jVuJox1B//8QAFxEBAQEBAAAAAAAAAAAAAAAAAQACEv/aAAgBAgEBPwDsuidMbb//xAAZEQEAAgMAAAAAAAAAAAAAAAAAAQIREhP/2gAIAQMBAT8A5w0hdh//2Q==" x="0" y="113" width="263" height="261" style="filter: blur(10)" /><foreignObject x="0" y="113" width="263" height="261" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><img src="https://briefer-covers.imgix.net/thumbnails/Crmu1eabKhE8ztqdmrwOkHwXvQbpDNbIpIYhpxQy.jpeg?auto=compress&amp;crop=entropy&amp;fit=crop&amp;h=261&amp;w=263" width="263" height="261" style="width: 100%; height:auto" srcset="https://briefer-covers.imgix.net/thumbnails/Crmu1eabKhE8ztqdmrwOkHwXvQbpDNbIpIYhpxQy.jpeg?auto=compress&amp;crop=entropy&amp;fit=crop&amp;h=49&amp;w=49 49w, https://briefer-covers.imgix.net/thumbnails/Crmu1eabKhE8ztqdmrwOkHwXvQbpDNbIpIYhpxQy.jpeg?auto=compress&amp;crop=entropy&amp;fit=crop&amp;h=98&amp;w=98 98w, https://briefer-covers.imgix.net/thumbnails/Crmu1eabKhE8ztqdmrwOkHwXvQbpDNbIpIYhpxQy.jpeg?auto=compress&amp;crop=entropy&amp;fit=crop&amp;h=522&amp;w=526 526w" loading="lazy" /></foreignObject><text x="16" y="402" style="font-family: Inter; font-size: 14px; fill: #ffffff">Self Help</text><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 23.71" x="223" y="386" height="24" width="24" style="fill: #FFFFFF"><path d="m11 0a11 11 0 0 0 -11 11v3.73h2.16v1.77a4.13 4.13 0 0 0 4.12 4.13h.59v3.09h11.7v-4.72a11 11 0 0 0 -7.57-19zm6.4 18.15-.23.21v4h-8.91v-3.1h-2a2.74 2.74 0 0 1 -2.73-2.78v-3.15h-2.13v-2.33a9.61 9.61 0 1 1 16 7.16z" /><path d="m14.06 8.51-2.25 2.25-3.23-3.23-3.73 3.72.99.99 2.74-2.74 3.23 3.23 3.23-3.23 1.3 1.29 1.31-4.88-4.89 1.31z" /></svg></svg>
+                    </div>
+                    <div class="font-bold text-md ellipsis">Thrive</div>
+                    <span class="text-sm text-gray-400 leading-none">What does success look like to you? For some, it equates to getting the corner office or a bigger pa...</span>
+                </a>
+            </div>
+                    <div class="w-1/2 md:w-1/3 lg:w-1/6 px-4 mb-16">
+                <a href="http://briefer.localhost:8888/books/outliers" title="Summary of Outliers">
+                    <div class="mb-5 wrap-svg relative">
+                        <?xml version="1.0" encoding="utf-8"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="263" height="420" viewBox="0 0 263 420" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><rect x="0" y="0" width="263" height="420" style="fill: #344B46" /><image xlink:href="http://briefer.localhost:8888/images/logo-light.svg" x="16" y="16" width="96" height="23" /><text x="16" y="75" style="font-family: Inter; font-weight: 500; font-size: 20px; fill: #ffffff">Outliers</text><text x="16" y="100" style="font-family: Inter; font-size: 14px; fill: #ffffff">Malcolm Gladwell</text><image xlink:href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wCEAAUGBgcJBwoLCwoNDg0ODRMSEBASEx0VFhUWFR0rGyAbGyAbKyYuJiMmLiZENjAwNkRPQj9CT19VVV94cnicnNIBBQYGBwkHCgsLCg0ODQ4NExIQEBITHRUWFRYVHSsbIBsbIBsrJi4mIyYuJkQ2MDA2RE9CP0JPX1VVX3hyeJyc0v/CABEIABgAGQMBIgACEQEDEQH/xAAZAAEAAgMAAAAAAAAAAAAAAAADAgQBBQf/2gAIAQEAAAAA5LTIyWM9ZcTH/8QAFAEBAAAAAAAAAAAAAAAAAAAAAf/aAAgBAhAAAAAE/8QAFwEAAwEAAAAAAAAAAAAAAAAAAAECBf/aAAgBAxAAAADMkf8A/8QAIBAAAQQBBAMAAAAAAAAAAAAAAQACAxEhBBIiQRQxUf/aAAgBAQABPwCKcuhpxyAmzGqTn7esqx8UEjqNjpDCe8BwBCpQ6jlSDt7inPAHIel5cC//xAAXEQEBAQEAAAAAAAAAAAAAAAAAAREC/9oACAECAQE/AGukmv/EABYRAAMAAAAAAAAAAAAAAAAAAAAQEf/aAAgBAwEBPwAj/9k=" x="0" y="113" width="263" height="261" style="filter: blur(10)" /><foreignObject x="0" y="113" width="263" height="261" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"><img src="https://briefer-covers.imgix.net/thumbnails/ROxDvhiEol8TOve8DUvpl40Eb3H04wrCPYTKjYnN.jpeg?auto=compress&amp;crop=entropy&amp;fit=crop&amp;h=261&amp;w=263" width="263" height="261" style="width: 100%; height:auto" srcset="https://briefer-covers.imgix.net/thumbnails/ROxDvhiEol8TOve8DUvpl40Eb3H04wrCPYTKjYnN.jpeg?auto=compress&amp;crop=entropy&amp;fit=crop&amp;h=49&amp;w=49 49w, https://briefer-covers.imgix.net/thumbnails/ROxDvhiEol8TOve8DUvpl40Eb3H04wrCPYTKjYnN.jpeg?auto=compress&amp;crop=entropy&amp;fit=crop&amp;h=98&amp;w=98 98w, https://briefer-covers.imgix.net/thumbnails/ROxDvhiEol8TOve8DUvpl40Eb3H04wrCPYTKjYnN.jpeg?auto=compress&amp;crop=entropy&amp;fit=crop&amp;h=522&amp;w=526 526w" loading="lazy" /></foreignObject><text x="16" y="402" style="font-family: Inter; font-size: 14px; fill: #ffffff">Psychology</text><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22.27 24" x="223" y="386" height="24" width="24" style="fill: #FFFFFF"><path d="m11.13 0a11.13 11.13 0 0 0 -7.65 19.21v4.79h11.84v-3.13h.59a4.2 4.2 0 0 0 4.18-4.23v-1.74h2.18v-3.77a11.15 11.15 0 0 0 -11.14-11.13zm9.73 13.49h-2.18v3.2a2.78 2.78 0 0 1 -2.77 2.77h-2v3.13h-9v-4l-.24-.2a9.72 9.72 0 1 1 16.21-7.25z" /><path d="m11.7 4.66a6.36 6.36 0 0 0 -6.36 6.34 7.68 7.68 0 0 0 .5 2.73l1.32-.5a6.24 6.24 0 0 1 -.4-2.23 4.94 4.94 0 0 1 4.94-4.92 3.82 3.82 0 0 1 3.81 3.81 2.92 2.92 0 0 1 -2.91 2.91 2.2 2.2 0 0 1 -2.19-2.19 1.62 1.62 0 0 1 1.59-1.61 1.16 1.16 0 0 1 1.15 1.15h1.41a2.56 2.56 0 0 0 -2.56-2.56 3 3 0 0 0 -3 3 3.61 3.61 0 0 0 3.6 3.6 4.33 4.33 0 0 0 4.32-4.32 5.23 5.23 0 0 0 -5.22-5.21z" /></svg></svg>
+                    </div>
+                    <div class="font-bold text-md ellipsis">Outliers</div>
+                    <span class="text-sm text-gray-400 leading-none">Have you ever marveled at the world&#039;s best and brightest and wondered how they became so successful?...</span>
+                </a>
+            </div>
+            </div>
+</recommended-books>        </div>
+    </div>
+    </main>
+
+    <div id="footer" data-turbo-permanent>
+        <footer class="py-20 mt-16">
+    <div class="container md:flex">
+        <div class="md:w-1/2 mb-10">
+            <img id="logo" src="http://briefer.localhost:8888/images/logo.svg" width="128" height="38" class="w-32 mb-8"/>
+            <p class="text-15">Copyright © 2021 Briefer</p>
+        </div>
+
+        <div class="md:mr-8 md:w-1/4 md:max-w-165 mb-10 md:mb-0">
+            <h6 class="font-semibold mb-4">Explore Summaries</h6>
+            <ul class="leading-none text-15">
+                                    <li class="mb-4">
+                        <a href="http://briefer.localhost:8888/categories/self-help">Self Help</a>
+                    </li>
+                                    <li class="mb-4">
+                        <a href="http://briefer.localhost:8888/categories/psychology">Psychology</a>
+                    </li>
+                                    <li class="mb-4">
+                        <a href="http://briefer.localhost:8888/categories/health-fitness">Health &amp; Fitness</a>
+                    </li>
+                                    <li class="mb-4">
+                        <a href="http://briefer.localhost:8888/categories/productivity">Productivity</a>
+                    </li>
+                                    <li class="mb-4">
+                        <a href="http://briefer.localhost:8888/categories/business">Business</a>
+                    </li>
+                                    <li class="mb-4">
+                        <a href="http://briefer.localhost:8888/categories/career-development">Career Development</a>
+                    </li>
+                                    <li class="mb-4">
+                        <a href="http://briefer.localhost:8888/categories/finance">Finance</a>
+                    </li>
+                            </ul>
+        </div>
+        <div class="md:mr-8 md:w-1/4 md:max-w-165 mb-10 md:mb-0">
+            <h6 class="font-semibold mb-4">Briefer</h6>
+            <ul class="leading-none text-15">
+                <li class="mb-4"><a href="http://briefer.localhost:8888/about">About Us</a></li>
+                <li class="mb-4"><a href="http://briefer.localhost:8888/privacy-policy">Privacy Policy</a></li>
+                <li class="mb-4"><a href="http://briefer.localhost:8888/terms">Terms and Conditions</a></li>
+                <li class="mb-4"><a href="http://briefer.localhost:8888/cookie-policy">Cookie Policy</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
+        <login-modal></login-modal>
+        <register-modal></register-modal>
+        <book-player></book-player>
+    </div>
+
+    </body>
+</html>
