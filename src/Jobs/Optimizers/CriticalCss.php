@@ -12,9 +12,7 @@ class CriticalCss extends BaseOptimizer
 
     public function handle()
     {
-        // Load the DomDocument
-        $this->dom = new DOMDocument();
-        @$this->dom->loadHTML($this->getFileContents());
+        $this->loadDom($this->getFilename());
 
         $links = [];
         foreach($this->dom->getElementsByTagName('link') as $link) {
@@ -98,13 +96,26 @@ class CriticalCss extends BaseOptimizer
         return $this;
     }
 
+    protected function loadDom(string $filename): CriticalCss
+    {
+        $html = $this->encodeVueAttributes($this->getFileContents());
+
+        // Load the DomDocument
+        $this->dom = new DOMDocument();
+        @$this->dom->loadHTML($html);
+
+        return $this;
+    }
+
     /**
      * @param string $filename The file to save the HTML to.
      * @return $this
      */
     protected function saveDom(string $filename): CriticalCss
     {
-        $this->dom->saveHTMLFile($filename);
+        $html = $this->dom->saveHTML();
+        $html = $this->decodeVueAttributes($html);
+        file_put_contents($filename, $html);
         return $this;
     }
 }

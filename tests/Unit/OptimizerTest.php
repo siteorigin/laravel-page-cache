@@ -58,6 +58,7 @@ class OptimizerTest extends TestCase
         $this->assertLessThan(strlen($original), strlen($content), 'No minification took place.');
         $this->assertStringContainsString('@click.prevent', $content, 'Vue attributes stripped during minification.');
         $this->assertStringContainsString('@click.exact.prevent', $content, 'Vue attributes stripped during minification.');
+        $this->assertStringContainsString('v-bind:id="dynamicId"', $content, 'Vue attributes stripped during minification.');
 
         unlink($filename);
     }
