@@ -41,8 +41,9 @@ class CriticalCss extends BaseOptimizer
         $command = [$this->config['command']];
         foreach($links as $link) {
             $href = $link->getAttribute('href');
-            $path = public_path($href);
-            $command[] = '--css='.$path;
+            if ($path = $this->getCssFilePath($href)) {
+                $command[] = '--css='.$path;
+            }
         }
         $command[] = '--minify';
 
@@ -51,6 +52,17 @@ class CriticalCss extends BaseOptimizer
         $process->run();
 
         return $process->isSuccessful() ? $process->getOutput() : '';
+    }
+
+    protected function getCssFilePath($href): ?string
+    {
+        $url = parse_url($href);
+
+        if (! isset($url['path'])) {
+            return null;
+        }
+
+        return public_path($url['path']);
     }
 
     /**
