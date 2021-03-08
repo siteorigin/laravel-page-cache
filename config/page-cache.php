@@ -22,6 +22,17 @@ return [
             'enabled' => true,
             'class' => \SiteOrigin\PageCache\Jobs\Optimizers\HtmlMinifier::class,
             'command' => base_path('node_modules/.bin/html-minifier'),
+            'config'=> [
+                "collapseWhitespace" => true,
+                "removeOptionalTags" => true,
+                "removeRedundantAttributes" => true,
+                "removeTagWhitespace" => true,
+                "html5" => true,
+                "removeAttributeQuotes" => false,
+                "removeComments" => true,
+                "removeEmptyAttributes" => false,
+                "removeEmptyElements" => false
+            ]
         ],
     ]
 ];

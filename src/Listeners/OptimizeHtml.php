@@ -42,11 +42,11 @@ class OptimizeHtml implements ShouldQueue
      * @param $filename
      * @return \Illuminate\Support\Collection
      */
-    protected function getOptimizers($filename): Collection
+    public function getOptimizers($filename): Collection
     {
         return collect(config('page-cache.optimizers', []))
             ->map(function($optimizer, $key) use ($filename){
-                return $optimizer['enabled'] ? app($optimizer['class'], [
+                return !empty($optimizer['enabled']) ? app($optimizer['class'], [
                     'filename' => $filename,
                     'config' => $optimizer
                 ]) : null;
@@ -54,7 +54,7 @@ class OptimizeHtml implements ShouldQueue
             ->filter();
     }
 
-    protected function hasOptimizers(): bool
+    public function hasOptimizers(): bool
     {
         $optimizers = config('page-cache.optimizers', []);
         return is_array($optimizers) && count($optimizers);

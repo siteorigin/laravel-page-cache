@@ -16,6 +16,8 @@ abstract class BaseOptimizer implements ShouldQueue
 
     protected array $config;
 
+    private array $replacedVueAttributes = [];
+
     public function __construct($filename, $config)
     {
         $this->filename = $filename;
@@ -47,5 +49,38 @@ abstract class BaseOptimizer implements ShouldQueue
     public function putFileContents(string $contents): bool
     {
         return file_put_contents($this->filename, $contents);
+    }
+
+    /**
+     * Convert Vue Attributes into safe attributes.
+     *
+     * @param $html
+     * @return string|string[]|null
+     */
+    protected function encodeVueAttributes($html)
+    {
+        $html = preg_replace_callback('/(@[\w\.]+)=/', function($match){
+            $md5 = md5($match[1]);
+            $this->replacedVueAttributes[$md5] = $match[1];
+
+            return '_safe_' . $md5 . '=';
+        }, $html);
+
+        return $html;
+    }
+
+    /**
+     * Convert safe attributes from the previous step into
+     *
+     * @param $html
+     * @return mixed|string|string[]
+     */
+    protected function decodeVueAttributes($html)
+    {
+        foreach($this->replacedVueAttributes as $md5 => $attr) {
+            $html = str_replace('_safe_' . $md5 . '=', $attr . '=', $html);
+        }
+
+        return $html;
     }
 }
