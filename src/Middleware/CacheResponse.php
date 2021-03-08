@@ -35,6 +35,9 @@ class CacheResponse
      */
     public function handle(Request $request, Closure $next)
     {
+        // Skip the middleware if Page Cache is not enabled
+        if( ! config('page-cache.enabled') ) return $next($request);
+
         // Handle other middleware first.
         $response = $next($request);
         $exchange = new Exchange($request, $response);

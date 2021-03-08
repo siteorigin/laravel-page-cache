@@ -3,6 +3,7 @@
 namespace SiteOrigin\PageCache\Tests\Unit;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Storage;
 use SiteOrigin\PageCache\Page;
 use SiteOrigin\PageCache\Tests\App\Article;
@@ -24,12 +25,14 @@ class MiddlewareTest extends TestCase
     }
 
     // We're removing this test for now because we no longer want to skip the middleware based on headers.
-    //public function test_middleware_skipped()
-    //{
-    //    $response = $this->get('nocache/home');
-    //    $page = Page::fromUrl('nocache/home');
-    //    $this->assertFalse(Storage::disk('page-cache')->exists('nocache/home__.html'), 'File should not have been cached.');
-    //}
+    public function test_middleware_skipped()
+    {
+        Config::set('page-cache.enabled', false);
+
+        $response = $this->get('site/home');
+        $page = Page::fromUrl('site/home');
+        $this->assertFalse(Storage::disk('page-cache')->exists('nocache/home__.html'), 'File should not have been cached.');
+    }
 
     public function test_deleted_page()
     {
