@@ -7,6 +7,7 @@ use SiteOrigin\PageCache\Events\PageRefreshing;
 use SiteOrigin\PageCache\Exchange;
 use SiteOrigin\PageCache\Events\PageRefreshed;
 use Illuminate\Http\Request;
+use SiteOrigin\PageCache\Jobs\OptimizeHtml;
 use SiteOrigin\PageCache\Page;
 
 /**
@@ -48,6 +49,8 @@ class CacheResponse
             PageRefreshing::dispatch($exchange, $page);
             $page->putFileContents($exchange->getContent());
             PageRefreshed::dispatch($exchange, $page);
+
+            OptimizeHtml::dispatch($page);
         }
 
         return $response;
