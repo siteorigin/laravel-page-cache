@@ -46,8 +46,10 @@ class CacheResponse
         if ($exchange->shouldCache() && $exchange->hasChanged($page)) {
             // Everything looks good. We need to cache this.
             PageRefreshing::dispatch($exchange, $page);
-            $page->putFileContents($exchange->getContent());
-            PageRefreshed::dispatch($exchange, $page);
+
+            if ($page->putFileContents($exchange->getContent())) {
+                PageRefreshed::dispatch($exchange, $page);
+            }
         }
 
         return $response;
