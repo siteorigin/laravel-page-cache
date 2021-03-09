@@ -1,25 +1,37 @@
 <?php
 
-namespace SiteOrigin\PageCache\Listeners;
+namespace SiteOrigin\PageCache\Jobs;
 
+use Illuminate\Bus\Queueable;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
 use SiteOrigin\PageCache\Events\PageOptimized;
 use SiteOrigin\PageCache\Events\PageOptimizing;
-use SiteOrigin\PageCache\Events\PageRefreshed;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Queue\ShouldBeUniqueUntilProcessing;
+use SiteOrigin\PageCache\Page;
 
-class OptimizeHtml implements ShouldQueue
+class OptimizeHtml implements ShouldQueue, ShouldBeUniqueUntilProcessing
 {
-    public function handle(PageRefreshed $event)
-    {
-        $page = $event->getPage();
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-        if ($page->getFileExtension() == 'html' && $this->hasOptimizers()) {
+    protected Page $page;
+
+    public function __construct(Page $page)
+    {
+        $this->page = $page;
+    }
+
+    public function handle()
+    {
+        if ($this->page->getFileExtension() == 'html' && $this->hasOptimizers()) {
             // Create a temporary file with the original filename
             $filename = tempnam('', 'page-cache');
-            file_put_contents($filename, $page->getFileContents());
+            file_put_contents($filename, $this->page->getFileContents());
 
-            PageOptimizing::dispatch($page, $filename);
+            PageOptimizing::dispatch($this->page, $filename);
 
             // Run each of the optimizations on the file
             $this->getOptimizers($filename)->each(fn($optimizer) => $optimizer->handle());
@@ -28,13 +40,13 @@ class OptimizeHtml implements ShouldQueue
             $optimized = file_get_contents($filename);
 
             if($optimized) {
-                $page->putFileContents($optimized, 'min');
+                $this->page->putFileContents($optimized, 'min');
             }
 
             // Clean up the temp file
             unlink($filename);
 
-            PageOptimized::dispatch($page, $filename);
+            PageOptimized::dispatch($this->page, $filename);
         }
     }
 
@@ -58,5 +70,13 @@ class OptimizeHtml implements ShouldQueue
     {
         $optimizers = config('page-cache.optimizers', []);
         return is_array($optimizers) && count($optimizers);
+    }
+
+    /**
+     * The unique ID of the job.
+     */
+    public function uniqueId(): string
+    {
+        return $this->page->url;
     }
 }
