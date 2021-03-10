@@ -13,7 +13,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Queue\ShouldBeUniqueUntilProcessing;
 use SiteOrigin\PageCache\Page;
 
-class OptimizeHtml implements ShouldQueue, ShouldBeUniqueUntilProcessing
+class OptimizeHtml implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
